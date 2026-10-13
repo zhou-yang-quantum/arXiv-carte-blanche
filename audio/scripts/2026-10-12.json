@@ -1,0 +1,47 @@
+{
+  "version": 3,
+  "date": "2026-10-12",
+  "source_hash": "ccf06801f029136ff80fa94bc304f40749001f070778cfcd55a3cd27f5fd53d5",
+  "pronunciations": [
+    {
+      "latex": "$I(A:C|B)=S(AB)+S(BC)-S(B)-S(ABC)$",
+      "spoken": "The conditional mutual information between A and C given B equals the entropy of A B plus the entropy of B C minus the entropy of B minus the entropy of A B C."
+    },
+    {
+      "latex": "$M(4,3)$",
+      "spoken": "M of four, three"
+    },
+    {
+      "latex": "$Q\\to1$",
+      "spoken": "Q tends to one"
+    },
+    {
+      "latex": "$S^4$",
+      "spoken": "S four"
+    },
+    {
+      "latex": "$\\phi^4$",
+      "spoken": "phi to the fourth power"
+    },
+    {
+      "latex": "$\\tau\\sim N^{2n}/\\kappa$",
+      "spoken": "tau scales as N raised to the power two n, divided by kappa"
+    },
+    {
+      "latex": "$c=1/2$",
+      "spoken": "c equals one half"
+    },
+    {
+      "latex": "$d_s$",
+      "spoken": "d sub s"
+    },
+    {
+      "latex": "$r^{-(n+1)}$",
+      "spoken": "r raised to the negative of the quantity n plus one"
+    },
+    {
+      "latex": "$λφ^4$",
+      "spoken": "lambda times phi to the fourth power"
+    }
+  ]
+}
