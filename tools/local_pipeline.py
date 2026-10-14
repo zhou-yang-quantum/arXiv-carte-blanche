@@ -41,6 +41,10 @@ SCHEMA = {
 COMPLETE = {'published', 'no-batch'}
 
 
+class SnapshotPending(RuntimeError):
+    """Only the cloud collector crawls arXiv; local runs wait for its archive."""
+
+
 def load_config():
     config = json.loads(CONFIG.read_text(encoding='utf-8'))
     # The app schedule controls the same model used by startup catch-up runs.
@@ -254,12 +258,7 @@ def get_snapshot(day, config, token):
     local = ROOT / 'sources' / f'{day}.json'
     snapshot = json.loads(local.read_text(encoding='utf-8')) if local.exists() else read_remote_snapshot(day, token)
     if snapshot is None:
-        # The first installation can recover recent gaps. For longer absences,
-        # the free GitHub collector supplies snapshots even while the PC is off.
-        collect_arxiv.collect(config['categories'], config['start_date'], cache)
-        if not target.exists():
-            raise RuntimeError(f'No verified announcement snapshot for {day}; leaving that day queued')
-        return validate_snapshot(json.loads(target.read_text(encoding='utf-8')), day)
+        raise SnapshotPending(f'No verified announcement snapshot for {day}; waiting for the GitHub collector')
     validate_snapshot(snapshot, day)
     target.write_text(json.dumps(snapshot, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     return snapshot
@@ -380,6 +379,14 @@ def run_pipeline(limit=None, automatic=False):
                                       'commit': publication.get('commit'), 'verified_at': datetime.now(timezone.utc).isoformat()}
                 save_state(state)
                 results.append(publication)
+            except SnapshotPending as error:
+                # This checks GitHub, not arXiv, and never starts a model call.
+                retry_at = (datetime.now(timezone.utc) + timedelta(minutes=5)).isoformat()
+                state['days'][day] = {'status': 'retry', 'waiting_for': 'archive',
+                                      'reason': str(error), 'retry_at': retry_at}
+                save_state(state)
+                results.append({'date': day, 'status': 'retry', 'waiting_for': 'archive', 'reason': str(error)})
+                continue
             except ValueError as error:
                 state['days'][day] = {'status': 'needs-review', 'reason': str(error)}
                 save_state(state)

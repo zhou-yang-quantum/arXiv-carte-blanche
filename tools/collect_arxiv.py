@@ -19,6 +19,8 @@ ARXIV_NAMESPACE = 'http://arxiv.org/schemas/atom'
 ARXIV_ID = re.compile(r'(?:\d{4}\.\d{4,5}|[a-z-]+/\d{7})(?:v\d+)?$')
 REQUEST_ATTEMPTS = 4
 MAX_RETRY_DELAY = 300
+HTML_CRAWL_DELAY = 15
+API_REQUEST_DELAY = 3
 _next_request_at = 0.0
 
 
@@ -124,12 +126,14 @@ def fetch_text(url):
     endpoint = urllib.parse.urlsplit(url)
     label = endpoint.hostname + endpoint.path
     for attempt in range(REQUEST_ATTEMPTS):
-        # Pace all endpoints, including the transition from API to listings.
+        # The HTML site's robots.txt specifies 15 seconds, whereas the
+        # documented legacy API permits one request every 3 seconds.
         remaining = _next_request_at - time.monotonic()
         if remaining > 0:
             time.sleep(remaining)
-        _next_request_at = time.monotonic() + 3
-        request = urllib.request.Request(url, headers={'User-Agent': 'daily-arxiv-archive/1.0'})
+        interval = API_REQUEST_DELAY if endpoint.hostname == 'export.arxiv.org' and endpoint.path.startswith('/api/') else HTML_CRAWL_DELAY
+        _next_request_at = time.monotonic() + interval
+        request = urllib.request.Request(url, headers={'User-Agent': 'daily-arxiv-archive/1.1 (+https://github.com/zhou-yang-quantum/daily-arXiv)'})
         try:
             with urllib.request.urlopen(request, timeout=60) as response:
                 return response.read().decode('utf-8')

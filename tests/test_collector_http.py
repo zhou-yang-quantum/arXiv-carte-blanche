@@ -13,7 +13,7 @@ URL = 'https://arxiv.org/list/quant-ph/pastweek?show=2000&skip=0'
 class CollectorHTTPTests(unittest.TestCase):
     def setUp(self):
         for replacement in (patch.object(collector, '_next_request_at', 0),
-                            patch.object(collector.time, 'monotonic', side_effect=itertools.count(100, 10)),
+                            patch.object(collector.time, 'monotonic', side_effect=itertools.count(100, 20)),
                             patch.object(collector.sys, 'stderr', io.StringIO())):
             replacement.start()
             self.addCleanup(replacement.stop)
@@ -60,9 +60,15 @@ class CollectorHTTPTests(unittest.TestCase):
         sleep.assert_called_once_with(10)
 
     def test_successful_requests_are_paced_across_endpoint_transitions(self):
-        with patch.object(collector.time, 'monotonic', side_effect=[0, 0, 1, 3]), patch.object(collector.urllib.request, 'urlopen', side_effect=[io.BytesIO(b'listing'), io.BytesIO(b'metadata')]), patch.object(collector.time, 'sleep') as sleep:
+        with patch.object(collector.time, 'monotonic', side_effect=[0, 0, 1, 15]), patch.object(collector.urllib.request, 'urlopen', side_effect=[io.BytesIO(b'listing'), io.BytesIO(b'metadata')]), patch.object(collector.time, 'sleep') as sleep:
             collector.fetch_text(URL)
             collector.fetch_text('https://export.arxiv.org/api/query?id_list=2610.00001v1')
+        sleep.assert_called_once_with(14)
+
+    def test_legacy_api_requests_keep_the_documented_three_second_interval(self):
+        with patch.object(collector.time, 'monotonic', side_effect=[0, 0, 1, 3]), patch.object(collector.urllib.request, 'urlopen', side_effect=[io.BytesIO(b'first'), io.BytesIO(b'second')]), patch.object(collector.time, 'sleep') as sleep:
+            collector.fetch_text('https://export.arxiv.org/api/query?id_list=2610.00001v1')
+            collector.fetch_text('https://export.arxiv.org/api/query?id_list=2610.00002v1')
         sleep.assert_called_once_with(2)
 
 

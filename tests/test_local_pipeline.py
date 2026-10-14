@@ -203,6 +203,33 @@ class QueueTests(unittest.TestCase):
             self.assertEqual(pipeline.read_state()['days']['2026-10-08']['status'], 'published')
             self.assertEqual(pipeline_plan(self.config, pipeline.read_state(), now)['due'], [])
 
+    def test_missing_archive_never_starts_a_second_arxiv_collector(self):
+        with tempfile.TemporaryDirectory() as folder, patch.object(pipeline, 'RUNTIME', Path(folder)), \
+             patch.object(pipeline, 'read_remote_snapshot', return_value=None), \
+             patch.object(collector, 'collect') as collect:
+            with self.assertRaises(pipeline.SnapshotPending):
+                pipeline.get_snapshot('2026-10-14', self.config, 'test-token')
+            collect.assert_not_called()
+
+    def test_waiting_for_archive_checks_again_in_five_minutes_without_gpt(self):
+        with tempfile.TemporaryDirectory() as folder, patch.object(pipeline, 'RUNTIME', Path(folder)), \
+             patch.object(pipeline, 'load_config', return_value=self.config), \
+             patch.object(pipeline, 'app_is_running', return_value=True), \
+             patch.object(pipeline, 'github_token', return_value='test-token'), \
+             patch.object(pipeline, 'plan', return_value={'due': ['2026-10-14']}), \
+             patch.object(pipeline.publish_digest, 'check_date', return_value={'status': 'missing'}), \
+             patch.object(pipeline, 'get_snapshot', side_effect=pipeline.SnapshotPending('Archive pending')), \
+             patch.object(pipeline, 'generate') as generate:
+            pipeline.run_pipeline()
+            state = pipeline.read_state()
+            waiting = state['days']['2026-10-14']
+            self.assertEqual(waiting['waiting_for'], 'archive')
+            delay = (datetime.fromisoformat(waiting['retry_at']) - datetime.now(timezone.utc)).total_seconds()
+            self.assertGreater(delay, 290)
+            self.assertLessEqual(delay, 300)
+            self.assertNotIn('pause_until', state)
+            generate.assert_not_called()
+
 
 pipeline_plan = pipeline.plan
 
