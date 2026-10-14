@@ -1,11 +1,14 @@
 """Archive dated arXiv announcements and v1 metadata without calling a model."""
 import argparse
 from datetime import date, datetime, timezone
+from email.utils import parsedate_to_datetime
 from html.parser import HTMLParser
 import json
 from pathlib import Path
 import re
+import sys
 import time
+import urllib.error
 import urllib.parse
 import urllib.request
 import xml.etree.ElementTree as ET
@@ -14,6 +17,9 @@ ROOT = Path(__file__).resolve().parents[1]
 ATOM = {'a': 'http://www.w3.org/2005/Atom'}
 ARXIV_NAMESPACE = 'http://arxiv.org/schemas/atom'
 ARXIV_ID = re.compile(r'(?:\d{4}\.\d{4,5}|[a-z-]+/\d{7})(?:v\d+)?$')
+REQUEST_ATTEMPTS = 4
+MAX_RETRY_DELAY = 300
+_next_request_at = 0.0
 
 
 def clean(text):
@@ -97,18 +103,57 @@ def parse_listing(text):
     return parser.entries, parser.dates, count
 
 
+def retry_after(error):
+    value = (getattr(error, 'headers', None) or {}).get('Retry-After', '').strip()
+    if not value:
+        return 0
+    try:
+        if value.isdigit():
+            return int(value)
+        when = parsedate_to_datetime(value)
+        if when.tzinfo is None:
+            when = when.replace(tzinfo=timezone.utc)
+        return max(0, (when - datetime.now(timezone.utc)).total_seconds())
+    except (TypeError, ValueError, OverflowError):
+        return 0
+
+
 def fetch_text(url):
-    last_error = None
-    for attempt in range(3):
+    global _next_request_at
+    last_error, deferred = None, ''
+    endpoint = urllib.parse.urlsplit(url)
+    label = endpoint.hostname + endpoint.path
+    for attempt in range(REQUEST_ATTEMPTS):
+        # Pace all endpoints, including the transition from API to listings.
+        remaining = _next_request_at - time.monotonic()
+        if remaining > 0:
+            time.sleep(remaining)
+        _next_request_at = time.monotonic() + 3
         request = urllib.request.Request(url, headers={'User-Agent': 'daily-arxiv-archive/1.0'})
         try:
             with urllib.request.urlopen(request, timeout=60) as response:
                 return response.read().decode('utf-8')
         except (OSError, TimeoutError) as error:
             last_error = error
-            if attempt < 2:
-                time.sleep(3 * (attempt + 1))
-    raise RuntimeError(f'Could not fetch {urllib.parse.urlsplit(url).hostname}; archive remains incomplete') from last_error
+            code = error.code if isinstance(error, urllib.error.HTTPError) else None
+            suggested = retry_after(error)
+            if isinstance(error, urllib.error.HTTPError):
+                error.close()
+            if code is not None and code not in (429, 500, 502, 503, 504):
+                break
+            if attempt == REQUEST_ATTEMPTS - 1:
+                break
+            delay = max((60 if code in (429, 503) else 10) * 2 ** attempt, suggested)
+            if delay > MAX_RETRY_DELAY:
+                deferred = f'; server requested a {suggested:g}-second wait, deferring to a later run'
+                break  # Never cap Retry-After and then retry before permission.
+            reason = f'HTTP {code}' if code is not None else type(error).__name__
+            print(f'{label}: {reason}; retrying in {delay:g} seconds '
+                  f'({attempt + 2}/{REQUEST_ATTEMPTS})', file=sys.stderr, flush=True)
+            time.sleep(delay)
+    code = getattr(last_error, 'code', None)
+    reason = f'HTTP {code}' if code is not None else type(last_error).__name__
+    raise RuntimeError(f'Could not fetch {label}: {reason}{deferred}; archive remains incomplete') from last_error
 
 
 def parse_atom(text):
