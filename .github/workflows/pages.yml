@@ -4,6 +4,12 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      audio_dates:
+        description: 'Optional comma-separated dates to generate or reuse; blank processes all dates'
+        type: string
+        required: false
+        default: ''
 
 permissions:
   contents: read
@@ -44,7 +50,16 @@ jobs:
         timeout-minutes: 60
         env:
           GH_TOKEN: ${{ github.token }}
-        run: python tools/generate_audio.py
+          AUDIO_DATES: ${{ inputs.audio_dates }}
+        run: |
+          if [ -n "$AUDIO_DATES" ]; then
+            IFS=',' read -r -a dates <<< "$AUDIO_DATES"
+            for stamp in "${dates[@]}"; do
+              python tools/generate_audio.py --date "$stamp"
+            done
+          else
+            python tools/generate_audio.py
+          fi
       - run: npm run build
       - uses: actions/upload-pages-artifact@v4
         with:

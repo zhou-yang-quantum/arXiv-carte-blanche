@@ -78,3 +78,10 @@ FFmpeg and eSpeak NG, then run `python tools/generate_audio.py --local-only --da
 Alternatively, build `docker build -f audio/Dockerfile -t daily-arxiv-speech .` and
 mount the repository at `/app` when running the image with `--local-only --date YYYY-MM-DD`.
 Publishing uses the existing GitHub CLI login or the workflow's scoped token.
+
+The **Publish daily-arXiv** workflow also accepts an optional `audio_dates` input:
+comma-separated dates without spaces, such as `2026-10-14,2026-10-15`. A manual
+run processes only those recordings and then publishes the site. Leave it blank
+to process all dates. To publish text promptly, first select dates whose recordings
+are already available, then queue the new dates in a second run. Each run retains
+the other still-current recordings from the published audio index.

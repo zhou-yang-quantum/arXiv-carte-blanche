@@ -1,0 +1,83 @@
+{
+  "version": 4,
+  "date": "2026-10-15",
+  "source_hash": "4b6bad18cb74dcd79c16c2be44f701e03d80a4af09c348af157b0e1d8dd1b3d9",
+  "pronunciations": [
+    {
+      "latex": "$(\\Delta-\\tfrac12)^2$",
+      "spoken": "the quantity delta minus one half, squared"
+    },
+    {
+      "latex": "$0.01\\%$",
+      "spoken": "zero point zero one percent"
+    },
+    {
+      "latex": "$0.1\\%$",
+      "spoken": "zero point one percent"
+    },
+    {
+      "latex": "$0.5\\%$",
+      "spoken": "zero point five percent"
+    },
+    {
+      "latex": "$4.10\\times10^{-7}$",
+      "spoken": "four point one zero times ten to the power minus seven"
+    },
+    {
+      "latex": "$8.89\\%$",
+      "spoken": "eight point eight nine percent"
+    },
+    {
+      "latex": "$A=V\\sqrt{A^\\dagger A}$",
+      "spoken": "A equals V times the square root of A dagger times A"
+    },
+    {
+      "latex": "$F_j=c_j^\\dagger+c_{j+1}^\\dagger$",
+      "spoken": "F sub j equals c dagger at site j plus c dagger at site j plus one"
+    },
+    {
+      "latex": "$H=h/(k_BT)$",
+      "spoken": "capital H equals lowercase h divided by the product of k sub B and T"
+    },
+    {
+      "latex": "$I(A:C|B)=S(AB)+S(BC)-S(B)-S(ABC)$",
+      "spoken": "The conditional mutual information between A and C given B equals the entropy of region A B plus the entropy of region B C minus the entropy of B minus the entropy of region A B C"
+    },
+    {
+      "latex": "$K=J/(k_BT)$",
+      "spoken": "K equals J divided by the product of k sub B and T"
+    },
+    {
+      "latex": "$N$",
+      "spoken": "N"
+    },
+    {
+      "latex": "$[[2844,1426,18]]$",
+      "spoken": "the quantum code with parameters two thousand eight hundred forty-four, one thousand four hundred twenty-six, eighteen"
+    },
+    {
+      "latex": "$\\Delta$",
+      "spoken": "delta"
+    },
+    {
+      "latex": "$\\eta,\\kappa\\propto t^{3/8}$",
+      "spoken": "eta and kappa are proportional to t to the power three eighths"
+    },
+    {
+      "latex": "$\\tau\\times\\tau=\\mathbf{1}+\\tau$",
+      "spoken": "tau fused with tau equals the identity plus tau"
+    },
+    {
+      "latex": "$k$",
+      "spoken": "k"
+    },
+    {
+      "latex": "$n_k\\propto k^{-d}$",
+      "spoken": "n sub k is proportional to k to the power minus d"
+    },
+    {
+      "latex": "$z=1$",
+      "spoken": "z equals one"
+    }
+  ]
+}
