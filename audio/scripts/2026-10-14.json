@@ -1,0 +1,75 @@
+{
+  "version": 3,
+  "date": "2026-10-14",
+  "source_hash": "b91a9e590a82ac60a01368f66dcc3a1c5527186223aed0fc99a6d122ff1562f6",
+  "pronunciations": [
+    {
+      "latex": "$0<\\alpha<1$",
+      "spoken": "zero is less than alpha, which is less than one"
+    },
+    {
+      "latex": "$O(N^{-1})$",
+      "spoken": "big O of N to the minus one"
+    },
+    {
+      "latex": "$O(N^{-2})$",
+      "spoken": "big O of N to the minus two"
+    },
+    {
+      "latex": "$SU(2)$",
+      "spoken": "S U two"
+    },
+    {
+      "latex": "$T$",
+      "spoken": "T"
+    },
+    {
+      "latex": "$V(x)=V_0/(1+|x|^\\beta)$",
+      "spoken": "V of x equals V sub zero divided by the quantity one plus the absolute value of x raised to beta"
+    },
+    {
+      "latex": "$[X,A]$",
+      "spoken": "the commutator of X and A"
+    },
+    {
+      "latex": "$[[16,4,4]]$",
+      "spoken": "double bracket sixteen, four, four, close double bracket"
+    },
+    {
+      "latex": "$\\alpha<d$",
+      "spoken": "alpha is less than d"
+    },
+    {
+      "latex": "$\\alpha=1$",
+      "spoken": "alpha equals one"
+    },
+    {
+      "latex": "$\\beta>1$",
+      "spoken": "beta is greater than one"
+    },
+    {
+      "latex": "$\\epsilon_k=u|k|^z$",
+      "spoken": "epsilon sub k equals u times the absolute value of k raised to z"
+    },
+    {
+      "latex": "$\\mathrm{SL}(2,\\mathbb{R})$",
+      "spoken": "S L two over the real numbers"
+    },
+    {
+      "latex": "$r^{-\\alpha}$",
+      "spoken": "r raised to minus alpha"
+    },
+    {
+      "latex": "$w_{\\max}\\geq\\lceil d/2\\rceil$",
+      "spoken": "w sub max is greater than or equal to the ceiling of d divided by two"
+    },
+    {
+      "latex": "$|\\alpha|=0.65(8)$",
+      "spoken": "the absolute value of alpha equals zero point six five, with uncertainty zero point zero eight"
+    },
+    {
+      "latex": "$|\\alpha|>1$",
+      "spoken": "the absolute value of alpha is greater than one"
+    }
+  ]
+}
