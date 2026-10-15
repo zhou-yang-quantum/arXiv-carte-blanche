@@ -17,6 +17,7 @@ Push to main → GitHub Actions build → dist/ → GitHub Pages
 | --- | --- |
 | `local-pipeline.json` | Categories, queue start date, due time, model defaults, retry and timeout settings. |
 | `prompts/local-research.md` | Actual research instructions passed to each local generation context. |
+| `prompts/researcher-profile.md` | Durable interests, confirmed knowledge, and provisional publication-based context; the research prompt instructs each fresh generator to read it before screening. |
 | `preferences.json` | Public selection criteria copied into the website; not loaded by the research controller. |
 | `sources/` | Immutable dated announcement evidence and captured paper metadata. Legacy snapshots use v1; Atom snapshots record the version in the new announcement. |
 | `incoming/` | Markdown digests parsed directly at build time. |
@@ -37,6 +38,8 @@ python tools/local_pipeline.py paper YYYY-MM-DD ID1 ID2
 ```
 
 Its current editorial rules prioritize quantum field theory, non-equilibrium physics, quantum error correction, quantum simulation, quantum algorithms, and exactly solvable models. They exclude materials, quantum chemistry, bilayer graphene, TMDs, high-temperature superconductivity, most experiments, overly mathematical string theory, and overly computer-science-heavy algorithms. Change these paragraphs and the assumed background to match the intended reader, and mirror the public criteria in `preferences.json`.
+
+The prompt also instructs each fresh generator to read [prompts/researcher-profile.md](../prompts/researcher-profile.md). Keep durable interests and knowledge calibration there; confirmed reader feedback takes precedence over publication-based inferences. Summaries begin with motivation and the existing obstacle before explaining the mechanism and results. Background fills paper-specific conceptual gaps, and **Why it matters?** assesses scientific significance, potential impact, and connections to durable interests. Save lasting reading feedback in the prompt or profile; the generator does not inherit previous conversations or refresh the profile from the web on every run.
 
 The model screens the catalog, reads saved announcement abstracts for plausible candidates, and consults original arXiv sources as needed. It uses the frozen source version recorded in the metadata: `source_v1` for legacy snapshots or `versioned_url` for Atom snapshots. It selects ten papers by default, with a maximum of twenty, using only distinct IDs from that date's verified first-announcement batch. Historical catch-up uses the historical batch. Replacement announcements and old papers newly cross-listed on the date are excluded; a new announcement may already be v2. Explanations include summary, background/motivation, and personal relevance, with numerical ranking and no priority verdicts.
 
@@ -64,11 +67,17 @@ Audio is optional. For a text-only fork, remove the audio cache, dependency prep
 
 Keep `main` as the publishing branch, or update both the workflow branch filter and the publisher's read/write branch values consistently. Choose `start_date` deliberately: it is the beginning of the missing-weekday queue, not just a label. Retained example digests count as completed dates.
 
-## Saved papers and device sync
+## Website reading controls and saved papers
+
+The archive sidebar groups dates under month/year headings. Readers can hide it, and a date dropdown remains available when it is hidden or on narrow screens. **Latest** returns to the newest digest; topic filters and **Saved** browse across the archive. **Compact view** collapses paper details, and each paper has its own **Show details / Hide details** button. The search field and mark-as-read controls have been removed.
+
+Paper cards show a numerical rank beside the title, authors and arXiv ID, then **Summary**, **Background**, and **Why it matters?** sections. Redundant inline v1 source links are omitted from rendering and copied text; arXiv and PDF footer links remain. The browser tab uses the selected digest title (`arXiv-YYYY-MM-DD`) even in Saved or filtered views, with `site/quantum-chip.svg` as both the favicon and brand icon.
 
 Bookmarks persist in browser storage and can optionally sync through each reader's own Dropbox account. The site remains static; no paid backend or model API is involved. Configure the public app key and redirect URLs using [the Dropbox setup guide](dropbox-sync.md), then connect from **Saved → Dropbox sync** on each device. An empty key leaves local saves enabled and Dropbox connection disabled.
 
-The theme switch and archive-sidebar preference also remember the browser's choice. Mark-as-read tracking has been removed.
+The theme follows the operating system until the reader chooses light or dark; that choice and the archive-sidebar preference persist in browser storage. The calendar picker and paginated **All** view remain future work, tracked in the [README to-do list](../README.md#to-do-future-implementations).
+
+**Play day** and **Play item** open the same continuous day recording, using item boundaries as chapters. The player offers track selection, previous/next, seeking within the current item, speed controls, Media Session controls, and automatic recovery after stalled playback. **Download playlist (ZIP)** appears when the published audio index includes the archive of dated individual MP3s. New narration uses version 4: item number, a pause, then the title without repeating the digest date. See [audio/README.md](../audio/README.md) for generation, recovery limits, and the remaining physical-device lock-screen check.
 
 ## Local installation and schedule
 
@@ -121,6 +130,8 @@ The local controller reads those snapshots instead of crawling arXiv. Missing ev
 After research, the local controller validates the result and calls the Python publisher. The automatic path creates `incoming/YYYY-MM-DD.md` and `audio/scripts/YYYY-MM-DD.json` together in one Git commit, updating `main` without force. If the branch moves, it rebuilds against the new parent and checks the dated entry again. An identical existing digest is treated as already delivered; a different one is protected from overwrite. The manual publisher still accepts a Markdown-only delivery. This remote commit does not update your local Git checkout, so pull remote changes before your next local commit. Audio preparation and licenses are documented in [audio/README.md](../audio/README.md).
 
 [`.github/workflows/pages.yml`](../.github/workflows/pages.yml) runs on pushes to `main` or manual dispatch. It installs Node/Python dependencies, runs Python tests, attempts offline audio generation/reuse, validates the archive, uploads `dist/`, and deploys that artifact to Pages. Markdown is parsed during the build; generated digest JSON need not be committed. Only `dist/` is deployed. Marked, KaTeX, fonts, and their licenses are bundled in the site. Audio uses offline speech synthesis and GitHub Release assets; audio-generation failures are allowed without blocking text publication.
+
+Manual dispatch accepts optional `audio_dates`, a comma-separated list without spaces (for example, `2026-10-14,2026-10-15`), to generate or reuse only those dates' recordings. Leave it blank to process all dates. Other still-current recordings are retained from the published index. New and reused releases receive a playlist ZIP without requiring speech to be regenerated; see the [audio publication notes](../audio/README.md).
 
 In your fork, enable Actions and select **Settings → Pages → Build and deployment → Source → GitHub Actions**, using the existing workflow. See [GitHub's publishing-source documentation](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site). The collector needs `contents: write`; the Pages build also needs it for audio releases, and the deploy job needs `pages: write` and `id-token: write`. The workflow declares these permissions and uses the built-in GitHub token; local publication uses your separate `gh` login.
 

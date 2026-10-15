@@ -10,9 +10,10 @@ The current selection focuses on theoretical physics and quantum information: qu
 
 - Browse by date and filter by topic.
 - Read summaries with equations and links to the original arXiv papers.
+- Hide the archive sidebar, switch to compact view, or expand individual paper details.
 - Save papers locally or sync them across devices with your own Dropbox account.
 - Switch between light and dark reading modes.
-- Copy a dated digest or individual paper for voice reading, or listen to recordings when available.
+- Copy a dated digest or individual paper for voice reading. Available recordings support a chapter playlist, playback speed controls, and a ZIP download of individual paper MP3s.
 
 The website is static HTML/CSS/JavaScript. Local Codex generates the digests; GitHub Actions collects arXiv source data and builds and deploys the website. Browsing, building, and manual digest imports need no model API key.
 
@@ -52,6 +53,7 @@ The minimum changes for a personalized digest are:
 | File | What to change |
 | --- | --- |
 | [prompts/local-research.md](prompts/local-research.md) | Set your interests, exclusions, assumed background, and what makes a paper useful to you. This is the prompt the local generator actually reads. Keep its dated output format. |
+| [prompts/researcher-profile.md](prompts/researcher-profile.md) | Set your durable interests and knowledge calibration. The research prompt instructs each fresh run to read this profile before screening papers. |
 | [preferences.json](preferences.json) | Match the interests and criteria shown on the website to your prompt. This file does not control generation. |
 | [local-pipeline.json](local-pipeline.json) | Set the arXiv `categories` to scan. For automation, also choose your `start_date`, timezone, time, model, and effort. |
 
@@ -61,6 +63,8 @@ To host your own copy, enable Actions in your fork and select **Settings → Pag
 
 For interests outside the current physics topics, the same guide explains how to adjust the topic filters.
 
+Future digests use motivation-first summaries, paper-specific background explanations calibrated to the profile, and a reasoned assessment of scientific significance in **Why it matters?** Update the prompt or profile to carry reading feedback into later runs.
+
 ## Add digests
 
 **Manually:** save a digest as UTF-8 Markdown at `incoming/YYYY-MM-DD.md`, following the [format in the technical guide](docs/technical-setup.md#digest-format). Run `npm run build` to validate it, then commit the Markdown and push to `main`. GitHub Actions parses it during the build and deploys the updated archive; you do not need to commit generated JSON or `dist/`.
@@ -68,6 +72,16 @@ For interests outside the current physics topics, the same guide explains how to
 **Automatically:** the current setup runs locally on Windows with Codex signed in through ChatGPT and GitHub CLI signed in to the destination repository. A Codex task runs at 10:00 on weekdays, and a startup watcher catches up missed days while the computer and Codex app are running. This uses the existing ChatGPT login with no paid model API fallback; account usage limits still apply.
 
 See **[Technical setup and agent reference](docs/technical-setup.md)** for the exact research prompt, sanitized scheduled-task prompt, installation steps, catch-up behavior, GitHub Actions workflows, and validation commands. Local schedules and logins must be set up separately for each person; cloning the repo does not create them.
+
+## To-do: future implementations
+
+- [ ] Improve date browsing:
+  - [x] Organize the left sidebar by month, then by date within each month (month/year headings are already implemented).
+  - [ ] When the left sidebar is hidden, replace the date dropdown with a calendar icon to the right of the title. Clicking the icon opens a calendar view with available dates highlighted and unavailable dates greyed out.
+- [ ] Add an **All** button to the right of **Latest**:
+  - [ ] Display all papers, ordered from newest to oldest.
+  - [ ] Paginate with 10 papers per page.
+  - [ ] Display papers without numbering.
 
 ## Credits
 

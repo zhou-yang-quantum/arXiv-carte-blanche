@@ -9,7 +9,7 @@ Start with `# arXiv-YYYY-MM-DD` and a brief daily overview, followed by 10–20 
 
 Each item must include a `###` paper title, authors and `arXiv:YYMM.NNNNN`,
 summary paragraphs, `**Background.**`, and
-`**Why it matters for you:**`.
+`**Why it matters?**`. The older `**Why it matters for you:**` heading remains accepted for existing digests.
 
 Ten papers is the default; include additional papers only when warranted, with a
 hard limit of twenty. Do not include priority verdicts such as “must read” or
