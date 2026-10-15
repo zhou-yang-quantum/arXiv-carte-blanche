@@ -1,0 +1,15 @@
+{
+  "date": "2026-10-13",
+  "version": 2,
+  "metadata_version": "v1",
+  "captured_at": "2026-10-14T00:03:14.663290+00:00",
+  "listing_sources": [
+    "https://arxiv.org/list/cond-mat.stat-mech/pastweek?show=2000&skip=0",
+    "https://arxiv.org/list/hep-lat/pastweek?show=2000&skip=0",
+    "https://arxiv.org/list/hep-th/pastweek?show=2000&skip=0",
+    "https://arxiv.org/list/math-ph/pastweek?show=2000&skip=0",
+    "https://arxiv.org/list/quant-ph/pastweek?show=2000&skip=0"
+  ],
+  "papers": [],
+  "excluded_papers": []
+}

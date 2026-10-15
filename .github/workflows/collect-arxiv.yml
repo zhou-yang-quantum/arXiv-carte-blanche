@@ -3,7 +3,7 @@ name: Archive arXiv announcements
 on:
   workflow_dispatch:
   schedule:
-    - cron: '17 2,8 * * 1-5'
+    - cron: '17 2,4,6,8,10 * * 1-5'
       timezone: America/New_York
 
 permissions:
@@ -22,10 +22,42 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: '3.12'
-      - name: Check collector retry handling
-        run: python -m unittest discover -s tests -p test_collector_http.py
-      - run: python tools/collect_arxiv.py
-      - name: Commit new snapshots
+      - name: Restore completed feed downloads
+        uses: actions/cache/restore@v4
+        with:
+          path: .cache/arxiv-collector
+          key: arxiv-feeds-v1-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: arxiv-feeds-v1-
+      - name: Check collector and recovery handling
+        run: python -m unittest discover -s tests -p 'test_collector*.py'
+      - name: Check daily archive freshness
+        id: freshness
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+        run: |
+          python - <<'PY'
+          from datetime import datetime
+          from pathlib import Path
+          from zoneinfo import ZoneInfo
+          import os
+          today = datetime.now(ZoneInfo('America/New_York')).date().isoformat()
+          run = os.environ['EVENT_NAME'] != 'schedule' or not Path('sources', today + '.json').exists()
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
+              output.write('run=' + str(run).lower() + '\n')
+          PY
+      - name: Capture official arXiv feeds
+        id: capture
+        if: steps.freshness.outputs.run == 'true'
+        timeout-minutes: 15
+        run: python -u tools/collect_arxiv.py
+      - name: Preserve completed downloads even after a later failure
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: .cache/arxiv-collector
+          key: arxiv-feeds-v1-${{ github.run_id }}-${{ github.run_attempt }}
+      - name: Commit complete snapshots
+        if: ${{ always() && !cancelled() && (steps.capture.outcome == 'success' || steps.capture.outcome == 'failure') }}
         shell: bash
         run: |
           git add sources/*.json
@@ -33,4 +65,8 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git commit -m "Archive new arXiv announcement batches"
-          git push
+          for attempt in 1 2 3; do
+            git pull --rebase origin main
+            if git push; then exit 0; fi
+          done
+          exit 1

@@ -4,7 +4,7 @@ command. This is a local task using my ChatGPT subscription. Do not call a paid
 model API, read credentials, publish, edit repository source, start another agent,
 or create a schedule. The controller validates and publishes your final result.
 
-Read the compact catalog once to screen the whole batch. Request stored v1
+Read the compact catalog once to screen the whole batch. Request stored announcement
 abstracts for plausible candidates using the provided metadata command (up to 20
 IDs per call). Consult the original arXiv abstract or paper text when needed to
 support a chosen paper's claims; prefer primary sources. Do not read full papers
@@ -22,9 +22,11 @@ to my publications. Do not invent details about my own research.
 Choose ten important papers by default. Include additional strong papers only
 when warranted, with a hard maximum of twenty. Use only distinct IDs in the
 provided dated catalog. These are newly announced papers for that particular
-day; later revisions and papers from other dates are ineligible. For a historical
-catch-up run, review that historical batch, not today's postings. Use v1 metadata
-and identify the actual announcement batch prominently in the overview.
+day; replacement announcements and papers from other dates are ineligible. For a
+historical catch-up run, review that historical batch, not today's postings. Use
+the frozen source version in the saved metadata: source_v1 for legacy snapshots,
+or versioned_url for feed snapshots. A feed entry labeled new may already be v2;
+it is still a newly announced paper. Identify the actual batch in the overview.
 
 Keep a clean numerical ranking and a concise daily overview, without priority
 verdicts such as "must read", "high", or "very high". Preserve substantial,
@@ -46,7 +48,7 @@ none or status is insufficient. This small list supplies an audio version by
 replacing only math; do not duplicate or paraphrase the digest's prose.
 
 Use the arXiv link at the bottom of each item, without redundant inline links
-labeled "v1 paper", "v1 abstract", or similar. Still verify claims from v1 sources.
+labeled "v1 paper", "v1 abstract", or similar. Verify claims from the recorded source version.
 
 Return only the final JSON object matching the supplied schema. If at least ten
 appropriate papers cannot be supported, set status to "insufficient", explain
@@ -60,7 +62,7 @@ Brief overview of the batch and selection.
 
 ## arXiv-YYYY-MM-DD — Item 1
 
-### Exact title from the stored v1 metadata
+### Exact title from the stored announcement metadata
 **Authors — arXiv:YYMM.NNNNN**
 
 Source-grounded summary paragraphs, with Markdown and LaTeX as helpful.

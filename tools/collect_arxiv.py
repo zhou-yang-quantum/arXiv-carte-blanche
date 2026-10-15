@@ -131,7 +131,8 @@ def fetch_text(url):
         remaining = _next_request_at - time.monotonic()
         if remaining > 0:
             time.sleep(remaining)
-        interval = API_REQUEST_DELAY if endpoint.hostname == 'export.arxiv.org' and endpoint.path.startswith('/api/') else HTML_CRAWL_DELAY
+        machine_endpoint = endpoint.hostname == 'rss.arxiv.org' or (endpoint.hostname == 'export.arxiv.org' and endpoint.path.startswith('/api/'))
+        interval = API_REQUEST_DELAY if machine_endpoint else HTML_CRAWL_DELAY
         _next_request_at = time.monotonic() + interval
         request = urllib.request.Request(url, headers={'User-Agent': 'daily-arxiv-archive/1.1 (+https://github.com/zhou-yang-quantum/daily-arXiv)'})
         try:
@@ -296,9 +297,16 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--folder', type=Path, default=ROOT / 'sources')
     parser.add_argument('--since')
+    parser.add_argument('--historical', action='store_true', help='Explicit HTML-based historical recovery; daily capture uses official feeds')
     args = parser.parse_args()
     config = json.loads((ROOT / 'local-pipeline.json').read_text(encoding='utf-8'))
-    print(json.dumps({'captured': collect(config['categories'], args.since or config['start_date'], args.folder)}))
+    capture = collect
+    if not args.historical:
+        if __package__:
+            from .collect_feeds import collect as capture
+        else:
+            from collect_feeds import collect as capture
+    print(json.dumps({'captured': capture(config['categories'], args.since or config['start_date'], args.folder)}))
 
 
 if __name__ == '__main__':

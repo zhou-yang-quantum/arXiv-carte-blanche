@@ -1,12 +1,12 @@
 """Subscription-backed local generation, durable catch-up, and protected publishing."""
 import argparse
-import base64
 from contextlib import contextmanager
 from datetime import date, datetime, time, timedelta, timezone
 import html
 import json
 import os
 from pathlib import Path
+import re
 import shutil
 import subprocess
 import sys
@@ -217,7 +217,7 @@ def read_remote_snapshot(day, token):
     date.fromisoformat(day)
     request = urllib.request.Request(
         f'https://api.github.com/repos/{publish_digest.REPOSITORY}/contents/sources/{day}.json?ref=main',
-        headers={'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github+json',
+        headers={'Authorization': 'Bearer ' + token, 'Accept': 'application/vnd.github.raw+json',
                  'User-Agent': 'daily-arxiv-local/1.0'})
     try:
         with urllib.request.urlopen(request, timeout=30) as response:
@@ -226,13 +226,12 @@ def read_remote_snapshot(day, token):
         if error.code == 404:
             return None
         raise RuntimeError(f'GitHub snapshot read returned HTTP {error.code}') from None
-    if data.get('encoding') != 'base64':
-        raise ValueError('Snapshot is too large for the verified read method')
-    return json.loads(base64.b64decode(data['content']).decode('utf-8-sig'))
+    return data
 
 
 def validate_snapshot(snapshot, day):
-    if snapshot.get('date') != day or snapshot.get('metadata_version') != 'v1':
+    expected_metadata = 'feed' if snapshot.get('version', 1) >= 3 else 'v1'
+    if snapshot.get('date') != day or snapshot.get('metadata_version') != expected_metadata:
         raise ValueError('Snapshot date/version mismatch')
     papers = snapshot.get('papers', [])
     if len({paper['id'] for paper in papers}) != len(papers):
@@ -241,11 +240,20 @@ def validate_snapshot(snapshot, day):
         raise ValueError('Snapshot lacks dated listing evidence')
     for paper in papers:
         if paper.get('announcement_date') != day or not paper.get('abstract'):
-            raise ValueError('Paper date or v1 abstract is missing')
+            raise ValueError('Paper date or saved abstract is missing')
         if not collect_arxiv.ARXIV_ID.fullmatch(paper['id']) or 'v' in paper['id']:
             raise ValueError('Snapshot contains an invalid paper ID')
         if snapshot.get('version', 1) >= 2 and (paper.get('first_announcement_date') != day or not paper.get('primary_listing_sources')):
             raise ValueError('Paper lacks first-announcement evidence for this date')
+        if snapshot.get('version', 1) >= 3:
+            origin = paper.get('metadata_origin')
+            if snapshot.get('source_format') != 'arxiv-atom' or paper.get('announcement_type') != 'new' or origin != 'arxiv-atom':
+                raise ValueError('Feed snapshot lacks an original new announcement')
+            if not re.fullmatch(re.escape(paper['id']) + r'v[1-9]\d*', paper.get('feed_id', '')):
+                raise ValueError('Feed metadata has an invalid version')
+            published = datetime.fromisoformat(paper.get('feed_published', ''))
+            if published.tzinfo is None or published.date().isoformat() != day or paper.get('versioned_url') != f'https://arxiv.org/abs/{paper["feed_id"]}':
+                raise ValueError('Feed snapshot has incorrect dated version evidence')
     return snapshot
 
 
@@ -296,7 +304,7 @@ def generate(day, snapshot, config):
     prompt = (ROOT / 'prompts/local-research.md').read_text(encoding='utf-8')
     prompt += f'\n\nExact target date: {day}.\nCatalog: {catalog_file}.\n'
     prompt += f'Metadata lookup: python tools/local_pipeline.py paper {day} ID1 ID2 ...\n'
-    prompt += 'The metadata lookup only reads saved v1 paper data. You may read files and use live web search. Use automatic approval review for required read commands. Return the digest in your final JSON, not through file writes.\n'
+    prompt += 'The metadata lookup only reads saved announcement data. Use the exact source version recorded in source_v1 (legacy snapshots) or versioned_url (feed snapshots). You may read files and use live web search. Use automatic approval review for required read commands. Return the digest in your final JSON, not through file writes.\n'
     with (folder / 'events.jsonl').open('w', encoding='utf-8') as events, (folder / 'stderr.log').open('w', encoding='utf-8') as errors:
         result = subprocess.run(generation_command(executable, config, output, schema_file), input=prompt,
                                 text=True, encoding='utf-8', stdout=events, stderr=errors,
@@ -319,7 +327,7 @@ def validate_result(result, snapshot, day):
             raise ValueError('Generated paper is outside the verified announcement batch')
         normalize = lambda value: collect_arxiv.clean(html.unescape(value))
         if normalize(paper['title']) != normalize(candidates[paper['id']]['title']):
-            raise ValueError(f"Title does not match verified v1 metadata for {paper['id']}")
+            raise ValueError(f"Title does not match verified announcement metadata for {paper['id']}")
         if 'priority' in paper:
             raise ValueError('New digests must omit priority verdicts')
     make_script(digest, result.get('math_pronunciations', []))
