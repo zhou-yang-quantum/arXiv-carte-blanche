@@ -212,7 +212,7 @@ function render() {
   const day = currentDay();
   const filtering = isArchiveSearch();
   const results = (filtering ? state.archive.days : [day]).flatMap((d) => d.papers.filter(matches).map((paper) => ({ day: d, paper })));
-  document.title = (state.savedOnly ? 'Saved papers' : filtering ? 'Search results' : day.title) + ' · daily-arXiv';
+  document.title = day.title;
   $('#page-title').textContent = state.savedOnly ? 'Saved papers' : filtering ? 'Search results' : day.title;
   $('#date-subtitle').hidden = !filtering;
   $('#date-subtitle').textContent = filtering ? state.archive.days.length + ' archived day' + (state.archive.days.length === 1 ? '' : 's') : '';

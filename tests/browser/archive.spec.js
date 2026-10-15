@@ -30,7 +30,7 @@ test('dated digest, readable math, and complete paper sections', async ({ page }
   await expect(page.locator('.priority-tag')).toHaveCount(0);
   await expect(page.locator('.paper-label, .read-button')).toHaveCount(0);
   await expect(page.locator('.paper-tag')).toHaveCount(0);
-  await expect(page.locator('.brand-symbol')).toHaveAttribute('src', './favicon.svg');
+  await expect(page.locator('.brand-symbol')).toHaveAttribute('src', './quantum-chip.svg');
   await expect(page.locator('.paper-summary').first()).toHaveCSS('font-size', '17.5px');
   await expect(page.locator('.katex').first()).toBeVisible();
   expect(await page.locator('.katex-error').count()).toBe(0);

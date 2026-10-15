@@ -1,4 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <title>Quantum chip</title>
   <g stroke="#b76543" stroke-width="3" stroke-linecap="round">
     <path d="M22 5v9m10-9v9m10-9v9M22 50v9m10-9v9m10-9v9M5 22h9m-9 10h9m-9 10h9m36-20h9m-9 10h9m-9 10h9"/>
   </g>
