@@ -22,4 +22,6 @@ entry fails the build and leaves the previous successful website in place.
 Do not overwrite earlier dates. If the same date also exists in `content/digests/`,
 the substantive content must agree; the reviewed JSON's topic tags take precedence.
 
-The complete cloud-task prompt is in `prompts/cloud-daily-selection.md`.
+The active research prompt is [prompts/local-research.md](../prompts/local-research.md).
+The local controller validates and publishes its output; see the
+[technical guide](../docs/technical-setup.md) for the current pipeline.

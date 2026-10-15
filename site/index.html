@@ -4,8 +4,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#f7f6f2">
+  <meta name="referrer" content="no-referrer">
   <meta name="description" content="Daily arXiv papers with summaries, background, and relevance notes.">
   <title>daily-arXiv</title>
+  <script src="./theme.js"></script>
   <link rel="icon" type="image/svg+xml" href="./favicon.svg">
   <link rel="stylesheet" href="./vendor/katex/katex.min.css">
   <link rel="stylesheet" href="./styles.css">
@@ -14,23 +16,28 @@
   <script defer src="./vendor/katex/contrib/auto-render.min.js"></script>
   <script defer src="./reading.js"></script>
   <script defer src="./audio.js"></script>
+  <script defer src="./bookmarks.js"></script>
   <script defer src="./app.js"></script>
 </head>
 <body>
   <a class="skip-link" href="#papers">Skip to papers</a>
   <header class="site-header">
     <div class="header-inner">
-      <a class="brand" href="./" aria-label="daily-arXiv home"><span class="brand-symbol" aria-hidden="true">∿</span><span>daily<span class="brand-slash">/</span>arXiv</span></a>
+      <div class="brand-controls">
+        <button id="sidebar-button" class="icon-button" aria-controls="archive-sidebar" aria-expanded="true" title="Hide archive sidebar"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16m6-11-3 3 3 3"/></svg><span class="sr-only">Hide sidebar</span></button>
+        <a class="brand" href="./" aria-label="daily-arXiv home"><img class="brand-symbol" src="./favicon.svg" alt="" width="32" height="32"><span>daily<span class="brand-slash">/</span>arXiv</span></a>
+      </div>
       <nav aria-label="Main navigation">
         <button id="latest-button" class="nav-button active" aria-pressed="true">Latest</button>
         <button id="saved-button" class="nav-button" aria-pressed="false">Saved <span id="saved-count" class="count">0</span></button>
+        <button id="theme-button" class="icon-button theme-button" aria-label="Switch to dark mode" title="Switch to dark mode" aria-pressed="false"><svg class="theme-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14A8.5 8.5 0 0 1 10 3.5 8.5 8.5 0 1 0 20.5 14Z"/></svg><svg class="theme-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></svg></button>
         <button id="preferences-button" class="icon-button" aria-label="View selection preferences" title="Selection preferences"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 17h16M8 4v6M16 14v6"/></svg></button>
       </nav>
     </div>
   </header>
 
   <div class="page-shell">
-    <aside class="sidebar" aria-label="Digest archive">
+    <aside id="archive-sidebar" class="sidebar" aria-label="Digest archive">
       <div class="sidebar-heading"><span class="eyebrow">Archive</span><span id="archive-count" class="muted"></span></div>
       <div id="archive-list" class="archive-list"></div>
       <a class="repo-link" href="https://github.com/zhou-yang-quantum/daily-arXiv" target="_blank" rel="noopener noreferrer">Repository <span aria-hidden="true">↗</span></a>
@@ -38,32 +45,38 @@
 
     <main id="main-content">
       <section class="digest-header" aria-labelledby="page-title">
-        <h1 id="page-title">daily-arXiv</h1>
+        <div class="digest-title-row">
+          <h1 id="page-title">daily-arXiv</h1>
+        </div>
         <p id="date-subtitle" class="date-subtitle">Loading the archive…</p>
-        <div class="digest-meta"><span id="paper-total" aria-live="polite">— papers</span></div>
-        <div id="day-actions" class="reading-actions"><button id="copy-day" class="text-button">Copy for voice</button><button id="play-day" class="text-button" disabled>Play day</button></div>
+        <div class="digest-actions">
+          <div id="day-actions" class="reading-actions"><button id="copy-day" class="text-button">Copy for voice</button><button id="play-day" class="text-button" disabled>Play day</button></div>
+          <button id="view-button" class="text-button" aria-pressed="false" title="Compact view"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16M4 12h16M4 19h16"/></svg><span>Compact view</span></button>
+          <button id="clear-filters" class="text-button" hidden>Clear filters</button>
+          <button id="sync-settings" class="text-button" hidden>Dropbox sync</button>
+        </div>
       </section>
 
-      <section class="discovery" aria-label="Find papers">
-        <div class="search-row">
-          <label class="search-box"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg><span class="sr-only">Search the archive</span><input id="search-input" type="search" placeholder="Search titles, concepts, or authors" autocomplete="off"><kbd aria-hidden="true">/</kbd></label>
-          <label class="mobile-date"><span class="sr-only">Choose a digest date</span><select id="date-select"></select></label>
-        </div>
+      <section class="discovery" aria-label="Browse papers">
+        <label class="mobile-date"><span class="sr-only">Choose a digest date</span><select id="date-select"></select></label>
         <div id="topic-filters" class="topic-filters" role="group" aria-label="Filter by topic"></div>
       </section>
-
-      <div class="results-toolbar">
-        <div><h2 id="results-title">Papers</h2></div>
-        <div class="view-actions"><button id="clear-filters" class="text-button" hidden>Clear filters</button><button id="view-button" class="text-button" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16M4 12h16M4 19h16"/></svg><span>Compact view</span></button></div>
-      </div>
 
       <div id="papers" class="paper-list" aria-live="polite"><div class="loading-state">Loading papers…</div></div>
       <section id="day-notes" class="day-notes" hidden><span class="eyebrow">Notes</span><div id="day-notes-content" class="prose"></div></section>
       <nav id="day-navigation" class="day-navigation" aria-label="Previous and next digest"><button id="previous-day" class="text-button">← Earlier selection</button><button id="next-day" class="text-button">Later selection →</button></nav>
-      <footer class="site-footer"><p id="archive-status" class="footer-detail"></p><p class="footer-detail">Saved papers and read status are stored in this browser.</p></footer>
+      <footer class="site-footer"><p id="archive-status" class="footer-detail"></p><p id="save-storage-status" class="footer-detail">Saved papers stay in this browser.</p></footer>
     </main>
   </div>
 
+  <dialog id="sync-dialog" aria-labelledby="sync-title">
+    <div class="dialog-heading"><button id="close-sync" class="icon-button" aria-label="Close Dropbox sync">✕</button></div>
+    <h2 id="sync-title">Sync saved papers</h2>
+    <p>Connect your own Dropbox account on each device to keep your saved papers together. Existing browser saves are added on your first connection.</p>
+    <p id="sync-status" role="status"></p>
+    <div class="sync-actions"><button id="connect-dropbox" class="text-button" disabled>Connect Dropbox</button><button id="sync-now" class="text-button" hidden>Sync now</button><button id="disconnect-dropbox" class="text-button" hidden>Disconnect</button></div>
+    <p class="dialog-footnote">Only paper IDs and save changes go into your Dropbox app folder. Disconnecting keeps existing copies on this device and in Dropbox. <a href="./privacy.html" target="_blank" rel="noopener noreferrer">Privacy details</a></p>
+  </dialog>
   <dialog id="preferences-dialog" aria-labelledby="preferences-title">
     <div class="dialog-heading"><button id="close-preferences" class="icon-button" aria-label="Close preferences">✕</button></div>
     <h2 id="preferences-title">Selection preferences</h2>
@@ -78,8 +91,10 @@
   </dialog>
   <section id="audio-player" class="audio-player" aria-label="Digest audio player" hidden>
     <div class="audio-heading"><span id="audio-title"></span><button id="audio-close" class="text-button" aria-label="Close audio player">Close</button></div>
-    <div class="audio-controls"><button id="audio-back" class="audio-seek" aria-label="Rewind 30 seconds">−30s</button><audio id="digest-audio" controls preload="metadata" aria-label="Audio playback"></audio><button id="audio-forward" class="audio-seek" aria-label="Forward 30 seconds">+30s</button></div>
-    <div class="audio-options"><span id="audio-status" role="status"></span><label>Speed <select id="audio-rate" aria-label="Playback speed"><option value="0.75">0.75×</option><option value="1" selected>1×</option><option value="1.25">1.25×</option><option value="1.5">1.5×</option><option value="1.75">1.75×</option><option value="2">2×</option></select></label><a id="audio-file" target="_blank" rel="noopener noreferrer">Open audio file</a></div>
+    <div class="audio-playlist"><label for="audio-track">Playlist</label><select id="audio-track" aria-label="Choose a playlist track"></select></div>
+    <audio id="digest-audio" preload="auto" aria-label="Audio playback"></audio>
+    <div class="audio-controls"><button id="audio-previous" class="audio-button" aria-label="Previous track">Previous</button><button id="audio-toggle" class="audio-button audio-toggle" aria-label="Play audio">Play</button><button id="audio-next" class="audio-button" aria-label="Next track">Next</button><input id="audio-progress" type="range" min="0" max="1" value="0" step="0.1" aria-label="Seek within track"><span id="audio-time">0:00 / 0:00</span></div>
+    <div class="audio-options"><span id="audio-status" role="status"></span><label>Speed <select id="audio-rate" aria-label="Playback speed"><option value="0.75">0.75×</option><option value="1" selected>1×</option><option value="1.25">1.25×</option><option value="1.5">1.5×</option><option value="1.75">1.75×</option><option value="2">2×</option></select></label><a id="audio-download" download hidden>Download playlist (ZIP)</a></div>
   </section>
   <div id="toast" class="toast" role="status" hidden></div>
   <noscript><p class="noscript">Enable JavaScript to browse this archive, or <a href="./data/digests/2026-10-06.json">download the first digest as JSON</a>.</p></noscript>

@@ -1,6 +1,6 @@
 """Render immutable MP3 releases with offline CPU speech; no model APIs."""
 import argparse
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 import hashlib
 import json
 import os
@@ -9,6 +9,7 @@ import subprocess
 import sys
 import urllib.request
 import wave
+import zipfile
 
 if __package__:
     from .build import ROOT, load_archive, audio_source_hash, audio_script_hash
@@ -37,6 +38,56 @@ def fingerprint(prepared):
     return hashlib.sha256(json.dumps(settings, sort_keys=True, ensure_ascii=False).encode()).hexdigest()
 
 
+def playlist_name(manifest):
+    stamp = manifest['date']
+    if date.fromisoformat(stamp).isoformat() != stamp:
+        raise ValueError('Invalid playlist date')
+    return f'arxiv-{stamp}-playlist.zip'
+
+
+def build_playlist_archive(manifest, folder):
+    """Keep the original item MP3 bytes, with portable dated, ordered names."""
+    ranks = [item['rank'] for item in manifest['items']]
+    if ranks != list(range(1, len(ranks) + 1)) or not ranks:
+        raise ValueError('Playlist items must be consecutively ranked')
+    target = folder / playlist_name(manifest)
+    partial = target.with_suffix('.partial.zip')
+    with zipfile.ZipFile(partial, 'w', compression=zipfile.ZIP_STORED) as archive:
+        for rank in ranks:
+            source = folder / f'item-{rank:02}.mp3'
+            info = zipfile.ZipInfo(f'arxiv-{manifest["date"]}-item-{rank:02}.mp3')
+            info.external_attr = 0o644 << 16
+            archive.writestr(info, source.read_bytes())
+    partial.replace(target)
+    return target
+
+
+def ensure_playlist(manifest, tag):
+    """Add a download to an existing release without re-synthesizing speech."""
+    base = f'https://github.com/{REPOSITORY}/releases/download/{tag}/'
+    if manifest['day']['url'] != base + 'day.mp3' or not tag.startswith('audio-' + manifest['date'] + '-'):
+        raise ValueError('Playlist release does not match the recording')
+    name = playlist_name(manifest)
+    url = base + name
+    if manifest.get('playlist_url') == url:
+        return manifest
+    release = json.loads(command(['gh', 'release', 'view', tag, '--repo', REPOSITORY, '--json', 'assets']))
+    folder = CACHE / 'renders' / tag
+    folder.mkdir(parents=True, exist_ok=True)
+    if name not in {asset['name'] for asset in release.get('assets', [])}:
+        for item in manifest['items']:
+            filename = f'item-{item["rank"]:02}.mp3'
+            if not (folder / filename).exists():
+                command(['gh', 'release', 'download', tag, '--repo', REPOSITORY, '--pattern', filename, '--dir', str(folder)], timeout=180)
+        archive = build_playlist_archive(manifest, folder)
+        command(['gh', 'release', 'upload', tag, '--repo', REPOSITORY, '--clobber', str(archive)], timeout=300)
+    updated = {**manifest, 'playlist_url': url}
+    path = folder / 'manifest.json'
+    path.write_text(json.dumps(updated, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+    command(['gh', 'release', 'upload', tag, '--repo', REPOSITORY, '--clobber', str(path)])
+    return updated
+
+
 def cached_release(tag):
     result = subprocess.run(['gh', 'api', f'repos/{REPOSITORY}/releases/tags/{tag}'], capture_output=True, text=True, encoding='utf-8', timeout=60)
     if result.returncode:
@@ -50,10 +101,15 @@ def cached_release(tag):
     asset = next(asset for asset in data['assets'] if asset['name'] == 'manifest.json')
     manifest = json.loads(command(['gh', 'api', f'repos/{REPOSITORY}/releases/assets/{asset["id"]}', '-H', 'Accept: application/octet-stream']))
     required = {'day.mp3'} | {f'item-{item["rank"]:02}.mp3' for item in manifest['items']}
-    if manifest.get('version') in (2, 3):
+    if manifest.get('version') in (2, 3, 4):
         required.add('speech.txt')
     if not required <= names:
         return None
+    name = playlist_name(manifest)
+    if name in names:
+        manifest['playlist_url'] = f'https://github.com/{REPOSITORY}/releases/download/{tag}/{name}'
+    else:
+        manifest.pop('playlist_url', None)
     return manifest
 
 
@@ -122,7 +178,9 @@ def render(prepared, tag, voice):
     for item in prepared['items']:
         name = f'item-{item["rank"]:02}'
         sections = item['sections']
-        expected = ['heading', 'authors', 'summary', 'background', 'why'] if prepared['version'] == 3 else ['heading', 'summary', 'background', 'why']
+        expected = ['heading', 'authors', 'summary', 'background', 'why'] if prepared['version'] >= 3 else ['heading', 'summary', 'background', 'why']
+        if prepared['version'] >= 4:
+            expected.insert(0, 'item')
         if [section['name'] for section in sections] != expected:
             raise ValueError('Speech sections are missing or out of order')
         section_paths = []
@@ -151,7 +209,9 @@ def render(prepared, tag, voice):
             output.setframerate(24000)
             for index, section_path in enumerate(section_paths):
                 if index:
-                    if sections[index]['name'] == 'authors':
+                    if sections[index]['name'] == 'heading':
+                        pause = prepared['item_title_pause_seconds']
+                    elif sections[index]['name'] == 'authors':
                         pause = prepared['title_author_pause_seconds']
                     elif sections[index]['name'] == 'summary':
                         pause = prepared['heading_pause_seconds']
@@ -193,6 +253,8 @@ def render(prepared, tag, voice):
 
 
 def publish(manifest, folder, tag):
+    archive = build_playlist_archive(manifest, folder)
+    manifest['playlist_url'] = f'https://github.com/{REPOSITORY}/releases/download/{tag}/{archive.name}'
     path = folder / 'manifest.json'
     path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     # Existing partial releases are repaired; only these exact deterministic
@@ -210,6 +272,7 @@ def publish(manifest, folder, tag):
         command(['gh', 'release', 'create', tag, '--repo', REPOSITORY, '--target', os.environ.get('GITHUB_SHA', 'main'),
                  '--title', 'arXiv-' + manifest['date'] + ' audio', '--notes-file', str(notes), '--latest=false'])
     command(['gh', 'release', 'upload', tag, '--repo', REPOSITORY, '--clobber', *[str(p) for p in sorted(folder.glob('*.mp3'))], str(folder / 'speech.txt')], timeout=600)
+    command(['gh', 'release', 'upload', tag, '--repo', REPOSITORY, '--clobber', str(archive)], timeout=300)
     command(['gh', 'release', 'upload', tag, '--repo', REPOSITORY, '--clobber', str(path)])
 
 
@@ -256,6 +319,11 @@ def main():
     for day in days:
         if day['date'] not in scripts:
             if day['date'] in index['days']:
+                manifest = index['days'][day['date']]
+                tag = manifest['day']['url'].rsplit('/', 2)[-2]
+                if not args.local_only:
+                    index['days'][day['date']] = ensure_playlist(manifest, tag)
+                    save_index(index_file, index)
                 print('Kept existing recording for ' + day['date'] + ' (no new speech script)', flush=True)
             else:
                 print('Audio needs an English math companion for ' + day['date'], flush=True)
@@ -272,7 +340,7 @@ def main():
         if existing:
             if existing['content_hash'] != fingerprint(prepared) or existing['date'] != day['date']:
                 raise ValueError('Audio release content mismatch')
-            manifest = existing
+            manifest = ensure_playlist(existing, tag)
             print('Reused audio for ' + day['date'], flush=True)
         else:
             if voice is None:
@@ -285,6 +353,8 @@ def main():
                 session = runtime.InferenceSession(str(model), sess_options=options, providers=['CPUExecutionProvider'])
                 voice = Kokoro.from_session(session, str(voices))
             manifest, folder = render(prepared, tag, voice)
+            if args.local_only:
+                build_playlist_archive(manifest, folder)
             (folder / 'manifest.json').write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
             if not args.local_only:
                 publish(manifest, folder, tag)

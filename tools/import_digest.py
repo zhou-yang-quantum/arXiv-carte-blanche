@@ -52,7 +52,7 @@ def parse_digest(text):
         # Older archived digests may contain a verdict. New ones omit it.
         priority = re.search(r"^\*\*Priority:\s*(.*?)\*\*[ \t]*$", chunk, re.M)
         background = re.search(r"\*\*Background[.:]?\*\*", chunk)
-        why = re.search(r"\*\*Why it matters(?: for you)?[.:]?\*\*", chunk)
+        why = re.search(r"\*\*Why it matters(?: for you)?[.?:]?\*\*", chunk)
         if not all((title, metadata, arxiv, background, why)):
             raise ValueError(f"Item {header.group(2)} is missing a title, arXiv metadata, background, or relevance section")
         if not (title.end() < metadata.start() < metadata.end() < background.start() < why.start()):

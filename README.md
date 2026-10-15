@@ -8,12 +8,15 @@ The current selection focuses on theoretical physics and quantum information: qu
 
 ## What it does
 
-- Browse by date, search the archive, and filter by topic.
+- Browse by date and filter by topic.
 - Read summaries with equations and links to the original arXiv papers.
-- Save papers and track reading progress in your browser; these do not sync across devices.
+- Save papers locally or sync them across devices with your own Dropbox account.
+- Switch between light and dark reading modes.
 - Copy a dated digest or individual paper for voice reading, or listen to recordings when available.
 
 The website is static HTML/CSS/JavaScript. Local Codex generates the digests; GitHub Actions collects arXiv source data and builds and deploys the website. Browsing, building, and manual digest imports need no model API key.
+
+Dropbox sync is optional and needs a one-time public app-key setting. Follow the [Dropbox setup guide](docs/dropbox-sync.md); no app secret, paid backend, or model API is needed. Without a connection, saves stay in the browser.
 
 ## Try it locally
 

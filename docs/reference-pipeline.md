@@ -23,8 +23,8 @@ The [English generator](https://github.com/LaserWong/LaserWong.github.io/blob/4f
 
 DeepSeek API usage is billed separately for model tokens; it is not included in ChatGPT Plus. See [DeepSeek's pricing documentation](https://api-docs.deepseek.com/quick_start/pricing/). The inspected repository's configured model name should be checked against the provider's current supported models before adopting its code.
 
-## Our current implementation and proposed replacement
+## Current daily-arXiv pipeline
 
-daily-arXiv has a validated Markdown importer, protected Python publisher, static website, and GitHub Actions deployment. Its existing workflow builds and deploys content that has already been delivered; it does not fetch arXiv or call models. The prepared cloud prompt asks a model to select and explain 10–20 papers, normally ten. The published environment passed user-reported manual access checks, but the scheduled app runtime lacks its checkout and token.
+The comparison above records the earlier source inspection. daily-arXiv now uses GitHub Actions to archive arXiv's official Atom feeds, and local Codex with the existing ChatGPT subscription to select and explain 10–20 papers, normally ten. A protected Python publisher delivers the digest and equation-pronunciation companion together. GitHub Actions then generates audio and deploys the website.
 
-A replacement could move collection, selection, summarization, validation, and publication into GitHub Actions. To keep usage bounded, it should fetch new submissions with Python, deduplicate, prefilter conservatively, rank candidate abstracts in a bounded model request, and generate full summary/background/relevance sections only for the chosen 10–20 papers. This would preserve the current website and scientific format while replacing the unavailable scheduling binding. It would require a separately billed model API credential and an explicit budget; neither is configured or enabled yet. It would not automatically consume the original ChatGPT task's private output.
+This implementation does not use the earlier cloud-environment prompt or a paid model API. Collection and publication use deterministic Python; the research model runs locally. See the [technical guide](technical-setup.md) and [active prompt](../prompts/local-research.md) for the current configuration.

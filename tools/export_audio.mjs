@@ -23,18 +23,20 @@ for (const day of days) {
   let script;
   try { script = JSON.parse(await fs.readFile(path.join(scriptFolder, day.date + '.json'), 'utf8')); }
   catch (error) { if (error.code === 'ENOENT') continue; throw error; }
-  if (![2, 3].includes(script.version) || script.date !== day.date) throw new Error('Invalid dated speech script');
-  const modern = script.version === 3;
+  if (![2, 3, 4].includes(script.version) || script.date !== day.date) throw new Error('Invalid dated speech script');
+  const modern = script.version >= 3;
+  const simpleHeading = script.version >= 4;
   const substitutions = new Map(script.pronunciations.map(entry => [entry.latex, entry.spoken]));
   const spokenDate = new Intl.DateTimeFormat('en-US', { timeZone: 'UTC', month: 'long', day: 'numeric', year: 'numeric' }).format(new Date(day.date + 'T12:00:00Z'));
   const items = day.papers.map(paper => {
-    const title = 'arXiv, ' + spokenDate + '. Item ' + paper.rank + '.\n\n' + pronounce(paper.title, substitutions, modern);
+    const title = (simpleHeading ? '' : 'arXiv, ' + spokenDate + '. Item ' + paper.rank + '.\n\n') + pronounce(paper.title, substitutions, modern);
     const authors = 'Authors: ' + reading.plainText(paper.authors) + '.\n\narXiv number ' + paper.id.split('.').map(part => [...part].join(' ')).join(', point, ');
     const sections = [
+      ...(simpleHeading ? [{ name: 'item', text: 'Item ' + paper.rank + '.' }] : []),
       ...(modern ? [{ name: 'heading', text: title }, { name: 'authors', text: authors }] : [{ name: 'heading', text: title + '\n\n' + authors }]),
       { name: 'summary', text: 'Summary.\n\n' + pronounce(paper.summary, substitutions, modern) },
-      { name: 'background', text: 'Background and motivation.\n\n' + pronounce(paper.background, substitutions, modern) },
-      { name: 'why', text: 'Why it matters for you.\n\n' + pronounce(paper.why, substitutions, modern) },
+      { name: 'background', text: 'Background.\n\n' + pronounce(paper.background, substitutions, modern) },
+      { name: 'why', text: 'Why it matters?\n\n' + pronounce(paper.why, substitutions, modern) },
     ];
     return { rank: paper.rank, id: paper.id, title: reading.plainText(paper.title), sections,
       text: sections.map(section => section.text).join('\n\n') };
@@ -43,6 +45,7 @@ for (const day of days) {
     section_pause_seconds: 1.5, heading_pause_seconds: 0.5, item_pause_seconds: 1.5,
     items, text: items.map(item => item.text).join('\n\n') };
   if (modern) prepared.title_author_pause_seconds = 0.75;
+  if (simpleHeading) prepared.item_title_pause_seconds = 0.6;
   await fs.writeFile(path.join(output, day.date + '.json'), JSON.stringify(prepared, null, 2) + '\n');
   await fs.writeFile(path.join(output, day.date + '.txt'), prepared.text + '\n');
 }

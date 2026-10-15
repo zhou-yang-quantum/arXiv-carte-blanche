@@ -1,7 +1,0 @@
-Run today's daily arXiv research and publishing task entirely in the cloud, using the published daily-arXiv environment for zhou-yang-quantum/daily-arXiv. Do not use my computer or create another schedule.
-
-Before research, verify that the actual runtime has the repository checkout, Python, tools/publish_digest.py, prompts/cloud-daily-selection.md, and the private ARXIV_GITHUB_TOKEN available to the publisher. Never display or store the credential. If any required resource is missing, stop and report the missing access; do not substitute local execution or the GitHub connector.
-
-Read and follow the complete current prompts/cloud-daily-selection.md in the repository for this run. It defines the topic preferences and exclusions, new-paper-only eligibility, default ten selections with a maximum of twenty, clean ranking and overview without priority verdicts, summary/background/why-it-matters sections, dated Markdown format, fresh-batch skip rule, duplicate protection, and Python publication commands. Publish only incoming/YYYY-MM-DD.md through tools/publish_digest.py as authorized by that prompt. Use the morning's America/Chicago date and identify the announcement batch reviewed. If no fresh batch is available, stop without publishing.
-
-After a successful delivery, return only the date, actual paper count, short publication status, and website link. Do not repeat the full digest in the chat, inspect the archive or website source, run builds, poll deployment, or start additional research agents.

@@ -4,6 +4,7 @@ import shutil
 from pathlib import Path
 import datetime
 import hashlib
+import math
 
 if __package__:
     from .import_digest import parse_digest, MIN_PAPERS, MAX_PAPERS
@@ -40,9 +41,21 @@ def load_audio_index(days, path):
         if audio.get('date') != day['date'] or actual != expected:
             raise ValueError('Audio manifest does not match the dated digest')
         for track in [audio['day'], *audio['items']]:
-            if not track['url'].startswith('https://github.com/zhou-yang-quantum/daily-arXiv/releases/download/audio-') or track.get('duration', 0) <= 0:
+            if (not track['url'].startswith('https://github.com/zhou-yang-quantum/daily-arXiv/releases/download/audio-')
+                    or not isinstance(track.get('duration'), (int, float)) or not math.isfinite(track['duration']) or track['duration'] <= 0):
                 raise ValueError('Invalid audio track')
-        allowed[day['date']] = audio
+        elapsed, items = 0.0, []
+        for item in audio['items']:
+            start = item.get('start', elapsed)
+            if not isinstance(start, (int, float)) or not math.isfinite(start) or start < 0 or abs(start - elapsed) > 0.05:
+                raise ValueError('Invalid audio playlist boundaries')
+            items.append({**item, 'start': start})
+            elapsed = start + item['duration']
+        if abs(elapsed - audio['day']['duration']) > 0.05:
+            raise ValueError('Audio playlist does not match the full recording')
+        if audio.get('playlist_url') and audio['playlist_url'] != audio['day']['url'].rsplit('/', 1)[0] + '/arxiv-' + day['date'] + '-playlist.zip':
+            raise ValueError('Invalid audio playlist download')
+        allowed[day['date']] = {**audio, 'items': items}
     return {'version': 1, 'days': allowed}
 
 

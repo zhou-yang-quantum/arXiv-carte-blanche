@@ -18,7 +18,7 @@ Push to main → GitHub Actions build → dist/ → GitHub Pages
 | `local-pipeline.json` | Categories, queue start date, due time, model defaults, retry and timeout settings. |
 | `prompts/local-research.md` | Actual research instructions passed to each local generation context. |
 | `preferences.json` | Public selection criteria copied into the website; not loaded by the research controller. |
-| `sources/` | Immutable dated announcement evidence and v1 paper metadata. |
+| `sources/` | Immutable dated announcement evidence and captured paper metadata. Legacy snapshots use v1; Atom snapshots record the version in the new announcement. |
 | `incoming/` | Markdown digests parsed directly at build time. |
 | `content/digests/` | Structured JSON digests, also accepted by the build. |
 | `tools/import_digest.py` | Markdown parser, validation, and optional manual JSON import. |
@@ -38,11 +38,11 @@ python tools/local_pipeline.py paper YYYY-MM-DD ID1 ID2
 
 Its current editorial rules prioritize quantum field theory, non-equilibrium physics, quantum error correction, quantum simulation, quantum algorithms, and exactly solvable models. They exclude materials, quantum chemistry, bilayer graphene, TMDs, high-temperature superconductivity, most experiments, overly mathematical string theory, and overly computer-science-heavy algorithms. Change these paragraphs and the assumed background to match the intended reader, and mirror the public criteria in `preferences.json`.
 
-The model screens the catalog, reads v1 abstracts for plausible candidates, and consults original arXiv sources as needed. It selects ten papers by default, with a maximum of twenty, using only distinct IDs from that date's verified first-announcement batch. Historical catch-up uses the historical batch. Revisions and old papers newly cross-listed on the date are excluded. Explanations include summary, background/motivation, and personal relevance, with numerical ranking and no priority verdicts.
+The model screens the catalog, reads saved announcement abstracts for plausible candidates, and consults original arXiv sources as needed. It uses the frozen source version recorded in the metadata: `source_v1` for legacy snapshots or `versioned_url` for Atom snapshots. It selects ten papers by default, with a maximum of twenty, using only distinct IDs from that date's verified first-announcement batch. Historical catch-up uses the historical batch. Replacement announcements and old papers newly cross-listed on the date are excluded; a new announcement may already be v2. Explanations include summary, background/motivation, and personal relevance, with numerical ranking and no priority verdicts.
 
-The controller requests `status` (`ready` or `insufficient`), `reason`, `markdown`, and `math_pronunciations`. The last field provides an exact English reading for each distinct item equation, without duplicating the prose or making another model call. An insufficient selection becomes `needs-review` rather than padded content. Validation checks the date, 10–20 distinct consecutive ranks, required sections, catalog membership, exact stored v1 titles, and complete pronunciation coverage. These checks do not independently verify every scientific claim or the semantics of every spoken formula.
+The controller requests `status` (`ready` or `insufficient`), `reason`, `markdown`, and `math_pronunciations`. The last field provides an exact English reading for each distinct item equation, without duplicating the prose or making another model call. An insufficient selection becomes `needs-review` rather than padded content. Validation checks the date, 10–20 distinct consecutive ranks, required sections, catalog membership, exact stored titles, and complete pronunciation coverage. These checks do not independently verify every scientific claim or the semantics of every spoken formula.
 
-`prompts/daily-selection.md` records the earlier conversational selection prompt. The `cloud-*` prompts and older cloud setup notes describe an earlier route. Neither is read by the active local controller.
+[The prompt map](../prompts/README.md) identifies the active research prompt, runtime instructions, and saved scheduled-task prompt. Earlier conversational and cloud prompts have been removed; Git history retains them. This guide is the current reference for setup and recovery.
 
 Changing `categories` in `local-pipeline.json` affects collection of new snapshots. Existing snapshots are retained unchanged, so choose a new start date when beginning a different subject collection. If you need topic filters beyond the current physics labels, update both the keyword-to-tag rules in `tools/import_digest.py` (`TOPICS`) and the allowed labels in `tools/build.py` (`TOPICS`). Changing preferences alone does not change those filters or rerank old digests.
 
@@ -63,6 +63,12 @@ Before using automatic publication, redirect the code to your own repository:
 Audio is optional. For a text-only fork, remove the audio cache, dependency preparation, and generation steps from `.github/workflows/pages.yml`; leave the build and deploy steps. Start without a generated `audio/index.json`. For audio setup and licenses, see [audio/README.md](../audio/README.md), substituting your own URL in its download example.
 
 Keep `main` as the publishing branch, or update both the workflow branch filter and the publisher's read/write branch values consistently. Choose `start_date` deliberately: it is the beginning of the missing-weekday queue, not just a label. Retained example digests count as completed dates.
+
+## Saved papers and device sync
+
+Bookmarks persist in browser storage and can optionally sync through each reader's own Dropbox account. The site remains static; no paid backend or model API is involved. Configure the public app key and redirect URLs using [the Dropbox setup guide](dropbox-sync.md), then connect from **Saved → Dropbox sync** on each device. An empty key leaves local saves enabled and Dropbox connection disabled.
+
+The theme switch and archive-sidebar preference also remember the browser's choice. Mark-as-read tracking has been removed.
 
 ## Local installation and schedule
 
@@ -100,11 +106,17 @@ This records the local Python/Codex executable paths in ignored `.cache/local-pi
 
 The watcher checks once per minute while the Codex app is running and calls `run --automatic` when work is due. A five-minute Windows trigger restarts an interrupted watcher, while `IgnoreNew` leaves a running instance alone. It does not start the app or wake the computer. A process lock prevents concurrent triggers from generating the same day. Opening the app after an absence processes missing weekdays oldest first, including gaps before newer entries. Before the due time, only older missing days are eligible. An empty queue makes no research-model call.
 
+Pausing the linked saved task also pauses automatic startup catch-up. An already-running controller and its research process must be stopped separately. Manual `run` commands can still generate and publish while the schedule is paused, so use them only for an explicitly requested test or recovery.
+
 Each research run launches a fresh `codex exec` context with live search, the configured model/effort, automatic approval review, an output schema, and a saved final JSON result. See `generation_command()` in `tools/local_pipeline.py` for the exact flags and the [official non-interactive Codex documentation](https://learn.chatgpt.com/docs/non-interactive-mode) for the CLI interface.
 
 ## Source capture and website publication
 
-[`.github/workflows/collect-arxiv.yml`](../.github/workflows/collect-arxiv.yml) runs the source collector at **02:17 and 08:17 on weekdays in America/New_York**, or manually. It reads categories from `local-pipeline.json`, captures dated announcement listings and v1 metadata, and commits new snapshots to `sources/`. It uses no AI model and continues independently of the local machine. Existing snapshots remain unchanged. Recent gaps can be recovered from available listings; arbitrarily old gaps cannot be reconstructed from today's feed. Missing evidence leaves a day queued; a verified closed empty batch can be marked `no-batch`.
+[`.github/workflows/collect-arxiv.yml`](../.github/workflows/collect-arxiv.yml) runs the source collector at **02:17, 04:17, 06:17, 08:17, and 10:17 on weekdays in America/New_York**, or manually. It reads categories from `local-pipeline.json`, captures the official Atom feeds, and commits complete dated snapshots to `sources/`. Once the day's snapshot exists, later scheduled capture windows skip downloading. It uses no AI model and continues independently of the local machine and its paused or active research task.
+
+Feed entries labeled `new` establish first-announcement eligibility. Cross-lists are checked against their original subject feeds; replacements and older cross-lists are excluded. Captured metadata includes the exact feed version without per-paper API lookups. Completed downloads are cached for recovery after a later failure, and existing snapshots remain unchanged. See [sources/README.md](../sources/README.md) for the snapshot formats and collector behavior.
+
+The local controller reads those snapshots instead of crawling arXiv. Missing evidence leaves a day queued for another GitHub check in five minutes, without a research-model call. Historical inputs can be recovered from saved feed downloads; an uncached old batch needs explicit historical recovery with `python tools/collect_arxiv.py --historical`. A missing or stale feed is not evidence of an empty day. A verified closed empty batch can be recorded as `no-batch`.
 
 After research, the local controller validates the result and calls the Python publisher. The automatic path creates `incoming/YYYY-MM-DD.md` and `audio/scripts/YYYY-MM-DD.json` together in one Git commit, updating `main` without force. If the branch moves, it rebuilds against the new parent and checks the dated entry again. An identical existing digest is treated as already delivered; a different one is protected from overwrite. The manual publisher still accepts a Markdown-only delivery. This remote commit does not update your local Git checkout, so pull remote changes before your next local commit. Audio preparation and licenses are documented in [audio/README.md](../audio/README.md).
 
@@ -128,9 +140,9 @@ Brief overview identifying the announcement batch.
 
 Source-grounded summary.
 
-**Background.** Concepts and motivation.
+**Background.** Paper-specific concepts and unfamiliar jargon.
 
-**Why it matters for you:** Relevance and broader connection.
+**Why it matters?** Scientific significance, potential impact, and connection to durable interests.
 
 [arXiv YYMM.NNNNN](https://arxiv.org/abs/YYMM.NNNNN)
 ```

@@ -45,10 +45,10 @@
       .replace(/[ \t]+\n/g, '\n').trim();
   }
   function itemText(day, paper) {
-    return [day.title + ' — Item ' + paper.rank, plainText(paper.title),
+    return ['Item ' + paper.rank + '.', plainText(paper.title),
       'Authors: ' + plainText(paper.authors || ''), 'arXiv:' + paper.id,
-      'Summary', plainText(paper.summary), 'Background and motivation', plainText(paper.background),
-      'Why it matters for you', plainText(paper.why)].join('\n\n');
+      'Summary', plainText(paper.summary), 'Background', plainText(paper.background),
+      'Why it matters?', plainText(paper.why)].join('\n\n');
   }
   function dayText(day) {
     return [day.title, day.overview ? 'Overview\n\n' + plainText(day.overview) : '',
@@ -58,7 +58,8 @@
   function voiceText(day) {
     return 'Prepare to read ' + day.title + ' (' + day.papers.length + ' items). The text below is the authoritative digest. '
       + 'Confirm its date and item count, then wait for me to say "start". '
-      + 'Start with Item 1. Read each requested item completely and verbatim: title, authors, arXiv ID, summary, background, and why it matters. '
+      + 'Start with Item 1. Introduce each item with only "Item N", pause, then read its title. Do not repeat the digest date before each item. '
+      + 'Read each requested item completely and verbatim: title, authors, arXiv ID, summary, background, and why it matters. '
       + 'Pronounce the mathematics faithfully. Stop after each item and wait for my questions or the next reading command. '
       + 'Keep answers to questions separate from the reading. Before "read item N", locate that exact dated item again. '
       + 'Do not summarize, add information, silently correct equations, or reconstruct missing text. If the exact source is unavailable, stop and say so.\n\n'

@@ -15,8 +15,8 @@ def expressions(day):
                    for match in MATH.finditer(paper[field])})
 
 
-def make_script(day, pronunciations, version=3):
-    if version not in (2, 3):
+def make_script(day, pronunciations, version=4):
+    if version not in (2, 3, 4):
         raise ValueError('Unsupported narration version')
     if not isinstance(pronunciations, list):
         raise ValueError('Audio needs an equation pronunciation list')

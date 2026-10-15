@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f6f2">
+  <meta name="referrer" content="no-referrer">
+  <title>Bookmark privacy · daily-arXiv</title>
+  <script src="./theme.js"></script>
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <main class="privacy-page">
+    <a href="./#saved=1">← Saved papers</a>
+    <h1>Bookmark privacy</h1>
+    <p>Saving a paper stores its arXiv ID and save changes in this browser. No Dropbox connection is required.</p>
+    <p>If you choose to connect Dropbox, this website reads and writes a bookmarks.json file in its dedicated app folder in your own Dropbox account. The file contains paper IDs, saved or removed states, timestamps, and random change identifiers for merging edits. It contains no paper text or audio. The app requests read and write access to its app folder only.</p>
+    <p>Your browser communicates directly with Dropbox. The website operator does not receive a copy of your bookmarks or access token. Dropbox receives the authorization and file requests and handles them under its <a href="https://www.dropbox.com/privacy" target="_blank" rel="noopener noreferrer">privacy policy</a>. Website hosting receives ordinary page requests; the authorization code returns through the website’s URL and is immediately removed from it.</p>
+    <p>Dropbox access tokens are short lived and kept in this tab’s session storage. Bookmark copies remain in local browser storage, separated by Dropbox account. Reconnect when a session expires. Anyone with access to the browser profile may be able to see cached bookmarks.</p>
+    <p>Disconnecting stops sync and removes the token from this tab. It preserves existing bookmark copies. To remove local copies, clear this website’s browser data. To delete the cloud copy, delete bookmarks.json from the app folder in Dropbox. Disconnect all devices first to prevent a retained copy being uploaded again. You can revoke this app in Dropbox’s connected-app settings.</p>
+    <p>Other visitors use their own Dropbox accounts and cannot access yours through the site.</p>
+  </main>
+</body>
+</html>

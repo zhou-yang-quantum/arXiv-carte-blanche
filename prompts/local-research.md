@@ -4,6 +4,12 @@ command. This is a local task using my ChatGPT subscription. Do not call a paid
 model API, read credentials, publish, edit repository source, start another agent,
 or create a schedule. The controller validates and publishes your final result.
 
+Read prompts/researcher-profile.md once before screening. Use its durable interests
+for selection and its knowledge calibration for explanations. It is a baseline,
+not a report of current projects. Do not assume access to previous conversations
+or refresh the profile from the web during each run. Publications are partial
+evidence of background, not a complete statement of interests or expertise.
+
 Read the compact catalog once to screen the whole batch. Request stored announcement
 abstracts for plausible candidates using the provided metadata command (up to 20
 IDs per call). Consult the original arXiv abstract or paper text when needed to
@@ -29,10 +35,51 @@ or versioned_url for feed snapshots. A feed entry labeled new may already be v2;
 it is still a newly announced paper. Identify the actual batch in the overview.
 
 Keep a clean numerical ranking and a concise daily overview, without priority
-verdicts such as "must read", "high", or "very high". Preserve substantial,
-source-grounded summary + background/motivation + why-it-matters explanations.
-Explain what was done, the main result, important limits, unfamiliar concepts, and
-why each paper fits my interests or provides a useful broader connection.
+labels such as "must read", "high", or "very high". Give each item a coherent,
+slightly discursive explanation for a fellow theoretical physicist. Preserve
+technical substance while making the reasoning easy to follow; do not compress
+the entry into an abstract-like list of named techniques and results. Let the
+complexity of the paper determine the length rather than imposing a word quota.
+
+Summary: begin with the physical question, motivation, and existing obstacle so
+the reader understands the big picture before the technical result. Then explain
+the authors' central idea, what they actually calculate or construct, the main
+result, and the scope of the evidence. Connect these steps in paragraphs. Give a
+short intuitive gloss when a specialized term first becomes necessary; reserve
+the fuller explanation for Background. Introduce symbols and explain what an
+equation tells us. Distinguish established results from the authors' claims and
+from your assessment. Include limitations where they qualify a result, without
+letting a list of caveats displace its explanation.
+
+Background: explain the paper-specific concepts and jargon that are necessary
+to understand the mechanism and are not established knowledge in the reader
+profile. Prioritize these conceptual gaps over textbook definitions the reader
+already knows. Explain what each concept is, how it works at an intuitive level,
+and why the paper needs it; use a small example when helpful. Expanding an acronym
+or replacing jargon with more jargon is not an explanation. Do not repeat the
+summary's motivation or supply a generic introduction to the whole field.
+For a paper using code automorphisms and fold-transversal gates, for example,
+explain those constructions and their role in logical operations rather than
+spending Background on qLDPC or the Clifford/non-Clifford distinction. This is a
+calibration example, not a requirement to discuss these terms in other papers.
+Verify specialized definitions from the source when needed. Do not omit essential
+concepts just to keep Background short, or invent a definition from a term's name.
+
+Why it matters?: give a high-level, reasoned verdict on the scientific significance
+and potential impact of the work, then explain a substantive connection to the
+reader's durable interests or a worthwhile broader direction. Identify what it
+changes relative to previous understanding or capability, and what would be
+needed for a proposed impact to follow. Distinguish conceptual advances, useful
+methods, and incremental results when the evidence supports that assessment.
+Avoid hype, priority badges, generic topic matching, and speculative claims about
+the reader's immediate projects. This section should assess the contribution
+rather than repeat the results.
+
+Before returning the digest, check each item: does the opening explain why the
+problem is worth solving before presenting results? Can the reader understand
+the central mechanism without unexplained specialist terminology? Does Background
+address the likely gaps in the profile rather than rehearse known basics? Does
+Why it matters? give an evidence-based assessment rather than just name interests?
 
 Also return math_pronunciations as a list: one object with latex and spoken fields for each
 distinct math expression in the item titles, summaries, backgrounds, and relevance
@@ -65,11 +112,11 @@ Brief overview of the batch and selection.
 ### Exact title from the stored announcement metadata
 **Authors — arXiv:YYMM.NNNNN**
 
-Source-grounded summary paragraphs, with Markdown and LaTeX as helpful.
+Motivation-first, source-grounded summary paragraphs, with Markdown and LaTeX as helpful.
 
-**Background.** Concepts and motivation.
+**Background.** Paper-specific concepts and unfamiliar jargon needed to understand the mechanism.
 
-**Why it matters for you:** Personal fit and broader connection.
+**Why it matters?** Scientific significance, potential impact, and connection to durable interests.
 
 [arXiv YYMM.NNNNN](https://arxiv.org/abs/YYMM.NNNNN)
 

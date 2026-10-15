@@ -1,7 +1,0 @@
-Verify this scheduled task's execution context once. Do not research papers, publish a digest, create files, change environment settings, or create another schedule.
-
-Run entirely in the cloud without my computer. The intended context is the published daily-arXiv environment for zhou-yang-quantum/daily-arXiv. Confirm from the actual available runtime that Python and the repository checkout with tools/publish_digest.py and prompts/cloud-daily-selection.md are accessible. Do not treat the environment name in this prompt or earlier chat messages as evidence of the current runtime. If runtime metadata exposes the environment name or ID, report it; otherwise say that the identity is not exposed.
-
-Check whether ARXIV_GITHUB_TOKEN is available to the publisher without printing its value, prefix, length, or any part of it. Run python tools/publish_digest.py --check-date 2026-10-06. Its expected result is exists, which verifies reads only. Check that the current dated arXiv listing can be accessed without retrieving full paper texts.
-
-If any required resource is missing, stop and report exactly what is missing. Do not clone the repository, fall back to my computer, copy credentials from chat, or substitute the GitHub connector. Return a short report of runtime identity (if exposed), repository/scripts, Python, credential availability, publisher read-check status, and arXiv access. Do not claim write access or daily publication has been verified by this read-only check.

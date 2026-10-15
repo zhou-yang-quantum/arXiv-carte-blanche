@@ -1,22 +1,29 @@
-/* A static archive: no account, external fonts, or client-side API credentials. */
+/* A static archive with optional, per-reader Dropbox bookmark sync. */
 'use strict';
 const $ = (selector) => document.querySelector(selector);
 const icons = {
   bookmark: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12v18l-6-4-6 4z"/></svg>',
   arrow: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19 19 5M5 5h14v14"/></svg>',
-  check: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></svg>',
 };
 const state = { archive: null, date: '', query: '', topic: '', savedOnly: false, compact: false };
 const escapeHTML = (value) => String(value).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-function readStore(key) {
-  try {
-    const data = JSON.parse(localStorage.getItem(key) || '[]');
-    return new Set(Array.isArray(data) ? data.filter((v) => typeof v === 'string') : []);
-  } catch { return new Set(); }
-}
-const saved = readStore('daily-arxiv:saved:v1');
-const read = readStore('daily-arxiv:read:v1');
+const bookmarkSync = new DropboxBookmarks();
+const saved = bookmarkSync.saved;
 const player = new DigestAudio($('#audio-player'));
+function setSidebarHidden(hidden, savePreference = false) {
+  $('.page-shell').classList.toggle('sidebar-hidden', hidden);
+  const button = $('#sidebar-button');
+  button.setAttribute('aria-expanded', String(!hidden));
+  button.querySelector('span').textContent = hidden ? 'Show sidebar' : 'Hide sidebar';
+  button.title = hidden ? 'Show archive sidebar' : 'Hide archive sidebar';
+  if (savePreference) {
+    try { localStorage.setItem('daily-arxiv:sidebar:v1', hidden ? 'hidden' : 'visible'); } catch {}
+  }
+}
+let sidebarHidden = false;
+try { sidebarHidden = localStorage.getItem('daily-arxiv:sidebar:v1') === 'hidden'; } catch {}
+setSidebarHidden(sidebarHidden);
+$('#sidebar-button').addEventListener('click', () => setSidebarHidden(!$('.page-shell').classList.contains('sidebar-hidden'), true));
 function refreshAudioButtons() {
   if (!state.archive) return;
   const day = currentDay();
@@ -41,10 +48,35 @@ async function copyText(text, message) {
     $('#copy-text').select();
   }
 }
-function persist(key, set) {
-  try { localStorage.setItem(key, JSON.stringify([...set])); return true; }
-  catch { toast('Your browser could not save this change. It will last for this visit.'); return false; }
+function refreshSyncStatus() {
+  const { state: status, message } = bookmarkSync.ui;
+  $('#sync-status').textContent = message;
+  $('#connect-dropbox').hidden = bookmarkSync.connected;
+  $('#connect-dropbox').disabled = !bookmarkSync.appKey || status === 'loading';
+  $('#connect-dropbox').textContent = status === 'expired' ? 'Reconnect Dropbox' : 'Connect Dropbox';
+  $('#sync-now').hidden = !bookmarkSync.connected;
+  $('#sync-now').disabled = status === 'syncing';
+  $('#disconnect-dropbox').hidden = !bookmarkSync.connected;
+  $('#save-storage-status').textContent = bookmarkSync.connected || status === 'expired' ? message : 'Saved papers stay in this browser.';
 }
+bookmarkSync.addEventListener('status', refreshSyncStatus);
+bookmarkSync.addEventListener('change', event => {
+  $('#saved-count').textContent = String(saved.size);
+  if (!state.archive || event.detail.origin === 'local') return;
+  if (state.savedOnly) render();
+  else for (const card of document.querySelectorAll('.paper-card')) {
+    const button = card.querySelector('[data-action="save"]');
+    const isSaved = saved.has(card.dataset.id);
+    button.setAttribute('aria-pressed', String(isSaved));
+    button.setAttribute('aria-label', (isSaved ? 'Unsave' : 'Save') + ' item ' + card.dataset.rank);
+  }
+});
+$('#sync-settings').addEventListener('click', () => { refreshSyncStatus(); $('#sync-dialog').showModal(); });
+$('#close-sync').addEventListener('click', () => $('#sync-dialog').close());
+$('#connect-dropbox').addEventListener('click', () => bookmarkSync.connect());
+$('#sync-now').addEventListener('click', () => bookmarkSync.sync());
+$('#disconnect-dropbox').addEventListener('click', () => bookmarkSync.disconnect());
+refreshSyncStatus();
 function toast(message) {
   $('#toast').textContent = message;
   $('#toast').hidden = false;
@@ -110,14 +142,13 @@ function applyHash() {
   state.query = params.get('q') || '';
   state.topic = state.archive.topics.includes(params.get('topic')) ? params.get('topic') : '';
   state.savedOnly = params.get('saved') === '1';
-  $('#search-input').value = state.query;
   render();
   const rank = Number(params.get('paper'));
   if (currentDay().papers.some((paper) => paper.rank === rank)) openPaper(state.date, rank);
 }
 function selectDate(date) {
   state.date = date; state.query = ''; state.topic = ''; state.savedOnly = false;
-  $('#search-input').value = ''; syncHash(); render();
+  syncHash(); render();
   window.scrollTo({ top: 0, behavior: 'instant' });
 }
 function renderArchive() {
@@ -147,27 +178,35 @@ function matches(paper) {
   return true;
 }
 function renderPaper(day, paper) {
-  const label = day.title + ' — Item ' + paper.rank;
-  const key = day.date + ':' + paper.id;
   const card = document.createElement('article');
-  card.className = 'paper-card' + (read.has(key) ? ' is-read' : '');
+  card.className = 'paper-card';
   card.id = 'paper-' + day.date + '-' + paper.rank;
   card.dataset.date = day.date; card.dataset.rank = paper.rank; card.dataset.id = paper.id;
-  card.innerHTML = '<div class="paper-header"><span class="paper-rank">' + String(paper.rank).padStart(2, '0') + '</span><div class="paper-content"><div class="paper-label-row"><span class="paper-label">' + label + '</span><button class="bookmark-button" aria-label="' + (saved.has(paper.id) ? 'Unsave' : 'Save') + ' item ' + paper.rank + '" aria-pressed="' + saved.has(paper.id) + '" data-action="save">' + icons.bookmark + '</button></div><h3></h3><p class="authors"></p><div class="paper-tags"></div></div></div><details class="paper-detail"' + (!state.compact ? ' open' : '') + '><summary><span class="collapsed-label">Show details</span><span class="expanded-label">Hide details</span></summary><h4 class="section-label">SUMMARY</h4><div class="prose paper-summary"></div><section class="background-note"><h4 class="section-label">BACKGROUND & MOTIVATION</h4><div class="prose paper-background"></div></section><section class="why-note"><h4 class="section-label">WHY IT MATTERS FOR YOU</h4><div class="prose paper-why"></div></section><div class="paper-footer"><div class="paper-links"><a href="' + paper.url + '" target="_blank" rel="noopener noreferrer">arXiv ' + icons.arrow + '</a><a class="secondary" href="https://arxiv.org/pdf/' + paper.id + '" target="_blank" rel="noopener noreferrer">PDF ' + icons.arrow + '</a><a class="secondary permalink" href="#date=' + day.date + '&paper=' + paper.rank + '" aria-label="Link to ' + label + '">Link</a></div><button class="read-button" aria-pressed="' + read.has(key) + '" data-action="read">' + icons.check + '<span>' + (read.has(key) ? 'Read' : 'Mark as read') + '</span></button></div></details>';
+  card.innerHTML = '<div class="paper-header"><div class="paper-content"><div class="paper-title-row"><span class="paper-rank">' + String(paper.rank).padStart(2, '0') + '</span><h3></h3><button class="bookmark-button" aria-label="' + (saved.has(paper.id) ? 'Unsave' : 'Save') + ' item ' + paper.rank + '" aria-pressed="' + saved.has(paper.id) + '" data-action="save">' + icons.bookmark + '</button></div><p class="authors"></p></div></div><details class="paper-detail"' + (!state.compact ? ' open' : '') + '><summary hidden>Paper details</summary><h4 class="section-label">SUMMARY</h4><div class="prose paper-summary"></div><section class="background-note"><h4 class="section-label">BACKGROUND</h4><div class="prose paper-background"></div></section><section class="why-note"><h4 class="section-label">WHY IT MATTERS?</h4><div class="prose paper-why"></div></section><div class="paper-footer"><div class="paper-links"><a href="' + paper.url + '" target="_blank" rel="noopener noreferrer">arXiv ' + icons.arrow + '</a><a class="secondary" href="https://arxiv.org/pdf/' + paper.id + '" target="_blank" rel="noopener noreferrer">PDF ' + icons.arrow + '</a></div></div></details>';
   card.querySelector('h3').textContent = paper.title; math(card.querySelector('h3'));
   card.querySelector('.authors').textContent = (paper.authors ? paper.authors + '  ·  ' : '') + 'arXiv:' + paper.id;
-  card.querySelector('.paper-tags').innerHTML = paper.topics.slice(0, 3).map((topic) => '<span class="paper-tag">' + escapeHTML(topic) + '</span>').join('');
   const actions = document.createElement('div');
   actions.className = 'reading-actions paper-actions';
-  actions.innerHTML = '<button class="text-button" data-action="copy" aria-label="Copy item ' + paper.rank + '">Copy item</button><button class="text-button" data-action="play" aria-label="Play item ' + paper.rank + '">Play item</button>';
+  actions.innerHTML = '<button class="text-button" data-action="copy" aria-label="Copy item ' + paper.rank + '">Copy item</button><button class="text-button" data-action="play" aria-label="Play item ' + paper.rank + '">Play item</button><button class="text-button" data-action="details">' + (state.compact ? 'Show details' : 'Hide details') + '</button>';
   const play = actions.querySelector('[data-action="play"]');
   play.disabled = !player.entry(day, paper.rank);
   if (play.disabled) play.title = 'Audio is not available yet';
   card.querySelector('.paper-content').append(actions);
+  const details = card.querySelector('details');
+  details.id = card.id + '-details';
+  actions.querySelector('[data-action="details"]').setAttribute('aria-controls', details.id);
+  details.addEventListener('toggle', () => syncDetails(card));
+  syncDetails(card);
   markdown(card.querySelector('.paper-summary'), paper.summary);
   markdown(card.querySelector('.paper-background'), paper.background);
   markdown(card.querySelector('.paper-why'), paper.why);
   return card;
+}
+function syncDetails(card) {
+  const open = card.querySelector('details').open;
+  const button = card.querySelector('[data-action="details"]');
+  button.textContent = open ? 'Hide details' : 'Show details';
+  button.setAttribute('aria-expanded', String(open));
 }
 function render() {
   const day = currentDay();
@@ -175,8 +214,8 @@ function render() {
   const results = (filtering ? state.archive.days : [day]).flatMap((d) => d.papers.filter(matches).map((paper) => ({ day: d, paper })));
   document.title = (state.savedOnly ? 'Saved papers' : filtering ? 'Search results' : day.title) + ' · daily-arXiv';
   $('#page-title').textContent = state.savedOnly ? 'Saved papers' : filtering ? 'Search results' : day.title;
-  $('#date-subtitle').textContent = filtering ? state.archive.days.length + ' archived day' + (state.archive.days.length === 1 ? '' : 's') : formatDate(day.date);
-  $('#paper-total').textContent = results.length + (results.length === 1 ? ' paper' : ' papers');
+  $('#date-subtitle').hidden = !filtering;
+  $('#date-subtitle').textContent = filtering ? state.archive.days.length + ' archived day' + (state.archive.days.length === 1 ? '' : 's') : '';
   $('#day-actions').hidden = filtering;
   $('#play-day').disabled = !player.entry(day);
   $('#play-day').title = player.entry(day) ? '' : 'Audio is not available yet';
@@ -186,6 +225,7 @@ function render() {
   $('#saved-button').setAttribute('aria-pressed', state.savedOnly);
   $('#saved-count').textContent = String(saved.size);
   $('#clear-filters').hidden = !filtering;
+  $('#sync-settings').hidden = !state.savedOnly;
   $('#papers').replaceChildren(...results.map(({ day: d, paper }) => renderPaper(d, paper)));
   if (!results.length) {
     $('#papers').innerHTML = '<div class="empty-state"><h3>' + (state.savedOnly && !state.query && !state.topic ? 'No saved papers.' : 'No matching papers.') + '</h3><p>' + (state.savedOnly ? 'Use the bookmark button to save a paper.' : 'Try a different search or topic.') + '</p><button class="text-button" data-action="reset">Latest papers →</button></div>';
@@ -209,10 +249,8 @@ function reset() { selectDate(state.archive.days[0].date); }
 $('#archive-list').addEventListener('click', (event) => { const button = event.target.closest('[data-date]'); if (button) selectDate(button.dataset.date); });
 $('#date-select').addEventListener('change', (event) => selectDate(event.target.value));
 $('#latest-button').addEventListener('click', () => { if (state.archive) reset(); });
-$('#saved-button').addEventListener('click', () => { if (!state.archive) return; state.savedOnly = !state.savedOnly; state.query = ''; state.topic = ''; $('#search-input').value = ''; syncHash(); render(); });
+$('#saved-button').addEventListener('click', () => { if (!state.archive) return; state.savedOnly = !state.savedOnly; state.query = ''; state.topic = ''; syncHash(); render(); });
 $('#topic-filters').addEventListener('click', (event) => { const button = event.target.closest('[data-topic]'); if (button) { state.topic = button.dataset.topic; syncHash(); render(); } });
-let searchTimer;
-$('#search-input').addEventListener('input', (event) => { clearTimeout(searchTimer); state.query = event.target.value.trim(); searchTimer = setTimeout(() => { if (state.archive) { syncHash(); render(); } }, 180); });
 $('#clear-filters').addEventListener('click', reset);
 $('#copy-day').addEventListener('click', () => { if (state.archive) copyText(DigestReading.voiceText(currentDay()), 'Digest copied'); });
 $('#play-day').addEventListener('click', () => { if (state.archive) player.play(currentDay()); });
@@ -221,6 +259,7 @@ $('#view-button').addEventListener('click', () => {
   state.compact = !state.compact;
   $('#view-button').setAttribute('aria-pressed', state.compact);
   $('#view-button span').textContent = state.compact ? 'Reading view' : 'Compact view';
+  $('#view-button').title = state.compact ? 'Reading view' : 'Compact view';
   for (const details of document.querySelectorAll('.paper-detail')) details.open = !state.compact;
 });
 $('#papers').addEventListener('click', (event) => {
@@ -228,7 +267,11 @@ $('#papers').addEventListener('click', (event) => {
   const card = event.target.closest('.paper-card');
   if (!card) return;
   const button = event.target.closest('[data-action]');
-  if (button?.dataset.action === 'copy' || button?.dataset.action === 'play') {
+  if (button?.dataset.action === 'details') {
+    const details = card.querySelector('details');
+    details.open = !details.open;
+    syncDetails(card);
+  } else if (button?.dataset.action === 'copy' || button?.dataset.action === 'play') {
     const day = state.archive.days.find((entry) => entry.date === card.dataset.date);
     const paper = day?.papers.find((entry) => entry.rank === Number(card.dataset.rank));
     if (!paper) return;
@@ -236,28 +279,20 @@ $('#papers').addEventListener('click', (event) => {
     else player.play(day, paper.rank);
   } else if (button?.dataset.action === 'save') {
     const id = card.dataset.id;
-    saved.has(id) ? saved.delete(id) : saved.add(id);
-    const stored = persist('daily-arxiv:saved:v1', saved);
+    const stored = bookmarkSync.toggle(id);
     $('#saved-count').textContent = String(saved.size);
     button.setAttribute('aria-pressed', saved.has(id));
     button.setAttribute('aria-label', (saved.has(id) ? 'Unsave' : 'Save') + ' item ' + card.dataset.rank);
     if (stored) toast(saved.has(id) ? 'Paper saved' : 'Removed from saved papers');
+    else toast('Your browser could not save this change. It will last for this visit.');
     if (state.savedOnly) render();
-  } else if (button?.dataset.action === 'read') {
-    const key = card.dataset.date + ':' + card.dataset.id;
-    read.has(key) ? read.delete(key) : read.add(key);
-    persist('daily-arxiv:read:v1', read);
-    button.setAttribute('aria-pressed', read.has(key)); button.querySelector('span').textContent = read.has(key) ? 'Read' : 'Mark as read'; card.classList.toggle('is-read', read.has(key));
   }
-  const link = event.target.closest('.permalink');
-  if (link) { event.preventDefault(); selectDate(card.dataset.date); syncHash(card.dataset.rank); openPaper(card.dataset.date, Number(card.dataset.rank)); }
 });
 $('#previous-day').addEventListener('click', () => { const i = state.archive.days.indexOf(currentDay()); if (state.archive.days[i + 1]) selectDate(state.archive.days[i + 1].date); });
 $('#next-day').addEventListener('click', () => { const i = state.archive.days.indexOf(currentDay()); if (state.archive.days[i - 1]) selectDate(state.archive.days[i - 1].date); });
 $('#preferences-button').addEventListener('click', () => $('#preferences-dialog').showModal());
 $('#close-preferences').addEventListener('click', () => $('#preferences-dialog').close());
 $('#preferences-dialog').addEventListener('click', (event) => { if (event.target === event.currentTarget) { const rect = event.currentTarget.getBoundingClientRect(); if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) event.currentTarget.close(); } });
-document.addEventListener('keydown', (event) => { if (event.key === '/' && !['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName) && !$('#preferences-dialog').open) { event.preventDefault(); $('#search-input').focus(); } });
 window.addEventListener('hashchange', applyHash);
 window.addEventListener('beforeprint', () => { document.querySelectorAll('.paper-detail').forEach((details) => { details.dataset.printWasOpen = details.open; details.open = true; }); });
 window.addEventListener('afterprint', () => { document.querySelectorAll('.paper-detail').forEach((details) => { details.open = details.dataset.printWasOpen === 'true'; }); });
@@ -274,6 +309,7 @@ async function load() {
     applyHash();
   } catch (error) {
     console.error(error);
+    $('#date-subtitle').hidden = false;
     $('#date-subtitle').textContent = 'The archive could not be loaded.';
     $('#papers').innerHTML = '<div class="empty-state"><h3>Unable to load papers.</h3><p>Check your connection and reload.</p><button class="text-button" id="retry-button">Try again →</button></div>';
     $('#retry-button').addEventListener('click', load);

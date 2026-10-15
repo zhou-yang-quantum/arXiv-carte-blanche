@@ -43,6 +43,17 @@ class DigestTests(unittest.TestCase):
             with self.subTest(count=count), self.assertRaises(ValueError):
                 parse_digest(example_digest(count, include_priority=False))
 
+    def test_why_heading_preserves_sections_for_new_and_legacy_digests(self):
+        for heading in ('**Why it matters?**', '**Why it matters:**',
+                        '**Why it matters for you:**'):
+            with self.subTest(heading=heading):
+                text = example_digest(include_priority=False).replace(
+                    '**Why it matters for you:**', heading)
+                day = parse_digest(text)
+                for paper in day['papers']:
+                    self.assertEqual(paper['background'], 'A useful concept.')
+                    self.assertEqual(paper['why'], 'A useful connection.')
+
     def test_twenty_paper_reading_order_and_notes(self):
         order = list(range(20, 0, -1))
         advice = 'My reading order would be **' + ' → '.join(map(str, order)) + '**.\n\nDaily synthesis.'

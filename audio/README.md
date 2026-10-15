@@ -26,24 +26,42 @@ links are omitted from rendering and speech; the footer arXiv link remains.
 The generator checks the source and pronunciation hashes. A changed equation
 reading cannot silently use an old recording. Missing or stale pronunciation
 metadata stops new audio rather than falling back to symbol-by-symbol reading.
-October 6–8 have matching pronunciation companions for the improved narration.
-New daily deliveries use the same version, with a title-to-authors pause and
-the tested letter-A pronunciation inside equations. The October 9 recording
-keeps its existing narration version until an explicit refresh is requested.
+The checked-in pronunciation companions and new daily deliveries use narration
+version 4: “Item 1”, a 0.6-second pause, then the title, without a repeated digest
+date. The title-to-authors pause and tested letter-A pronunciation inside equations
+are retained. Updating the companion version invalidates previous recordings;
+the publication workflow generates new immutable releases on its next run.
 
-Native audio playback and Media Session handlers provide play/pause, seeking,
-position, speed, and lock-screen metadata. Headphone previous/next track actions
-seek backward/forward 30 seconds. Hardware gestures and displayed lock-screen
-controls depend on the Android browser and headphones. Use Chrome or another
-browser with background media support; open/download the MP3 for an Android audio
-player if a browser or embedded app restricts background playback.
+**Play day** opens the day's complete playlist at Item 1. **Play item** opens the
+same playlist at that item. The track picker and previous/next buttons jump between
+items; the progress bar seeks within the current item. Speed, play/pause, position,
+item titles, and previous/next actions are also registered with Media Session for
+lock-screen and headphone controls. There are no 30-second skip buttons.
+
+The player requests automatic preloading and distinguishes buffering from actual
+playback. While playback is requested, a 15-second lack of progress triggers a
+fresh connection at the current position and selected speed, with at most three
+consecutive attempts. Recovery also checks when the page returns or the network
+reconnects. Pausing or closing cancels recovery. Recovery runs automatically;
+there is no reconnect control. A real Pixel lock-screen check is still needed:
+a website cannot detect every Android audio-output interruption or run recovery
+while Chrome suspends its JavaScript.
 
 The whole-day recording is the item PCM recordings concatenated in rank order,
-starting with Item 1 and without a daily overview or closing notes. A sleeping
-page does not have to run JavaScript between papers. There are 1.5 seconds of real
-silence between summary, background, and relevance, a 0.75-second pause between
+starting with Item 1 and without a daily overview or closing notes. The playlist
+uses this continuous native stream with the manifest's item boundaries as chapters.
+A sleeping page does not have to load another file or run JavaScript between
+papers. Changing tracks seeks within that stream, while the player and lock-screen
+timeline show the position within the selected item. There are 1.5 seconds of real
+silence between summary, background, and relevance, a 0.6-second pause between
+the item number and title, a 0.75-second pause between
 title and authors, a 0.5-second pause before summary, and an item-end pause.
-Per-item recordings stop naturally at the item end.
+**Download playlist (ZIP)** saves all the individual item MP3s in rank order,
+named `arxiv-YYYY-MM-DD-item-01.mp3`, `arxiv-YYYY-MM-DD-item-02.mp3`, and so on.
+The release publisher builds the ZIP for both new and reused recordings without
+regenerating speech. The link appears only after the archive is published and
+listed in the audio index. Extract the ZIP to play the files in an Android audio
+player offline.
 Kokoro is a speech model, not a physics solver: correctness comes from the
 checked English script, and unusual names can still need pronunciation corrections.
 Audio failures leave reading/copy available and do not block text publication.
