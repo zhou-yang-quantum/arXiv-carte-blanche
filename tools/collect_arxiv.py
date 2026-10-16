@@ -134,7 +134,7 @@ def fetch_text(url):
         machine_endpoint = endpoint.hostname == 'rss.arxiv.org' or (endpoint.hostname == 'export.arxiv.org' and endpoint.path.startswith('/api/'))
         interval = API_REQUEST_DELAY if machine_endpoint else HTML_CRAWL_DELAY
         _next_request_at = time.monotonic() + interval
-        request = urllib.request.Request(url, headers={'User-Agent': 'daily-arxiv-archive/1.1 (+https://github.com/zhou-yang-quantum/daily-arXiv)'})
+        request = urllib.request.Request(url, headers={'User-Agent': 'daily-arxiv-archive/1.1 (+https://github.com/zhou-yang-quantum/arXiv-carte-blanche)'})
         try:
             with urllib.request.urlopen(request, timeout=60) as response:
                 return response.read().decode('utf-8')

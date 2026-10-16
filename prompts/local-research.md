@@ -1,4 +1,4 @@
-Research one dated arXiv batch for my personal daily-arXiv website. The controller
+Research one dated arXiv batch for my personal arXiv carte blanche website. The controller
 will provide the exact target date, a compact catalog file, and a metadata lookup
 command. This is a local task using my ChatGPT subscription. Do not call a paid
 model API, read credentials, publish, edit repository source, start another agent,

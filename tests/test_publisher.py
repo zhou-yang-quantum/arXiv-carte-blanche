@@ -6,6 +6,7 @@ from unittest.mock import patch
 from tools.publish_digest import publish, check_date
 from tools.speech_text import make_script
 from tools.import_digest import parse_digest
+from tools.project import WEBSITE
 from test_archive import example_digest
 
 
@@ -19,6 +20,7 @@ class PublisherTests(unittest.TestCase):
                            {'sha': 'new-tree'}, {'sha': 'new-commit'}, {'object': {'sha': 'new-commit'}}]
         result = publish(text, 'test-credential', speech_script=script)
         self.assertEqual(result['commit'], 'new-commit')
+        self.assertEqual(result['website'], WEBSITE + '#date=2026-10-06')
         tree = git.call_args_list[2].args[3]
         self.assertEqual({entry['path'] for entry in tree['tree']}, {'incoming/2026-10-06.md', 'audio/scripts/2026-10-06.json'})
         self.assertEqual(tree['base_tree'], 'base-tree')
@@ -57,6 +59,7 @@ class PublisherTests(unittest.TestCase):
         text = example_digest()
         result = publish(text, 'test-credential')
         self.assertEqual(result['status'], 'publication-queued')
+        self.assertEqual(result['website'], WEBSITE + '#date=2026-10-06')
         method, date, _, payload = api.call_args.args
         self.assertEqual((method, date, payload['branch']), ('PUT', '2026-10-06', 'main'))
         self.assertEqual(base64.b64decode(payload['content']).decode('utf-8'), text)

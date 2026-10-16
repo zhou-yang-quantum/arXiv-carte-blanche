@@ -2,7 +2,7 @@
 
 A personal daily arXiv digest and reading archive. Each entry ranks 10–20 newly announced papers and explains the main result, background and motivation, and why it matters for the reader.
 
-**[Read the website](https://zhou-yang-quantum.github.io/daily-arXiv/)**
+**[Read the website](https://zhou-yang-quantum.github.io/arXiv-carte-blanche/)**
 
 The current selection focuses on theoretical physics and quantum information: quantum field theory, non-equilibrium physics, quantum error correction, quantum simulation, quantum algorithms, and exactly solvable models. You can adapt the same setup to your own interests.
 
@@ -25,8 +25,8 @@ Dropbox sync is optional and needs a one-time public app-key setting. Follow the
 Clone this repository, or fork it on GitHub and clone your fork:
 
 ```sh
-git clone https://github.com/zhou-yang-quantum/daily-arXiv.git
-cd daily-arXiv
+git clone https://github.com/zhou-yang-quantum/arXiv-carte-blanche.git
+cd arXiv-carte-blanche
 ```
 
 With Docker Desktop running:
@@ -85,7 +85,7 @@ See **[Technical setup and agent reference](docs/technical-setup.md)** for the e
   - [ ] Display papers without numbering.
 - [ ] Add a **Save** button to the online audio player to save the paper currently playing.
 - [ ] Use a dedicated maths and physics speech engine, or develop a standalone engine for this purpose.
-- [ ] Rename the repository to match **arXiv carte blanche** (postponed; confirm the exact repository name first). Update the Git remote, publishing scripts, Pages links, audio URL validation, and Dropbox redirect URI; preserve bookmarks and existing recordings, and plan for the old website address, which GitHub does not automatically redirect. Schedule the migration after any running audio jobs finish.
+- [x] Rename the repository to **arXiv-carte-blanche** and migrate publishing, website, and audio links. See [repository migration notes](docs/repository-migration.md) for the new addresses and Dropbox setup.
 
 ## Credits
 

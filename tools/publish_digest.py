@@ -11,11 +11,12 @@ import urllib.request
 if __package__:
     from .import_digest import parse_digest
     from .speech_text import make_script
+    from .project import REPOSITORY, WEBSITE
 else:
     from import_digest import parse_digest
     from speech_text import make_script
+    from project import REPOSITORY, WEBSITE
 
-REPOSITORY = "zhou-yang-quantum/daily-arXiv"
 API_ROOT = f"https://api.github.com/repos/{REPOSITORY}/contents/incoming/"
 
 
@@ -108,7 +109,7 @@ def publish(text, token, speech_script=None):
     if speech_script is not None:
         sha = publish_bundle(text, speech_script, token)
         return {'date': date, 'papers': count, 'status': 'publication-queued' if sha else 'already-delivered',
-                'commit': sha, 'website': f'https://zhou-yang-quantum.github.io/daily-arXiv/#date={date}'}
+                'commit': sha, 'website': f'{WEBSITE}#date={date}'}
     result = api_request("PUT", date, token, {
         "message": f"Add arXiv-{date} selection",
         "content": base64.b64encode(text.encode("utf-8")).decode("ascii"),
@@ -119,7 +120,7 @@ def publish(text, token, speech_script=None):
     return {
         "date": date, "papers": count, "status": "publication-queued",
         "commit": result["commit"]["sha"],
-        "website": f"https://zhou-yang-quantum.github.io/daily-arXiv/#date={date}",
+        "website": f"{WEBSITE}#date={date}",
     }
 
 

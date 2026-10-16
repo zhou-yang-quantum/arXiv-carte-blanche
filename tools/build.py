@@ -8,8 +8,10 @@ import math
 
 if __package__:
     from .import_digest import parse_digest, MIN_PAPERS, MAX_PAPERS
+    from .project import AUDIO_BASE, canonical_audio_manifest
 else:
     from import_digest import parse_digest, MIN_PAPERS, MAX_PAPERS
+    from project import AUDIO_BASE, canonical_audio_manifest
 
 ROOT = Path(__file__).resolve().parents[1]
 DIST = ROOT / "dist"
@@ -33,6 +35,7 @@ def load_audio_index(days, path):
         audio = index.get('days', {}).get(day['date'])
         if not audio or audio.get('source_hash') != audio_source_hash(day):
             continue  # Never play an old recording of a corrected digest.
+        audio = canonical_audio_manifest(audio)
         script_path = ROOT / 'audio/scripts' / (day['date'] + '.json')
         if script_path.exists() and audio.get('speech_script_hash') != audio_script_hash(json.loads(script_path.read_text(encoding='utf-8'))):
             continue  # A corrected pronunciation must not reuse its old audio.
@@ -41,7 +44,7 @@ def load_audio_index(days, path):
         if audio.get('date') != day['date'] or actual != expected:
             raise ValueError('Audio manifest does not match the dated digest')
         for track in [audio['day'], *audio['items']]:
-            if (not track['url'].startswith('https://github.com/zhou-yang-quantum/daily-arXiv/releases/download/audio-')
+            if (not track['url'].startswith(AUDIO_BASE + 'audio-')
                     or not isinstance(track.get('duration'), (int, float)) or not math.isfinite(track['duration']) or track['duration'] <= 0):
                 raise ValueError('Invalid audio track')
         elapsed, items = 0.0, []

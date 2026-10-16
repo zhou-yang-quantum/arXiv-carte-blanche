@@ -15,11 +15,12 @@ import zipfile
 if __package__:
     from .build import ROOT, load_archive, audio_source_hash, audio_script_hash
     from .speech_text import make_script
+    from .project import REPOSITORY, WEBSITE, canonical_audio_manifest
 else:
     from build import ROOT, load_archive, audio_source_hash, audio_script_hash
     from speech_text import make_script
+    from project import REPOSITORY, WEBSITE, canonical_audio_manifest
 
-REPOSITORY = 'zhou-yang-quantum/daily-arXiv'
 VOICE = 'af_heart'
 MODEL_SHA = 'beb0d1848dee9a49da392cc3df26958d46cfa35d321edf434f52949153f0df3a'
 CONFIG_SHA = 'bca610b8308e8d99f32e6fe4197e7ec01679264efed0cac9140fe9c29f1fbf7d'
@@ -65,6 +66,7 @@ def build_playlist_archive(manifest, folder):
 
 def ensure_playlist(manifest, tag):
     """Add a download to an existing release without re-synthesizing speech."""
+    manifest = canonical_audio_manifest(manifest)
     base = f'https://github.com/{REPOSITORY}/releases/download/{tag}/'
     if manifest['day']['url'] != base + 'day.mp3' or not tag.startswith('audio-' + manifest['date'] + '-'):
         raise ValueError('Playlist release does not match the recording')
@@ -101,6 +103,7 @@ def cached_release(tag):
         return None
     asset = next(asset for asset in data['assets'] if asset['name'] == 'manifest.json')
     manifest = json.loads(command(['gh', 'api', f'repos/{REPOSITORY}/releases/assets/{asset["id"]}', '-H', 'Accept: application/octet-stream']))
+    manifest = canonical_audio_manifest(manifest)
     required = {'day.mp3'} | {f'item-{item["rank"]:02}.mp3' for item in manifest['items']}
     if manifest.get('version') in (2, 3, 4, 5, 6):
         required.add('speech.txt')
@@ -293,7 +296,10 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--date')
     parser.add_argument('--local-only', action='store_true')
+    parser.add_argument('--reuse-only', action='store_true', help='Publish available recordings without starting speech synthesis')
     args = parser.parse_args()
+    if args.local_only and args.reuse_only:
+        parser.error('--local-only and --reuse-only cannot be combined')
     CACHE.mkdir(parents=True, exist_ok=True)
     all_days = load_archive(ROOT / 'content/digests', ROOT / 'incoming')
     days = all_days
@@ -319,10 +325,11 @@ def main():
     seed = json.loads(index_file.read_text(encoding='utf-8')) if index_file.exists() else {'days': {}}
     if not seed.get('days'):
         try:
-            with urllib.request.urlopen('https://zhou-yang-quantum.github.io/daily-arXiv/data/audio/index.json', timeout=20) as response:
+            with urllib.request.urlopen(WEBSITE + 'data/audio/index.json', timeout=20) as response:
                 seed = json.load(response)
         except (OSError, ValueError):
             pass
+    seed['days'] = {stamp: canonical_audio_manifest(manifest) for stamp, manifest in seed.get('days', {}).items()}
     # Preserve previously verified, still-current recordings if a new day's
     # synthesis or upload fails before this run can finish.
     index = {'version': 1, 'days': {day['date']: seed['days'][day['date']] for day in all_days
@@ -357,6 +364,9 @@ def main():
             manifest = ensure_playlist(existing, tag)
             print('Reused audio for ' + day['date'], flush=True)
         else:
+            if args.reuse_only:
+                print('No completed recording for ' + day['date'] + '; synthesis was not requested.', flush=True)
+                continue
             if voice is None:
                 from kokoro_onnx import Kokoro
                 import onnxruntime as runtime

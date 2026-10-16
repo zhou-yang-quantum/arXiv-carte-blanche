@@ -305,7 +305,7 @@ test('a delayed audio index does not block reading or Ask GPT', async ({ page })
   await pending.fulfill({ json: { days: {} } });
 });
 
-async function audioFixture(page) {
+async function audioFixture(page, { legacy = false } = {}) {
   await page.addInitScript(() => {
     window.mediaActions = {};
     Object.defineProperty(navigator, 'mediaSession', { configurable: true, value: {
@@ -313,12 +313,13 @@ async function audioFixture(page) {
       setPositionState: (state) => { window.mediaPosition = state; }, playbackState: 'none', metadata: null,
     } });
   });
-  const base = 'https://github.com/zhou-yang-quantum/daily-arXiv/releases/download/audio-fixture/';
+  const base = 'https://github.com/zhou-yang-quantum/arXiv-carte-blanche/releases/download/audio-fixture/';
+  const manifestBase = legacy ? base.replace('/arXiv-carte-blanche/', '/daily-arXiv/') : base;
   await page.route('**/data/audio/index.json', (route) => route.fulfill({ json: { days: { '2026-10-06': {
-    day: { url: base + 'day.mp3', duration: 360 },
+    day: { url: manifestBase + 'day.mp3', duration: 360 },
     items: Array.from({ length: 12 }, (_, index) => ({ rank: index + 1, id: '2610.' + String(index + 1).padStart(5, '0'),
-      title: 'Paper ' + (index + 1), url: base + 'item-' + String(index + 1).padStart(2, '0') + '.mp3', start: index * 30, duration: 30 })),
-    playlist_url: base + 'arxiv-2026-10-06-playlist.zip',
+      title: 'Paper ' + (index + 1), url: manifestBase + 'item-' + String(index + 1).padStart(2, '0') + '.mp3', start: index * 30, duration: 30 })),
+    playlist_url: manifestBase + 'arxiv-2026-10-06-playlist.zip',
   } } } }));
   // Actual decodable PCM exercises HTMLMediaElement, not a mocked play method.
   const frames = 360 * 8000;
@@ -388,6 +389,18 @@ test('a twelve-track playlist supports item jumps, previous/next, speed and lock
   await page.getByRole('button', { name: 'Close audio player', exact: true }).click();
   await expect(page.locator('#audio-player')).toBeHidden();
   expect(await page.evaluate(() => navigator.mediaSession.playbackState)).toBe('none');
+});
+
+test('pre-rename audio manifests play and download through the renamed repository', async ({ page }) => {
+  await audioFixture(page, { legacy: true });
+  const legacyRequests = [];
+  page.on('request', request => { if (request.url().includes('/daily-arXiv/releases/')) legacyRequests.push(request.url()); });
+  await page.goto('/');
+  await page.getByRole('button', { name: 'Play day', exact: true }).click();
+  await expect(page.locator('#audio-status')).toHaveText('Playing');
+  await expect(page.locator('audio')).toHaveAttribute('src', 'https://github.com/zhou-yang-quantum/arXiv-carte-blanche/releases/download/audio-fixture/day.mp3');
+  await expect(page.locator('#audio-download')).toHaveAttribute('href', 'https://github.com/zhou-yang-quantum/arXiv-carte-blanche/releases/download/audio-fixture/arxiv-2026-10-06-playlist.zip');
+  expect(legacyRequests).toEqual([]);
 });
 
 test('playing an item first opens the complete playlist at that item and advances without reloading', async ({ page }) => {

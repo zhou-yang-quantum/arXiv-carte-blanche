@@ -4,12 +4,12 @@ The static website supports optional Dropbox sync without a separate server. Eac
 
 ## One-time setup for the site owner
 
-1. Open the [Dropbox app console](https://www.dropbox.com/developers/apps/create), signed into your Dropbox account. Create an app with **Scoped access**, **App folder** access, and a unique name, such as `daily-arXiv-saves-yourname`. Do not choose Full Dropbox. Dropbox limits App folder access to the app's dedicated folder ([permissions guide](https://docs.dropboxapi.com/dropbox-api/docs/developer-resources/developer-guide)).
+1. Open the [Dropbox app console](https://www.dropbox.com/developers/apps/create), signed into your Dropbox account. Create an app with **Scoped access**, **App folder** access, and a unique name, such as `arXiv-carte-blanche-saves-yourname`. Do not choose Full Dropbox. Dropbox limits App folder access to the app's dedicated folder ([permissions guide](https://docs.dropboxapi.com/dropbox-api/docs/developer-resources/developer-guide)).
 2. In the app's **Permissions** tab, enable `files.content.read` and `files.content.write`, then **Submit**. The website explicitly requests only these two scopes.
 3. Under **Settings → OAuth 2 → Redirect URIs**, add each address you will use, exactly, including the trailing slash:
 
    ```text
-   https://zhou-yang-quantum.github.io/daily-arXiv/
+   https://zhou-yang-quantum.github.io/arXiv-carte-blanche/
    http://localhost:8080/
    http://127.0.0.1:8080/
    http://127.0.0.1:4173/
@@ -26,7 +26,7 @@ The static website supports optional Dropbox sync without a separate server. Eac
 5. Build with `npm run build`. For Docker preview, use `docker compose up --build -d --wait`. Publish the source changes through your normal GitHub Pages workflow when ready; changing your local preview does not update the live site.
 6. Open **Saved → Dropbox sync → Connect Dropbox**. Approve access. Repeat on your other device with the same Dropbox account. The app creates `bookmarks.json` in `Apps/<your-app-folder-name>/`; do not create or share the file manually.
 
-For personal use, the app can remain in development mode: connecting your own account on multiple devices does not require production approval. To let other readers connect their own accounts, choose **Enable additional users** in the Dropbox app console. Dropbox's current rules allow up to 500 development users, but reaching 50 linked users starts a two-week deadline to obtain production approval before new connections are frozen. Reviews normally begin at 50 linked users, with exceptions for justified early review. Consult the [production approval instructions](https://docs.dropboxapi.com/dropbox-api/docs/developer-resources/developer-guide#production-approval) before a wider launch. Set the app's privacy-policy URL to `https://zhou-yang-quantum.github.io/daily-arXiv/privacy.html` after that page is published (substitute your site URL for a fork).
+For personal use, the app can remain in development mode: connecting your own account on multiple devices does not require production approval. To let other readers connect their own accounts, choose **Enable additional users** in the Dropbox app console. Dropbox's current rules allow up to 500 development users, but reaching 50 linked users starts a two-week deadline to obtain production approval before new connections are frozen. Reviews normally begin at 50 linked users, with exceptions for justified early review. Consult the [production approval instructions](https://docs.dropboxapi.com/dropbox-api/docs/developer-resources/developer-guide#production-approval) before a wider launch. Set the app's privacy-policy URL to `https://zhou-yang-quantum.github.io/arXiv-carte-blanche/privacy.html` after that page is published (substitute your site URL for a fork).
 
 ## Everyday behavior
 

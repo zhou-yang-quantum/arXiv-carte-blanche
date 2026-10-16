@@ -13,6 +13,7 @@ from tools.build import ROOT, audio_source_hash, audio_script_hash, load_audio_i
 from tools.generate_audio import fingerprint, concatenate, append_silence, text_chunks, build_playlist_archive, ensure_playlist, render
 from tools.speech_text import make_script
 from tools.import_digest import parse_digest
+from tools.project import AUDIO_BASE, LEGACY_AUDIO_BASE, canonical_audio_manifest
 from test_archive import example_digest
 
 
@@ -25,7 +26,7 @@ class AudioTests(unittest.TestCase):
         root.start()
         self.addCleanup(root.stop)
         self.day = parse_digest(example_digest(include_priority=False))
-        prefix = 'https://github.com/zhou-yang-quantum/daily-arXiv/releases/download/audio-test/'
+        prefix = 'https://github.com/zhou-yang-quantum/arXiv-carte-blanche/releases/download/audio-test/'
         self.audio = {'date': self.day['date'], 'source_hash': audio_source_hash(self.day),
                       'day': {'url': prefix + 'day.mp3', 'duration': 300},
                       'items': [{'rank': p['rank'], 'id': p['id'], 'url': prefix + f'item-{p["rank"]:02}.mp3',
@@ -41,6 +42,59 @@ class AudioTests(unittest.TestCase):
         self.assertIn(self.day['date'], self.read(self.audio)['days'])
         self.day['papers'][0]['summary'] += ' Corrected statement.'
         self.assertEqual(self.read(self.audio)['days'], {})
+
+    def test_pre_rename_audio_links_migrate_without_changing_recordings(self):
+        legacy = json.loads(json.dumps(self.audio).replace(AUDIO_BASE, LEGACY_AUDIO_BASE))
+        legacy['speech_url'] = LEGACY_AUDIO_BASE + 'audio-test/speech.txt'
+        legacy['playlist_url'] = LEGACY_AUDIO_BASE + 'audio-test/arxiv-2026-10-06-playlist.zip'
+        original = json.loads(json.dumps(legacy))
+        migrated = self.read(legacy)['days'][self.day['date']]
+        for track in [migrated['day'], *migrated['items']]:
+            self.assertTrue(track['url'].startswith(AUDIO_BASE))
+        self.assertEqual(migrated['playlist_url'], AUDIO_BASE + 'audio-test/arxiv-2026-10-06-playlist.zip')
+        self.assertEqual(migrated['speech_url'], AUDIO_BASE + 'audio-test/speech.txt')
+        self.assertEqual(migrated['source_hash'], original['source_hash'])
+        self.assertEqual(legacy, original)
+        self.assertEqual(canonical_audio_manifest(migrated), migrated)
+
+    def test_lookalike_audio_repositories_remain_rejected_after_rename(self):
+        for repository in ('arXiv-carte-blanche-other', 'daily-arXiv-other'):
+            changed = json.loads(json.dumps(self.audio))
+            changed['day']['url'] = f'https://github.com/zhou-yang-quantum/{repository}/releases/download/audio-test/day.mp3'
+            with self.subTest(repository=repository), self.assertRaises(ValueError):
+                self.read(changed)
+
+    def test_legacy_playlist_reuse_needs_no_upload_or_synthesis(self):
+        legacy = json.loads(json.dumps(self.audio))
+        tag = 'audio-2026-10-06-fixture'
+        legacy['day']['url'] = LEGACY_AUDIO_BASE + tag + '/day.mp3'
+        legacy['playlist_url'] = LEGACY_AUDIO_BASE + tag + '/arxiv-2026-10-06-playlist.zip'
+        with patch('tools.generate_audio.command') as command:
+            migrated = ensure_playlist(legacy, tag)
+            self.assertEqual(migrated['playlist_url'], AUDIO_BASE + tag + '/arxiv-2026-10-06-playlist.zip')
+            command.assert_not_called()
+
+    def test_reuse_only_skips_missing_recordings_without_loading_speech_runtime(self):
+        from tools import generate_audio
+        with tempfile.TemporaryDirectory() as folder:
+            folder = Path(folder)
+            (folder / 'text').mkdir()
+            prepared = {'version': 6, 'date': self.day['date'], 'items': []}
+            (folder / 'text' / (self.day['date'] + '.json')).write_text(json.dumps(prepared), encoding='utf-8')
+            scripts = folder / 'audio/scripts'
+            scripts.mkdir(parents=True)
+            script = make_script(self.day, [])
+            (scripts / (self.day['date'] + '.json')).write_text(json.dumps(script), encoding='utf-8')
+            (folder / 'audio/index.json').write_text('{"days": {"seed": {"date": "seed"}}}', encoding='utf-8')
+            with patch.object(generate_audio, 'ROOT', folder), patch.object(generate_audio, 'CACHE', folder), \
+                 patch.object(generate_audio, 'load_archive', return_value=[self.day]), \
+                 patch.object(generate_audio, 'command'), patch.object(generate_audio, 'cached_release', return_value=None), \
+                 patch.object(generate_audio, 'download_voice') as voice, patch.object(generate_audio, 'render') as render, \
+                 patch('sys.argv', ['generate_audio.py', '--reuse-only']):
+                generate_audio.main()
+                voice.assert_not_called()
+                render.assert_not_called()
+            self.assertEqual(json.loads((folder / 'audio/index.json').read_text(encoding='utf-8'))['days'], {})
 
     def test_wrong_item_ids_ranks_and_external_hosts_are_rejected(self):
         for key, value in [('id', '2610.99999'), ('rank', 20), ('url', 'https://example.com/track.mp3')]:
@@ -94,7 +148,7 @@ class AudioTests(unittest.TestCase):
     def test_reused_release_gets_playlist_without_speech_generation(self):
         manifest = {**self.audio, 'items': self.audio['items'][:2]}
         tag = 'audio-2026-10-06-fixture'
-        prefix = 'https://github.com/zhou-yang-quantum/daily-arXiv/releases/download/' + tag + '/'
+        prefix = 'https://github.com/zhou-yang-quantum/arXiv-carte-blanche/releases/download/' + tag + '/'
         manifest['day'] = {**manifest['day'], 'url': prefix + 'day.mp3'}
         calls = []
         def run(args, **kwargs):

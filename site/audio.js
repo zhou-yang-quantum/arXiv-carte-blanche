@@ -1,6 +1,13 @@
 /* Playlist chapters share one native stream, so locked-screen transitions need no JavaScript. */
 (function (root) {
   'use strict';
+  const audioBase = 'https://github.com/zhou-yang-quantum/arXiv-carte-blanche/releases/download/';
+  const legacyAudioBase = 'https://github.com/zhou-yang-quantum/daily-arXiv/releases/download/';
+  function canonicalAudioURL(url) {
+    if (typeof url !== 'string') return null;
+    if (url.startsWith(legacyAudioBase + 'audio-')) return audioBase + url.slice(legacyAudioBase.length);
+    return url.startsWith(audioBase + 'audio-') ? url : null;
+  }
   class DigestAudio {
     constructor(panel) {
       this.panel = panel;
@@ -94,8 +101,9 @@
       const data = this.index.days?.[day.date];
       if (!data?.items?.length) return null;
       const source = rank == null ? data.day : data.items.find((item) => item.rank === rank);
-      if (!source || !source.url.startsWith('https://github.com/zhou-yang-quantum/daily-arXiv/releases/download/audio-')) return null;
-      return { ...source, label: day.title, date: day.date };
+      const url = canonicalAudioURL(source?.url);
+      if (!url) return null;
+      return { ...source, url, label: day.title, date: day.date };
     }
     async play(day, rank) {
       const track = this.entry(day);
@@ -133,7 +141,7 @@
         return option;
       }));
       const playlistURL = new URL('arxiv-' + day.date + '-playlist.zip', track.url).href;
-      this.download.hidden = data.playlist_url !== playlistURL;
+      this.download.hidden = canonicalAudioURL(data.playlist_url) !== playlistURL;
       this.download.removeAttribute('href');
       if (!this.download.hidden) this.download.href = playlistURL;
       this.download.download = 'arxiv-' + day.date + '-playlist.zip';

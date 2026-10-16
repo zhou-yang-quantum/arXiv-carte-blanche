@@ -23,8 +23,8 @@ The [English generator](https://github.com/LaserWong/LaserWong.github.io/blob/4f
 
 DeepSeek API usage is billed separately for model tokens; it is not included in ChatGPT Plus. See [DeepSeek's pricing documentation](https://api-docs.deepseek.com/quick_start/pricing/). The inspected repository's configured model name should be checked against the provider's current supported models before adopting its code.
 
-## Current daily-arXiv pipeline
+## Current arXiv carte blanche pipeline
 
-The comparison above records the earlier source inspection. daily-arXiv now uses GitHub Actions to archive arXiv's official Atom feeds, and local Codex with the existing ChatGPT subscription to select and explain 10–20 papers, normally ten. A protected Python publisher delivers the digest and equation-pronunciation companion together. GitHub Actions then generates audio and deploys the website.
+The comparison above records the earlier source inspection. arXiv carte blanche now uses GitHub Actions to archive arXiv's official Atom feeds, and local Codex with the existing ChatGPT subscription to select and explain 10–20 papers, normally ten. A protected Python publisher delivers the digest and equation-pronunciation companion together. GitHub Actions then generates audio and deploys the website.
 
 This implementation does not use the earlier cloud-environment prompt or a paid model API. Collection and publication use deterministic Python; the research model runs locally. See the [technical guide](technical-setup.md) and [active prompt](../prompts/local-research.md) for the current configuration.

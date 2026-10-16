@@ -63,10 +63,9 @@ Before using automatic publication, redirect the code to your own repository:
 
 | Location | Required change |
 | --- | --- |
-| `tools/publish_digest.py` | Change `REPOSITORY` to `OWNER/REPO` and the returned `website` URL to your Pages URL. The local controller uses this repository for remote source reads and duplicate checks too. |
+| `tools/project.py` | Set `REPOSITORY` and `WEBSITE`. The publisher, source reader, audio publisher, and archive builder share these settings. `LEGACY_REPOSITORY` keeps existing recording links compatible after a rename. |
 | `site/index.html` and `README.md` | Update the public repository and website links; adjust the title/branding if desired. |
-| `tools/generate_audio.py` | If keeping audio, change `REPOSITORY` and the Pages audio-index seed URL. |
-| `tools/build.py` and `site/audio.js` | If keeping audio, change the allowed GitHub Release URL prefix to your repository in both files. |
+| `site/audio.js` | Match the canonical and legacy audio URL prefixes to `tools/project.py`; unrelated repositories remain rejected. |
 | `tests/test_audio.py` and `tests/browser/archive.spec.js` | If changing the audio destination, match the audio fixture URL prefixes to it. |
 
 Audio is optional. For a text-only fork, remove the audio cache, dependency preparation, and generation steps from `.github/workflows/pages.yml`; leave the build and deploy steps. Start without a generated `audio/index.json`. For audio setup and licenses, see [audio/README.md](../audio/README.md), substituting your own URL in its download example.

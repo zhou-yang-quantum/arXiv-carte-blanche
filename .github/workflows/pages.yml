@@ -1,4 +1,4 @@
-name: Publish daily-arXiv
+name: Publish arXiv carte blanche
 
 on:
   push:
@@ -10,6 +10,11 @@ on:
         type: string
         required: false
         default: ''
+      reuse_audio_only:
+        description: 'Publish available audio without starting speech synthesis'
+        type: boolean
+        required: false
+        default: false
 
 permissions:
   contents: read
@@ -40,6 +45,7 @@ jobs:
           path: .cache/audio/voice
           key: kokoro-v1-af-heart-beb0d184-bca610b8-1
       - name: Prepare offline audio dependencies
+        if: ${{ !inputs.reuse_audio_only }}
         continue-on-error: true
         run: |
           sudo apt-get update -qq
@@ -51,14 +57,19 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           AUDIO_DATES: ${{ inputs.audio_dates }}
+          REUSE_AUDIO_ONLY: ${{ inputs.reuse_audio_only }}
         run: |
+          audio_options=()
+          if [ "$REUSE_AUDIO_ONLY" = "true" ]; then
+            audio_options+=(--reuse-only)
+          fi
           if [ -n "$AUDIO_DATES" ]; then
             IFS=',' read -r -a dates <<< "$AUDIO_DATES"
             for stamp in "${dates[@]}"; do
-              python tools/generate_audio.py --date "$stamp"
+              python tools/generate_audio.py --date "$stamp" "${audio_options[@]}"
             done
           else
-            python tools/generate_audio.py
+            python tools/generate_audio.py "${audio_options[@]}"
           fi
       - run: npm run build
       - uses: actions/upload-pages-artifact@v4
