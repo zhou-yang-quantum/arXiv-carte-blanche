@@ -1,20 +1,30 @@
 # arXiv carte blanche
 
-A personal daily arXiv digest and reading archive. Each entry ranks 10–20 newly announced papers and explains the main result, background and motivation, and why it matters for the reader.
+<img src="site/chef-bot.svg" alt="Chef-bot serving a dish" width="112" height="112" align="right">
+
+*Carte blanche* means giving someone freedom to choose. Here, you tell AI your tastes and leave it to decide what you read. arXiv supplies the raw ingredients; AI selects the papers and cooks them into an appetizing daily menu of ideas, explanations, and background tailored to you.
+
+I started this project because I wanted to listen to arXiv papers during my commute. It grew into a personal daily digest and reading archive, with recordings for listening on the go.
 
 **[Read the website](https://zhou-yang-quantum.github.io/arXiv-carte-blanche/)**
 
-The current selection focuses on theoretical physics and quantum information: quantum field theory, non-equilibrium physics, quantum error correction, quantum simulation, quantum algorithms, and exactly solvable models. You can adapt the same setup to your own interests.
+## Le menu
+
+- **A daily digest to your taste.** AI selects and ranks 10–20 newly announced papers, explaining the main result, motivation, background, and why each paper matters. Both the selection and the depth of explanation are catered to the researcher's interests and knowledge.
+- **Audio for the commute.** Accompanying recordings include experimental maths pronunciations: equations are given spoken English readings, with pauses and phrasing to help them make sense by ear. Listen by paper or play the day's menu, with playback speed controls and downloadable MP3s.
+- **Save something for later.** Bookmark papers from the page or audio player, and sync your saved papers across devices through your own Dropbox account.
+
+*Bon appétit!*
+
+The published menu reflects my own knowledge and interests in theoretical physics and quantum information: quantum field theory, non-equilibrium physics, quantum error correction, quantum simulation, quantum algorithms, and exactly solvable models. For a menu of your own, [fork the repository](https://github.com/zhou-yang-quantum/arXiv-carte-blanche/fork) and ask your AI to adapt it to your tastes. See [Make it your own](#make-it-your-own) below.
 
 ## What it does
 
 - Browse a monthly calendar with available digests highlighted, jump to a month or year, and filter by topic.
 - Read summaries with equations and links to the original arXiv papers.
 - Hide the archive sidebar, switch to compact view, or expand individual paper details.
-- Save papers locally or sync them across devices with your own Dropbox account.
 - Switch between light and dark reading modes.
 - Ask GPT about any paper: open ChatGPT with the complete digest item, original arXiv links, and a prepared prompt for physics and maths questions grounded in the paper. You may need to sign in and press Send in ChatGPT.
-- Listen to available recordings with a chapter playlist, playback speed controls, and a ZIP download of individual paper MP3s.
 
 The website is static HTML/CSS/JavaScript. Local Codex generates the digests; GitHub Actions collects arXiv source data and builds and deploys the website. Browsing, building, and manual digest imports need no model API key.
 
@@ -22,7 +32,7 @@ Dropbox sync is optional and needs a one-time public app-key setting. Follow the
 
 ## Try it locally
 
-Clone this repository, or fork it on GitHub and clone your fork:
+To preview the existing setup on your computer, clone this repository:
 
 ```sh
 git clone https://github.com/zhou-yang-quantum/arXiv-carte-blanche.git
@@ -48,6 +58,12 @@ npm run preview
 Open **http://127.0.0.1:4173**.
 
 ## Make it your own
+
+The paper choices, assumed background, and explanations here are tailored to me. To make your own version, **fork** the repository on GitHub, then **clone your fork** to your computer. The fork gives you your own GitHub repository to publish from; cloning gives you a local copy to work on. Cloning alone is enough for a local preview.
+
+Then ask your AI to adjust the recipe. For example:
+
+> Make this my daily arXiv menu. My research interests are [...]. I already know [...], and I would like more explanation of [...]. Update the research prompt, researcher profile, public preferences, and arXiv categories to match my tastes and knowledge level. Keep the website and audio pipeline working.
 
 The minimum changes for a personalized digest are:
 
@@ -76,16 +92,11 @@ See **[Technical setup and agent reference](docs/technical-setup.md)** for the e
 
 ## To-do: future implementations
 
-- [x] Improve date browsing:
-  - [x] Show a monthly calendar in the left sidebar, with digest dates highlighted, arrows that skip empty months, and month/year selectors limited to available digests.
-  - [x] When the left sidebar is hidden, show a calendar icon to the right of the title. Clicking the icon opens a calendar view with available dates highlighted and unavailable dates greyed out.
 - [ ] Add an **All** button to the right of **Latest**:
   - [ ] Display all papers, ordered from newest to oldest.
   - [ ] Paginate with 10 papers per page.
   - [ ] Display papers without numbering.
-- [ ] Add a **Save** button to the online audio player to save the paper currently playing.
 - [ ] Use a dedicated maths and physics speech engine, or develop a standalone engine for this purpose.
-- [x] Rename the repository to **arXiv-carte-blanche** and migrate publishing, website, and audio links. See [repository migration notes](docs/repository-migration.md) for the new addresses and Dropbox setup.
 
 ## Credits
 
