@@ -1,0 +1,51 @@
+{
+  "version": 4,
+  "date": "2026-10-16",
+  "source_hash": "90f025521730bb9f197861e43b5190db4618fdfb4940daa58ce02ea1579cccff",
+  "pronunciations": [
+    {
+      "latex": "$-\\log F_{\\mathrm{stab,LO}}$",
+      "spoken": "Minus the logarithm of F subscript stab comma L O."
+    },
+    {
+      "latex": "$C(t)=\\langle\\sigma_x^-(t)\\sigma_x^+(0)\\rangle$",
+      "spoken": "C of t equals the expectation value of sigma minus at site x and time t, multiplied by sigma plus at site x and time zero."
+    },
+    {
+      "latex": "$C(t)\\sim\\sqrt{3}/(18\\sqrt{t})$",
+      "spoken": "C of t is asymptotic to the square root of three divided by eighteen times the square root of t."
+    },
+    {
+      "latex": "$C_\\varepsilon(N)=C_0(N/(1-\\varepsilon))$",
+      "spoken": "C sub epsilon of N equals C sub zero evaluated at N divided by the quantity one minus epsilon."
+    },
+    {
+      "latex": "$G(t)=R(t)P_M R(t)^{\\mathsf T}$",
+      "spoken": "G of t equals R of t times P sub M times the transpose of R of t."
+    },
+    {
+      "latex": "$\\Delta_{T'}\\geq11/2$",
+      "spoken": "Delta sub T prime is greater than or equal to eleven halves."
+    },
+    {
+      "latex": "$\\mathcal D_p(\\rho)=(1-p)\\rho+pZ\\rho Z$",
+      "spoken": "Calligraphic D sub p acting on rho equals the quantity one minus p times rho, plus p times Z times rho times Z."
+    },
+    {
+      "latex": "$\\rho_0=P_{\\mathcal C}/\\operatorname{Tr}P_{\\mathcal C}$",
+      "spoken": "Rho sub zero equals P sub calligraphic C divided by the trace of P sub calligraphic C."
+    },
+    {
+      "latex": "$\\rho_s/T\\propto N$",
+      "spoken": "Rho sub s divided by T is proportional to N."
+    },
+    {
+      "latex": "$p^2/N$",
+      "spoken": "p squared divided by N."
+    },
+    {
+      "latex": "$t^{-2}$",
+      "spoken": "t to the power minus two."
+    }
+  ]
+}
