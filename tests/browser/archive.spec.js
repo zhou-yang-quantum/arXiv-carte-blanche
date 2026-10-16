@@ -150,7 +150,7 @@ test('mobile reading, deep links, preferences, and no horizontal overflow', asyn
   await page.setViewportSize({ width: 320, height: 700 });
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
   const actions = page.locator('.paper-actions').first();
-  const buttons = actions.locator('button');
+  const buttons = actions.locator('button, a');
   const layout = await buttons.evaluateAll(elements => elements.map(element => ({
     y: element.getBoundingClientRect().y, font: getComputedStyle(element).fontSize,
   })));
@@ -174,6 +174,7 @@ test('additional dates navigate and search across the entire archive', async ({ 
     await route.fulfill({ response, json: data });
   });
   await page.goto('/');
+  await expect(page.locator('.paper-card')).toHaveCount(10);
   await page.getByRole('button', { name: 'Earlier selection' }).click();
   await expect(page.getByRole('heading', { name: 'arXiv-2026-10-02', exact: true })).toBeVisible();
   await page.getByRole('button', { name: 'Later selection' }).click();
@@ -181,6 +182,9 @@ test('additional dates navigate and search across the entire archive', async ({ 
   await expect(page.locator('.paper-card')).toHaveCount(1);
   await expect(page.locator('.paper-card')).toHaveAttribute('data-date', '2026-10-02');
   await expect(page.locator('.paper-label')).toHaveCount(0);
+  const prompt = new URL(await page.getByRole('link', { name: 'Ask GPT about item 1', exact: true }).getAttribute('href')).searchParams.get('prompt');
+  expect(prompt).toContain('BEGIN DIGEST ITEM: arXiv-2026-10-02');
+  expect(prompt).toContain('An older unique research idea');
 });
 
 test('imported Markdown cannot run HTML or javascript links', async ({ page }) => {
@@ -248,24 +252,58 @@ test('voice copying keeps full dated sections and TeX without rendered math dupl
   await expect(page.getByRole('link', { name: 'v1 paper', exact: true })).toHaveCount(0);
   expect(full).not.toContain('**');
   expect(full).not.toContain('DIGESTMATH');
-  await page.getByRole('button', { name: 'Copy item 1', exact: true }).click();
-  const item = await page.evaluate(() => window.copiedText);
-  expect(item).toMatch(/^Item 1\.\n\n/);
-  expect(item).not.toContain('arXiv-2026-10-06');
-  expect(item).not.toContain('Item 2');
-  expect(item).toContain('Authors:');
-  expect(item).toContain('Background');
-  expect(item).toContain('Why it matters?');
-  expect((item.match(/x\^2\+1/g) || []).length).toBe(1);
   await expect(page.locator('.katex-error')).toHaveCount(0);
+});
+
+test('Ask GPT opens ChatGPT with the complete selected item, TeX and original paper links', async ({ page, context }) => {
+  const summary = 'Exact claim: \\(x^2+1\\), $z=3/2$, α + β & 50% #1? Café.';
+  await page.route('**/data/archive.json', async (route) => {
+    const { response, data } = await archiveFixture(route);
+    data.days[0].papers[0].summary = summary;
+    await route.fulfill({ response, json: data });
+  });
+  // Intercept the external destination so tests never send a prompt to ChatGPT.
+  await context.route('https://chatgpt.com/**', route => route.fulfill({ contentType: 'text/html', body: '<p>ChatGPT handoff</p>' }));
+  await page.goto('/');
+  await page.getByRole('button', { name: 'Compact view', exact: true }).click();
+  const ask = page.getByRole('link', { name: 'Ask GPT about item 1', exact: true });
+  await expect(ask).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Copy item 1', exact: true })).toHaveCount(0);
+  await expect(ask).toHaveAttribute('target', '_blank');
+  await expect(ask).toHaveAttribute('rel', 'noopener noreferrer');
+  const opened = page.waitForEvent('popup');
+  await ask.focus();
+  await page.keyboard.press('Enter');
+  const chat = await opened;
+  await chat.waitForURL('https://chatgpt.com/**');
+  const url = new URL(chat.url());
+  expect(url.origin).toBe('https://chatgpt.com');
+  const prompt = url.searchParams.get('prompt');
+  expect(prompt).toContain('physics and maths questions');
+  expect(prompt).toContain('Refer to the original arXiv paper');
+  expect(prompt).toContain('If you cannot access the paper, say so');
+  expect(prompt).toContain('wait for my questions');
+  expect(prompt).toContain('Original paper: https://arxiv.org/abs/2610.03864');
+  expect(prompt).toContain('PDF: https://arxiv.org/pdf/2610.03864');
+  expect(prompt).toContain('BEGIN DIGEST ITEM: arXiv-2026-10-06\n\nItem 1.\n\n');
+  expect(prompt).toContain(originalDigest.papers[0].title);
+  expect(prompt).toContain('Authors: ' + originalDigest.papers[0].authors);
+  expect(prompt).toContain('Summary\n\n' + summary);
+  expect(prompt).toContain('Background\n\nOrdinary \\(0\\)-form symmetry');
+  expect(prompt).toContain('Why it matters?\n\nvery high.');
+  expect(prompt).toContain('END DIGEST ITEM: arXiv-2026-10-06');
+  expect(prompt).not.toContain(originalDigest.papers[1].title);
+  expect((prompt.match(/x\^2\+1/g) || []).length).toBe(1);
+  expect(prompt).not.toContain('DIGESTMATH');
+  expect(await chat.evaluate(() => window.opener)).toBeNull();
 });
 
 test('clipboard rejection provides selectable text instead of losing the copy', async ({ page }) => {
   await page.addInitScript(() => { Object.defineProperty(navigator, 'clipboard', { value: { writeText: async () => { throw new Error('Denied'); } }, configurable: true }); });
   await page.goto('/');
-  await page.getByRole('button', { name: 'Copy item 4', exact: true }).click();
+  await page.getByRole('button', { name: 'Copy for voice', exact: true }).click();
   await expect(page.getByRole('dialog', { name: 'Copy text', exact: true })).toBeVisible();
-  await expect(page.getByRole('textbox', { name: 'Text to copy' })).toHaveValue(/^Item 4\.\n\n/);
+  await expect(page.getByRole('textbox', { name: 'Text to copy' })).toHaveValue(/BEGIN DIGEST: arXiv-2026-10-06/);
 });
 
 test('a delayed audio index does not block reading or copying', async ({ page }) => {

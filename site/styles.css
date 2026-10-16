@@ -27,7 +27,7 @@ dialog{border:1px solid var(--line);background:var(--card);color:var(--ink);bord
 @media(max-width:760px){.header-inner .icon-button{width:30px;height:30px}.digest-title-row{gap:8px}.digest-actions .text-button{font-size:.7rem}}
 @media print{.digest-title-row #view-button,.digest-actions{display:none!important}}
 
-.paper-header{display:block;padding:16px 22px 0}.paper-detail{margin:0;padding:0 22px 16px}.paper-actions{margin:2px 0 0;gap:16px}.paper-actions .text-button{min-height:30px;padding:4px 0}.paper-detail .prose{max-width:78ch}
+.paper-header{display:block;padding:16px 22px 0}.paper-detail{margin:0;padding:0 22px 16px}.paper-actions{margin:2px 0 0;gap:16px}.paper-actions .text-button{min-height:30px;padding:4px 0;text-decoration:none}.paper-detail .prose{max-width:78ch}
 .brand-controls{display:flex;align-items:center;gap:8px}#sidebar-button{flex-shrink:0;border-radius:5px;padding:0}
 .page-shell.sidebar-hidden{display:block;max-width:880px}.sidebar-hidden .sidebar{display:none}.sidebar-hidden main{width:100%;margin:0 auto}.sidebar-hidden .mobile-date{display:block;max-width:260px;margin:0 0 6px}.mobile-date select{width:100%;min-height:34px;border:1px solid var(--line);border-radius:5px;background:var(--paper);padding:5px 9px;color:var(--ink);font-size:.7rem}
 @media(max-width:760px){#sidebar-button{display:none}.paper-header{padding:14px 16px 0}.paper-detail{padding:0 16px 14px}.digest-actions{gap:10px}.digest-actions #day-actions{gap:10px}.digest-actions .text-button{font-size:.7rem}.digest-actions .text-button svg{width:12px;height:12px}.sidebar-hidden .mobile-date{max-width:none;margin:0}.paper-title-row{gap:8px}}

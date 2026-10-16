@@ -187,7 +187,8 @@ function renderPaper(day, paper) {
   card.querySelector('.authors').textContent = (paper.authors ? paper.authors + '  ·  ' : '') + 'arXiv:' + paper.id;
   const actions = document.createElement('div');
   actions.className = 'reading-actions paper-actions';
-  actions.innerHTML = '<button class="text-button" data-action="copy" aria-label="Copy item ' + paper.rank + '">Copy item</button><button class="text-button" data-action="play" aria-label="Play item ' + paper.rank + '">Play item</button><button class="text-button" data-action="details">' + (state.compact ? 'Show details' : 'Hide details') + '</button>';
+  actions.innerHTML = '<a class="text-button" data-action="ask" target="_blank" rel="noopener noreferrer" aria-label="Ask GPT about item ' + paper.rank + '" title="Open ChatGPT with this paper and a prepared prompt">Ask GPT</a><button class="text-button" data-action="play" aria-label="Play item ' + paper.rank + '">Play item</button><button class="text-button" data-action="details">' + (state.compact ? 'Show details' : 'Hide details') + '</button>';
+  actions.querySelector('[data-action="ask"]').href = 'https://chatgpt.com/?prompt=' + encodeURIComponent(DigestReading.questionPrompt(day, paper));
   const play = actions.querySelector('[data-action="play"]');
   play.disabled = !player.entry(day, paper.rank);
   if (play.disabled) play.title = 'Audio is not available yet';
@@ -271,12 +272,11 @@ $('#papers').addEventListener('click', (event) => {
     const details = card.querySelector('details');
     details.open = !details.open;
     syncDetails(card);
-  } else if (button?.dataset.action === 'copy' || button?.dataset.action === 'play') {
+  } else if (button?.dataset.action === 'play') {
     const day = state.archive.days.find((entry) => entry.date === card.dataset.date);
     const paper = day?.papers.find((entry) => entry.rank === Number(card.dataset.rank));
     if (!paper) return;
-    if (button.dataset.action === 'copy') copyText(DigestReading.itemText(day, paper), 'Item ' + paper.rank + ' copied');
-    else player.play(day, paper.rank);
+    player.play(day, paper.rank);
   } else if (button?.dataset.action === 'save') {
     const id = card.dataset.id;
     const stored = bookmarkSync.toggle(id);

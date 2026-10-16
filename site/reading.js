@@ -55,6 +55,17 @@
       ...day.papers.map((paper) => itemText(day, paper)), day.notes ? 'Notes\n\n' + plainText(day.notes) : '']
       .filter(Boolean).join('\n\n');
   }
+  function questionPrompt(day, paper) {
+    return 'Prepare to answer physics and maths questions about the following digest item. '
+      + 'Refer to the original arXiv paper for answers rather than relying on the digest. '
+      + 'Read the original paper before answering substantive questions and cite relevant sections or equations where possible. '
+      + 'If you cannot access the paper, say so and ask me to upload it; do not guess from the digest. '
+      + 'For now, briefly acknowledge the paper and wait for my questions.\n\n'
+      + 'Original paper: https://arxiv.org/abs/' + paper.id + '\n'
+      + 'PDF: https://arxiv.org/pdf/' + paper.id + '\n\n'
+      + 'BEGIN DIGEST ITEM: ' + day.title + '\n\n' + itemText(day, paper)
+      + '\n\nEND DIGEST ITEM: ' + day.title;
+  }
   function voiceText(day) {
     return 'Prepare to read ' + day.title + ' (' + day.papers.length + ' items). The text below is the authoritative digest. '
       + 'Confirm its date and item count, then wait for me to say "start". '
@@ -65,5 +76,5 @@
       + 'Do not summarize, add information, silently correct equations, or reconstruct missing text. If the exact source is unavailable, stop and say so.\n\n'
       + 'BEGIN DIGEST: ' + day.title + '\n\n' + dayText(day) + '\n\nEND DIGEST: ' + day.title;
   }
-  root.DigestReading = Object.freeze({ plainText, itemText, dayText, voiceText, mathPattern, removeSourceLinks });
+  root.DigestReading = Object.freeze({ plainText, itemText, dayText, questionPrompt, voiceText, mathPattern, removeSourceLinks });
 })(globalThis);
