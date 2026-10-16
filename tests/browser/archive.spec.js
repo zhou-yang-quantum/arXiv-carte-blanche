@@ -234,18 +234,16 @@ test('twenty-paper days support mobile direct links without a reading-order bar 
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
 });
 
-test('voice copying keeps full dated sections and TeX without rendered math duplication', async ({ page }) => {
-  await page.addInitScript(() => { Object.defineProperty(navigator, 'clipboard', { value: { writeText: async (text) => { window.copiedText = text; } }, configurable: true }); });
+test('Ask GPT context preserves TeX and omits redundant source links', async ({ page }) => {
   await page.route('**/data/archive.json', async (route) => {
     const { response, data } = await archiveFixture(route);
     data.days[0].papers[0].summary = 'Exact **claim**, with \\(x^2+1\\), $z=3/2$, and [a source](https://arxiv.org/abs/2610.03864). [v1 paper](https://arxiv.org/html/2610.03864v1)';
     await route.fulfill({ response, json: data });
   });
   await page.goto('/');
-  await page.getByRole('button', { name: 'Copy for voice', exact: true }).click();
-  const full = await page.evaluate(() => window.copiedText);
-  expect(full).toContain('BEGIN DIGEST: arXiv-2026-10-06');
-  expect(full).toContain('Item 10.\n\n');
+  const full = new URL(await page.getByRole('link', { name: 'Ask GPT about item 1', exact: true }).getAttribute('href')).searchParams.get('prompt');
+  expect(full).toContain('BEGIN DIGEST ITEM: arXiv-2026-10-06');
+  expect(full).toContain('Item 1.\n\n');
   expect(full).not.toContain('arXiv-2026-10-06 — Item');
   expect(full).toContain('Exact claim, with \\(x^2+1\\), $z=3/2$, and a source.');
   expect(full).not.toContain('v1 paper');
@@ -298,20 +296,12 @@ test('Ask GPT opens ChatGPT with the complete selected item, TeX and original pa
   expect(await chat.evaluate(() => window.opener)).toBeNull();
 });
 
-test('clipboard rejection provides selectable text instead of losing the copy', async ({ page }) => {
-  await page.addInitScript(() => { Object.defineProperty(navigator, 'clipboard', { value: { writeText: async () => { throw new Error('Denied'); } }, configurable: true }); });
-  await page.goto('/');
-  await page.getByRole('button', { name: 'Copy for voice', exact: true }).click();
-  await expect(page.getByRole('dialog', { name: 'Copy text', exact: true })).toBeVisible();
-  await expect(page.getByRole('textbox', { name: 'Text to copy' })).toHaveValue(/BEGIN DIGEST: arXiv-2026-10-06/);
-});
-
-test('a delayed audio index does not block reading or copying', async ({ page }) => {
+test('a delayed audio index does not block reading or Ask GPT', async ({ page }) => {
   let pending;
   await page.route('**/data/audio/index.json', (route) => { pending = route; });
   await page.goto('/');
   await expect(page.locator('.paper-card')).toHaveCount(10);
-  await expect(page.getByRole('button', { name: 'Copy for voice', exact: true })).toBeEnabled();
+  await expect(page.getByRole('link', { name: 'Ask GPT about item 1', exact: true })).toBeVisible();
   await pending.fulfill({ json: { days: {} } });
 });
 

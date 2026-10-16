@@ -14,7 +14,7 @@ The current selection focuses on theoretical physics and quantum information: qu
 - Save papers locally or sync them across devices with your own Dropbox account.
 - Switch between light and dark reading modes.
 - Ask GPT about any paper: open ChatGPT with the complete digest item, original arXiv links, and a prepared prompt for physics and maths questions grounded in the paper. You may need to sign in and press Send in ChatGPT.
-- Copy a dated digest for voice reading. Available recordings support a chapter playlist, playback speed controls, and a ZIP download of individual paper MP3s.
+- Listen to available recordings with a chapter playlist, playback speed controls, and a ZIP download of individual paper MP3s.
 
 The website is static HTML/CSS/JavaScript. Local Codex generates the digests; GitHub Actions collects arXiv source data and builds and deploys the website. Browsing, building, and manual digest imports need no model API key.
 

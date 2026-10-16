@@ -36,18 +36,6 @@ function refreshAudioButtons() {
     button.title = button.disabled ? 'Audio is not available yet' : '';
   }
 }
-async function copyText(text, message) {
-  try {
-    if (!navigator.clipboard?.writeText) throw new Error('Clipboard unavailable');
-    await navigator.clipboard.writeText(text);
-    toast(message);
-  } catch {
-    $('#copy-text').value = text;
-    $('#copy-dialog').showModal();
-    $('#copy-text').focus();
-    $('#copy-text').select();
-  }
-}
 function refreshSyncStatus() {
   const { state: status, message } = bookmarkSync.ui;
   $('#sync-status').textContent = message;
@@ -253,9 +241,7 @@ $('#latest-button').addEventListener('click', () => { if (state.archive) reset()
 $('#saved-button').addEventListener('click', () => { if (!state.archive) return; state.savedOnly = !state.savedOnly; state.query = ''; state.topic = ''; syncHash(); render(); });
 $('#topic-filters').addEventListener('click', (event) => { const button = event.target.closest('[data-topic]'); if (button) { state.topic = button.dataset.topic; syncHash(); render(); } });
 $('#clear-filters').addEventListener('click', reset);
-$('#copy-day').addEventListener('click', () => { if (state.archive) copyText(DigestReading.voiceText(currentDay()), 'Digest copied'); });
 $('#play-day').addEventListener('click', () => { if (state.archive) player.play(currentDay()); });
-$('#close-copy').addEventListener('click', () => $('#copy-dialog').close());
 $('#view-button').addEventListener('click', () => {
   state.compact = !state.compact;
   $('#view-button').setAttribute('aria-pressed', state.compact);

@@ -50,7 +50,7 @@
         </div>
         <p id="date-subtitle" class="date-subtitle">Loading the archive…</p>
         <div class="digest-actions">
-          <div id="day-actions" class="reading-actions"><button id="copy-day" class="text-button">Copy for voice</button><button id="play-day" class="text-button" disabled>Play day</button></div>
+          <div id="day-actions" class="reading-actions"><button id="play-day" class="text-button" disabled>Play day</button></div>
           <button id="view-button" class="text-button" aria-pressed="false" title="Compact view"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16M4 12h16M4 19h16"/></svg><span>Compact view</span></button>
           <button id="clear-filters" class="text-button" hidden>Clear filters</button>
           <button id="sync-settings" class="text-button" hidden>Dropbox sync</button>
@@ -82,12 +82,6 @@
     <h2 id="preferences-title">Selection preferences</h2>
     <div id="preferences-content"></div>
     <p class="dialog-footnote">Topic filters apply to the existing archive.</p>
-  </dialog>
-  <dialog id="copy-dialog" aria-labelledby="copy-title">
-    <div class="dialog-heading"><button id="close-copy" class="icon-button" aria-label="Close copy text">✕</button></div>
-    <h2 id="copy-title">Copy text</h2>
-    <p class="muted">Automatic copy is unavailable. Select and copy the text below.</p>
-    <textarea id="copy-text" aria-label="Text to copy" readonly></textarea>
   </dialog>
   <section id="audio-player" class="audio-player" aria-label="Digest audio player" hidden>
     <div class="audio-heading"><span id="audio-title"></span><button id="audio-close" class="text-button" aria-label="Close audio player">Close</button></div>
