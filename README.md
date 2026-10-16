@@ -2,7 +2,7 @@
 
 <img src="site/chef-bot.svg" alt="Chef-bot serving a dish" width="112" height="112" align="right">
 
-*Carte blanche* means giving someone freedom to choose. Here, you tell AI your tastes and leave it to decide what you read. arXiv supplies the raw ingredients; AI selects the papers and cooks them into an appetizing daily menu of ideas, explanations, and background tailored to you.
+*Carte blanche* means giving the chef a free hand: you share your tastes, and let them decide what to serve. arXiv supplies the raw ingredients; AI selects the papers and cooks them into an appetizing daily menu of ideas, explanations, and background tailored to you.
 
 I started this project because I wanted to listen to arXiv papers during my commute. It grew into a personal daily digest and reading archive, with recordings for listening on the go.
 
