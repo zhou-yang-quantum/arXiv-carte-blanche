@@ -191,7 +191,7 @@
       this.next.disabled = index === this.items.length - 1;
       if ('mediaSession' in navigator && 'MediaMetadata' in root) {
         navigator.mediaSession.metadata = new MediaMetadata({ title: 'Item ' + item.rank + ' — ' + item.title,
-          artist: 'daily-arXiv', album: this.track.label });
+          artist: 'arXiv carte blanche', album: this.track.label });
       }
       this.mediaHandlers();
     }

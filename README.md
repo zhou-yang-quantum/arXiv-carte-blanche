@@ -1,4 +1,4 @@
-# daily-arXiv
+# arXiv carte blanche
 
 A personal daily arXiv digest and reading archive. Each entry ranks 10–20 newly announced papers and explains the main result, background and motivation, and why it matters for the reader.
 
