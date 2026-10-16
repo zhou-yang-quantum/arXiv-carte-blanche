@@ -14,23 +14,56 @@ each release. The roughly 354 MB of model assets stay in an ignored local cache
 or GitHub Actions cache, not in Git history or the published website.
 
 The same subscribed Codex research run returns a compact equation-to-English
-pronunciation list. It adds some output tokens but no second model call or paid
-speech API. The controller publishes the digest and
+pronunciation list and source-exact terminology groups. They add some output
+tokens but no second model call or paid speech API. The controller publishes the digest and
 `audio/scripts/YYYY-MM-DD.json` together in one protected Git commit. Validation
 requires every distinct item equation exactly once. Code creates the spoken
-version from the original title, authors, ID, summary, background, and relevance:
-only math notation and acronym pronunciation change. Redundant inline v1 source
+version from the original title, authors, ID, summary, background, and relevance.
+Only math notation, acronym pronunciation, and annotated phrase delivery change.
+Redundant inline v1 source
 links are omitted from rendering and speech; the footer arXiv link remains.
 `speech.txt` in each new release contains the actual English narration.
 
 The generator checks the source and pronunciation hashes. A changed equation
 reading cannot silently use an old recording. Missing or stale pronunciation
 metadata stops new audio rather than falling back to symbol-by-symbol reading.
-The checked-in pronunciation companions and new daily deliveries use narration
-version 4: “Item 1”, a 0.6-second pause, then the title, without a repeated digest
-date. The title-to-authors pause and tested letter-A pronunciation inside equations
-are retained. Updating the companion version invalidates previous recordings;
-the publication workflow generates new immutable releases on its next run.
+Existing pronunciation companions use narration version 4. New daily deliveries
+use version 6, which adds terminology grouping to version 5's math rhythm while
+retaining “Item 1”, a 0.6-second pause,
+then the title, without a repeated digest date. The title-to-authors pause and
+tested letter-A pronunciation inside equations are retained. Updating a companion
+invalidates its previous recording; the publication workflow generates a new
+immutable release on its next run.
+
+Future math readings follow the preferences in `prompts/local-research.md`:
+`[[4,2,2]]` is “four two two” in a QEC context, and creation operators use the
+subscript before “dagger”: `c_j` is “C sub J”, and `c_{j+1}` is
+“C sub (J plus one)”. Single-letter symbols such as `N` and `\mathcal{N}`
+are simply “N” when context is clear, as in “large N” or “N equals four super
+Yang Mills”; use “capital N” when clarification is needed. Versions 5 and later
+accept `[p]` in a math pronunciation for 0.18
+seconds of actual silence, and `(words)` for a compact group spoken at 1.1 times
+the normal speed. For example:
+`F sub J [p] equals [p] C sub J dagger [p] plus [p] C sub (J plus one) dagger`.
+Groups cannot nest or contain pauses. These controls apply only inside the
+equation's `spoken` field; prose parentheses keep their ordinary meaning. The
+exporter converts the controls into timing segments and removes them from
+`speech.txt`. Versions 2–4 retain their original rendering behavior.
+
+Version 6 also accepts `phrase_groups`: a list of lists of exact source parts.
+For example, `["Large $N$ Vector and SYK-like Models"]` keeps the whole term
+together; `["Large $N$", "Vector and SYK-like Models"]` inserts a 0.18-second
+pause after the shared modifier. The research run chooses grouping from the
+paper's meaning. `["Sachdev–Ye–Kitaev"]` treats the names as one continuous
+unit, with dash separators converted to spaces for synthesis. Groups can span
+inline math and ordinary words. They retain normal speed, override internal
+math rhythm, and stay in a single synthesis request without ordinary chunking.
+The written title and prose are preserved. Validation requires source-exact,
+nonoverlapping groups and rejects boundaries that split a math expression.
+Updating grouping changes the audio identity; versions 2–5 keep their previous
+behavior. Kokoro still determines pitch and word-level prosody inside a group;
+a single synthesis request cannot guarantee a completely flat contour or zero
+model-generated silence.
 
 **Play day** opens the day's complete playlist at Item 1. **Play item** opens the
 same playlist at that item. The track picker and previous/next buttons jump between

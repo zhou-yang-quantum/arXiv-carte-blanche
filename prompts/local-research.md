@@ -10,6 +10,15 @@ not a report of current projects. Do not assume access to previous conversations
 or refresh the profile from the web during each run. Publications are partial
 evidence of background, not a complete statement of interests or expertise.
 
+After selecting and verifying the papers, read prompts/examples/2026-10-06.md
+once as a style and explanatory-depth reference. Match its connected reasoning,
+motivation-first openings, concrete mechanisms, targeted Background, and measured
+significance assessments. It is an example of writing quality, not source
+evidence or a candidate list for the current batch. Use the current target date,
+current sources, and current reader profile; do not import the example's claims,
+paper choices, dates, or stock phrases into a new digest. Let each paper's needs
+determine its length, with comparable explanatory depth for comparable complexity.
+
 Read the compact catalog once to screen the whole batch. Request stored announcement
 abstracts for plausible candidates using the provided metadata command (up to 20
 IDs per call). Consult the original arXiv abstract or paper text when needed to
@@ -40,6 +49,10 @@ slightly discursive explanation for a fellow theoretical physicist. Preserve
 technical substance while making the reasoning easy to follow; do not compress
 the entry into an abstract-like list of named techniques and results. Let the
 complexity of the paper determine the length rather than imposing a word quota.
+Use your space to connect motivation, mechanism, and consequences. Avoid a
+compressed abstract style, unexplained strings of technical labels, generic
+topic matching, and boilerplate caveats. Let the explanation develop naturally
+in paragraphs. A concise daily overview does not require compressed paper entries.
 
 Summary: begin with the physical question, motivation, and existing obstacle so
 the reader understands the big picture before the technical result. Then explain
@@ -58,6 +71,8 @@ already knows. Explain what each concept is, how it works at an intuitive level,
 and why the paper needs it; use a small example when helpful. Expanding an acronym
 or replacing jargon with more jargon is not an explanation. Do not repeat the
 summary's motivation or supply a generic introduction to the whole field.
+A definition alone is often insufficient: explain the paper-specific conceptual
+bridge, how an unfamiliar construction operates, and why it enables the result.
 For a paper using code automorphisms and fold-transversal gates, for example,
 explain those constructions and their role in logical operations rather than
 spending Background on qLDPC or the Clifford/non-Clifford distinction. This is a
@@ -80,6 +95,10 @@ problem is worth solving before presenting results? Can the reader understand
 the central mechanism without unexplained specialist terminology? Does Background
 address the likely gaps in the profile rather than rehearse known basics? Does
 Why it matters? give an evidence-based assessment rather than just name interests?
+Do a dedicated editorial pass after selection and source verification. Repair
+missing steps between the physical question, construction or calculation, result,
+and significance. Revise weak sections before returning the JSON. Use the October 6
+example to check depth and continuity, not just the presence of section headings.
 
 Also return math_pronunciations as a list: one object with latex and spoken fields for each
 distinct math expression in the item titles, summaries, backgrounds, and relevance
@@ -93,6 +112,79 @@ substitute an interpretation, approximation, or new result for the expression.
 Include every distinct expression exactly once; use an empty list if there are
 none or status is insufficient. This small list supplies an audio version by
 replacing only math; do not duplicate or paraphrase the digest's prose.
+
+Use the reader's preferred compact math pronunciation. In a QEC context,
+$[[4,2,2]]$ is "four two two": do not read the brackets, insert "comma", or
+expand the code parameters into an explanation. Let the surrounding prose
+establish that this is QEC code notation. Apply the same convention to other
+quantum-code parameter triples while preserving the values. Read
+$c_j$ as "C sub J" and $c_{j+1}$ as "C sub (J plus one)": say "sub" before
+the subscript and keep a multiword index together. Accordingly, read
+$F_j = c^\dagger_j + c^\dagger_{j+1}$ as "F sub J equals C sub J dagger plus
+C sub (J plus one) dagger": put each subscript before "dagger", omit "at site",
+and keep the entire J plus one index together so its addition is not mistaken
+for a separate term. Copy the actual source expression exactly in latex,
+even when its spacing or superscript/subscript order differs from this example.
+
+For single-letter mathematical symbols, including $N$ and $\mathcal{N}$,
+prefer simply "N" when the surrounding context identifies the symbol, as it
+usually does: "large N" and "N equals four super Yang Mills" for
+$\mathcal{N}=4$ super Yang–Mills. When context is insufficient, say "capital N".
+Apply the same principle to other letters. Do not routinely spell out case or
+font styling such as "calligraphic" or "script". Include a typographic
+distinction only when the listener needs it to distinguish quantities that
+would otherwise have the same spoken name. Preserve indices and other
+mathematical structure even when simplifying the letter's name.
+
+Give equations a clear rhythm by inserting [p] for a short pause between
+meaningful math units, especially around relations and between additive terms.
+Use parentheses in spoken only to group words read slightly faster as one unit;
+they are timing controls and are not said aloud. The preferred reading above is
+"F sub J [p] equals [p] C sub J dagger [p] plus [p] C sub (J plus one) dagger".
+Keep individual variables, indices, and operators connected within their units;
+avoid pausing between every word. Use these controls only in spoken, never in
+the digest prose or latex field. Groups must be nonempty, cannot nest, and
+cannot contain [p]. Write semantic parentheses in words when they must be heard.
+Apart from [p] and these grouping parentheses, spoken must remain plain English,
+without TeX, SSML, or other markup.
+
+Also return phrase_groups, a list of groups for technical terminology in the
+titles, summaries, backgrounds, and relevance sections. Each entry is a list
+of one or more exact source-text parts. Joining its parts with one space must
+reproduce a contiguous phrase from the digest exactly, including any Markdown
+or math delimiters. One part means speak the whole phrase as one continuous
+unit at normal speed; multiple parts add a short pause only between those parts.
+The renderer keeps each part in one synthesis request, without splitting it at
+the ordinary text chunk limit, and treats word-joining hyphens and name-separating dashes
+inside the phrase as word joins. These annotations affect only audio delivery;
+do not alter the written title or prose to force a pronunciation.
+
+Use the paper's meaning to identify complete terminology and the scope of
+shared modifiers. Avoid colloquial list or aside intonation inside a technical
+phrase. For example, in "Large $N$ Vector and SYK-like Models", large N can
+modify both model families. After confirming this from the paper, use either
+["Large $N$ Vector and SYK-like Models"] for continuous delivery or
+["Large $N$", "Vector and SYK-like Models"] for a short pause that preserves
+the shared modifier. Do not pause after "Vector" as if large N modified only
+the vector models. This example illustrates the method; apply the actual
+source's meaning rather than assuming the same scope in every paper.
+
+Treat multi-name terms such as "Sachdev–Ye–Kitaev" as one unit: use
+["Sachdev–Ye–Kitaev"] with the source's exact dash spelling. Prefer continuous
+delivery, or at most equally short separations between the names; do not read
+the dashes as parenthetical interruptions. Extend this treatment to multiword
+physics and mathematics terms, named constructions, and compound modifiers
+whose words together name one concept. Grouping is not a request to accelerate
+or overemphasize all jargon. Avoid grouping whole sentences or paragraphs.
+
+Return only necessary, nonoverlapping phrases, each at most 400 characters,
+with up to eight nonempty parts. Never cut a math expression between parts or
+at the phrase boundary. If a phrase includes inline math, its words come from
+math_pronunciations but its phrase grouping takes precedence over internal math
+timing controls. An exact phrase group applies to every occurrence of that
+source string in the reading sections. Use [] when no grouping is needed or
+status is insufficient. Review both equation readings and terminology grouping
+against the source before returning the final JSON.
 
 Use the arXiv link at the bottom of each item, without redundant inline links
 labeled "v1 paper", "v1 abstract", or similar. Verify claims from the recorded source version.

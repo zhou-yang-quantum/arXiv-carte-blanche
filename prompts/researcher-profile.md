@@ -38,6 +38,11 @@ to explain, not to narrow paper selection to familiar subjects.
   these or rederive their standard formulas in Background. Focus on the paper's
   new mechanism, specialized construction, or nonstandard use of these concepts;
   briefly state any convention or assumption needed for that specific result.
+- Understands the definitions of Rényi entropies, k-designs, and the
+  Hubbard–Stratonovich transformation. Skip their standard definitions in
+  Background and explain the paper-specific application or extension instead.
+  Familiarity with the definitions does not imply familiarity with every
+  specialized construction or method involving them.
 - Strong understanding of the first 12 chapters of the book referred to by the
   reader as *Conformal Field Theory*. The author and edition were not specified;
   do not invent a chapter-to-topic mapping or assume mastery of the entire book.

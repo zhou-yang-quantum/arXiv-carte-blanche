@@ -84,6 +84,8 @@ See **[Technical setup and agent reference](docs/technical-setup.md)** for the e
   - [ ] Paginate with 10 papers per page.
   - [ ] Display papers without numbering.
 - [ ] Add a **Save** button to the online audio player to save the paper currently playing.
+- [ ] Use a dedicated maths and physics speech engine, or develop a standalone engine for this purpose.
+- [ ] Rename the repository to match **arXiv carte blanche** (postponed; confirm the exact repository name first). Update the Git remote, publishing scripts, Pages links, audio URL validation, and Dropbox redirect URI; preserve bookmarks and existing recordings, and plan for the old website address, which GitHub does not automatically redirect. Schedule the migration after any running audio jobs finish.
 
 ## Credits
 

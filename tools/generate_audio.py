@@ -5,6 +5,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import re
 import subprocess
 import sys
 import urllib.request
@@ -101,7 +102,7 @@ def cached_release(tag):
     asset = next(asset for asset in data['assets'] if asset['name'] == 'manifest.json')
     manifest = json.loads(command(['gh', 'api', f'repos/{REPOSITORY}/releases/assets/{asset["id"]}', '-H', 'Accept: application/octet-stream']))
     required = {'day.mp3'} | {f'item-{item["rank"]:02}.mp3' for item in manifest['items']}
-    if manifest.get('version') in (2, 3, 4):
+    if manifest.get('version') in (2, 3, 4, 5, 6):
         required.add('speech.txt')
     if not required <= names:
         return None
@@ -158,8 +159,14 @@ def concatenate(paths, target):
                 output.writeframes(source.readframes(source.getnframes()))
 
 
-def text_chunks(text, limit=650):
-    words, chunk, size = text.split(), [], 0
+def text_chunks(text, limit=650, protected_spans=()):
+    words, chunk, size = [], [], 0
+    for word in re.finditer(r'\S+', text):
+        # Pack all words of a protected phrase as one unit, keeping its sentence context.
+        if words and any(start < word.start() < end for start, end in protected_spans):
+            words[-1] += ' ' + word.group()
+        else:
+            words.append(word.group())
     for word in words:
         if chunk and size + len(word) + 1 > limit:
             yield ' '.join(chunk)
@@ -192,13 +199,19 @@ def render(prepared, tag, voice):
                     output.setnchannels(1)
                     output.setsampwidth(2)
                     output.setframerate(24000)
-                    for index, chunk in enumerate(text_chunks(section['text'])):
-                        samples, rate = voice.create(chunk, voice=VOICE, speed=1.0, lang='en-us')
-                        if rate != 24000 or not len(samples):
-                            raise ValueError('Speech synthesis returned invalid audio')
-                        if index:
-                            append_silence(output, 0.2)
-                        output.writeframes((np.clip(samples, -1, 1) * 32767).astype('<i2').tobytes())
+                    segments = section.get('segments', [{'text': section['text'], 'speed': 1.0}]) if prepared['version'] >= 5 else [{'text': section['text'], 'speed': 1.0}]
+                    for segment in segments:
+                        if 'pause_seconds' in segment:
+                            append_silence(output, segment['pause_seconds'])
+                            continue
+                        chunks = text_chunks(segment['text'], protected_spans=segment.get('protected_spans', []))
+                        for index, chunk in enumerate(chunks):
+                            samples, rate = voice.create(chunk, voice=VOICE, speed=segment['speed'], lang='en-us')
+                            if rate != 24000 or not len(samples):
+                                raise ValueError('Speech synthesis returned invalid audio')
+                            if index:
+                                append_silence(output, 0.2)
+                            output.writeframes((np.clip(samples, -1, 1) * 32767).astype('<i2').tobytes())
                 partial.replace(target)
             section_paths.append(target)
         target = folder / (name + '.wav')
@@ -293,7 +306,8 @@ def main():
         script_path = ROOT / 'audio/scripts' / (day['date'] + '.json')
         if script_path.exists():
             script = json.loads(script_path.read_text(encoding='utf-8'))
-            if script != make_script(day, script.get('pronunciations', []), version=script.get('version')):
+            if script != make_script(day, script.get('pronunciations', []), version=script.get('version'),
+                                     phrase_groups=script.get('phrase_groups', [])):
                 raise ValueError('Speech script is stale or does not match ' + day['date'])
             scripts[day['date']] = script
     source = CACHE / 'days.json'

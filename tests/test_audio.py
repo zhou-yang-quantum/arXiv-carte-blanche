@@ -143,6 +143,37 @@ class AudioTests(unittest.TestCase):
             self.audio['speech_script_hash'] = audio_script_hash(script)
             self.assertIn(self.day['date'], self.read(self.audio)['days'])
 
+    def test_math_rhythm_rejects_invalid_or_legacy_controls(self):
+        self.day['papers'][0]['summary'] = 'The result is $x$.'
+        invalid = ['[pause] x', '[p]', '()', '(J (plus one))', '(J plus one',
+                   'J plus one)', '(J [p] plus one)', '<break/> x', 'x^2']
+        for spoken in invalid:
+            with self.subTest(spoken=spoken), self.assertRaises(ValueError):
+                make_script(self.day, [{'latex': '$x$', 'spoken': spoken}])
+        with self.assertRaises(ValueError):
+            make_script(self.day, [{'latex': '$x$', 'spoken': 'x [p] equals one'}], version=4)
+
+    def test_phrase_groups_are_source_exact_nonoverlapping_and_cannot_split_math(self):
+        self.day['papers'][0]['title'] = 'Large $N$ Vector and SYK-like Models'
+        self.day['papers'][0]['summary'] = 'The Sachdev–Ye–Kitaev model is useful.'
+        readings = [{'latex': '$N$', 'spoken': 'N'}]
+        groups = [['Large $N$', 'Vector and SYK-like Models'], ['Sachdev–Ye–Kitaev']]
+        original = json.loads(json.dumps(self.day))
+        script = make_script(self.day, readings, phrase_groups=groups)
+        self.assertEqual(script['phrase_groups'], groups)
+        self.assertEqual(self.day, original)
+        self.assertEqual(script, make_script(self.day, readings, version=script['version'], phrase_groups=script['phrase_groups']))
+        self.assertNotEqual(audio_script_hash(script), audio_script_hash(make_script(self.day, readings)))
+        invalid = ['phrase', ['phrase'], [[]], [['']], [[' Large $N$']], [['made-up jargon']],
+                   [['Sachdev–Ye–Kitaev'], ['Sachdev–Ye–Kitaev']],
+                   [['Sachdev–Ye–Kitaev'], ['Sachdev–Ye–Kitaev model']],
+                   [['Large $N', '$ Vector and SYK-like Models']], [['N']]]
+        for value in invalid:
+            with self.subTest(groups=value), self.assertRaises(ValueError):
+                make_script(self.day, readings, phrase_groups=value)
+        with self.assertRaises(ValueError):
+            make_script(self.day, readings, version=5, phrase_groups=groups)
+
     @unittest.skipUnless(shutil.which('node'), 'Speech text exporter requires Node.js')
     def test_title_pause_and_letter_a_are_versioned_without_rewriting_prose(self):
         self.day['papers'][0]['summary'] = 'A useful quantity is $S(AB)$. A result follows.'
@@ -151,7 +182,7 @@ class AudioTests(unittest.TestCase):
             folder = Path(folder)
             source = folder / 'days.json'
             source.write_text(json.dumps([self.day]), encoding='utf-8')
-            for version in (2, 3, 4):
+            for version in (2, 3, 4, 5, 6):
                 script = make_script(self.day, pronunciations, version=version)
                 (folder / (self.day['date'] + '.json')).write_text(json.dumps(script), encoding='utf-8')
                 subprocess.run(['node', str(ROOT / 'tools/export_audio.mjs'), str(source), str(folder / 'text'), str(folder)],
@@ -170,7 +201,7 @@ class AudioTests(unittest.TestCase):
                     self.assertNotIn('title_author_pause_seconds', prepared)
                     self.assertIn('Authors:', item['sections'][0]['text'])
                     self.assertIn('the entropy of A B', item['text'])
-                if version == 4:
+                if version >= 4:
                     expected.insert(0, 'item')
                     self.assertEqual(item['sections'][0]['text'], 'Item 1.')
                     self.assertEqual(heading['text'], 'Paper 1')
@@ -178,6 +209,101 @@ class AudioTests(unittest.TestCase):
                     self.assertNotIn('October', item['text'])
                 self.assertEqual([section['name'] for section in item['sections']], expected)
                 self.assertEqual(prepared['text'], '\n\n'.join(item['text'] for item in prepared['items']))
+
+    @unittest.skipUnless(shutil.which('node') and importlib.util.find_spec('numpy'), 'Math rhythm requires Node.js and NumPy')
+    def test_math_preferences_export_and_render_with_real_pauses_and_group_speed(self):
+        import numpy as np
+        from types import SimpleNamespace
+        formula = r'$F_j = c^\dagger_j + c^\dagger_{j+1}$'
+        self.day['papers'][0]['summary'] = 'A useful quantity (in QEC) is ' + formula + '. The $[[4,2,2]]$ code follows.'
+        original = json.loads(json.dumps(self.day))
+        script = make_script(self.day, [
+            {'latex': formula, 'spoken': 'F sub J [p] equals [p] C sub J dagger [p] plus [p] C sub (J plus one) dagger'},
+            {'latex': '$[[4,2,2]]$', 'spoken': 'four two two'},
+        ])
+        self.assertEqual(script['version'], 6)
+        self.assertEqual(self.day, original)
+        calls = []
+        def synthesize(text, **kwargs):
+            calls.append((text, kwargs['speed']))
+            return np.full(240, 0.25), 24000
+        with tempfile.TemporaryDirectory() as folder:
+            folder = Path(folder)
+            source = folder / 'days.json'
+            source.write_text(json.dumps([self.day]), encoding='utf-8')
+            (folder / (self.day['date'] + '.json')).write_text(json.dumps(script), encoding='utf-8')
+            subprocess.run(['node', str(ROOT / 'tools/export_audio.mjs'), str(source), str(folder / 'text'), str(folder)],
+                           check=True, capture_output=True, timeout=60)
+            prepared = json.loads((folder / 'text' / (self.day['date'] + '.json')).read_text(encoding='utf-8'))
+            summary = next(section for section in prepared['items'][0]['sections'] if section['name'] == 'summary')
+            self.assertEqual(summary['text'], 'Summary.\n\nA useful quantity (in Q E C) is F sub J equals C sub J dagger plus C sub J plus one dagger. The four two two code follows.')
+            self.assertEqual([segment for segment in summary['segments'] if 'pause_seconds' in segment],
+                             [{'pause_seconds': 0.18}] * 4)
+            self.assertEqual([segment['text'] for segment in summary['segments'] if segment.get('speed') == 1.1], ['J plus one'])
+            self.assertNotIn('[p]', prepared['text'])
+            self.assertNotIn('(J plus one)', prepared['text'])
+            prepared['items'] = prepared['items'][:1]
+            prepared['text'] = prepared['items'][0]['text']
+            prepared['speech_script_hash'] = audio_script_hash(script)
+            with patch('tools.generate_audio.CACHE', folder), patch('tools.generate_audio.command'):
+                _, output = render(prepared, 'rhythm', SimpleNamespace(create=synthesize))
+            self.assertIn(('J plus one', 1.1), calls)
+            self.assertEqual([text for text, speed in calls if speed == 1.1], ['J plus one'])
+            self.assertTrue(all('[p]' not in text and '(J plus one)' not in text for text, _ in calls))
+            tone = (np.full(240, 0.25) * 32767).astype('<i2').tobytes()
+            expected_pcm = b''.join(b'\0' * 8640 if 'pause_seconds' in segment else tone
+                                    for segment in summary['segments'])
+            with wave.open(str(output / 'item-01-summary.wav'), 'rb') as recording:
+                self.assertEqual(recording.readframes(recording.getnframes()), expected_pcm)
+            self.assertEqual((output / 'speech.txt').read_text(encoding='utf-8'), prepared['text'] + '\n')
+
+    @unittest.skipUnless(shutil.which('node') and importlib.util.find_spec('numpy'), 'Phrase grouping requires Node.js and NumPy')
+    def test_technical_phrases_keep_names_together_and_preserve_shared_modifier_pause(self):
+        import numpy as np
+        from types import SimpleNamespace
+        phrase = 'Large $N$ Vector and SYK-like Models'
+        self.day['papers'][0]['title'] = '𝒩: Kinetic Equations and Turbulence in ' + phrase
+        # Put the name beyond the ordinary chunk boundary to catch accidental splitting.
+        self.day['papers'][0]['summary'] = 'An introductory word. ' * 31 + 'Sachdev–Ye–Kitaev.'
+        source_before = json.loads(json.dumps(self.day))
+        with tempfile.TemporaryDirectory() as folder:
+            folder = Path(folder)
+            source = folder / 'days.json'
+            source.write_text(json.dumps([self.day]), encoding='utf-8')
+            for parts in ([phrase], ['Large $N$', 'Vector and SYK-like Models']):
+                with self.subTest(parts=parts):
+                    script = make_script(self.day, [{'latex': '$N$', 'spoken': '(N)'}],
+                                         phrase_groups=[parts, ['Sachdev–Ye–Kitaev']])
+                    (folder / (self.day['date'] + '.json')).write_text(json.dumps(script), encoding='utf-8')
+                    subprocess.run(['node', str(ROOT / 'tools/export_audio.mjs'), str(source), str(folder / 'text'), str(folder)],
+                                   check=True, capture_output=True, timeout=60)
+                    prepared = json.loads((folder / 'text' / (self.day['date'] + '.json')).read_text(encoding='utf-8'))
+                    heading = next(section for section in prepared['items'][0]['sections'] if section['name'] == 'heading')
+                    joined = [segment for segment in heading['segments'] if segment.get('protected_spans')]
+                    expected = ['Large N Vector and S Y K like Models'] if len(parts) == 1 else ['Large N', 'Vector and S Y K like Models']
+                    self.assertEqual([segment['text'][start:end] for segment in joined for start, end in segment['protected_spans']], expected)
+                    self.assertTrue(all(segment['speed'] == 1.0 for segment in joined))
+                    pauses = [segment for segment in heading['segments'] if 'pause_seconds' in segment]
+                    self.assertEqual(pauses, [{'pause_seconds': 0.18}] * (len(parts) - 1))
+                    self.assertEqual(prepared['items'][0]['title'], source_before['papers'][0]['title'])
+                    self.assertNotIn('DIGESTPHRASE', prepared['text'])
+                    prepared['items'] = prepared['items'][:1]
+                    prepared['text'] = prepared['items'][0]['text']
+                    prepared['speech_script_hash'] = audio_script_hash(script)
+                    calls = []
+                    def synthesize(text, **kwargs):
+                        calls.append((text, kwargs['speed']))
+                        return np.full(240, 0.25), 24000
+                    tag = 'phrase-' + str(len(parts))
+                    with patch('tools.generate_audio.CACHE', folder), patch('tools.generate_audio.command'):
+                        render(prepared, tag, SimpleNamespace(create=synthesize))
+                    self.assertTrue(any('Sachdev Ye Kitaev.' in text for text, _ in calls))
+                    for text in expected:
+                        self.assertTrue(any(text in spoken for spoken, _ in calls))
+                    self.assertIn(('𝒩: Kinetic Equations and Turbulence in ' + expected[0], 1.0), calls)
+                    self.assertTrue(all(speed == 1.0 for _, speed in calls))
+                    self.assertNotIn(('.', 1.0), calls)
+                    self.assertEqual(self.day, source_before)
 
     @unittest.skipUnless(importlib.util.find_spec('numpy'), 'Renderer requires NumPy')
     def test_item_number_and_title_are_separated_by_real_pcm_silence(self):
@@ -230,6 +356,14 @@ class AudioTests(unittest.TestCase):
     def test_chunking_preserves_every_word_including_long_sentences(self):
         text = ' '.join('word' + str(i) for i in range(500))
         self.assertEqual(' '.join(text_chunks(text)).split(), text.split())
+
+    def test_chunking_moves_a_complete_technical_term_to_the_next_chunk(self):
+        phrase = 'Sachdev Ye Kitaev'
+        text = 'Some text before the ' + phrase + ' model.'
+        start = text.index(phrase)
+        chunks = list(text_chunks(text, limit=30, protected_spans=[(start, start + len(phrase))]))
+        self.assertEqual(chunks, ['Some text before the', 'Sachdev Ye Kitaev model.'])
+        self.assertEqual(' '.join(chunks), text)
 
 
 if __name__ == '__main__':

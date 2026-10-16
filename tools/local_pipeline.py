@@ -35,8 +35,9 @@ SCHEMA = {
                    'math_pronunciations': {'type': 'array', 'items': {
                        'type': 'object', 'additionalProperties': False,
                        'properties': {'latex': {'type': 'string'}, 'spoken': {'type': 'string'}},
-                       'required': ['latex', 'spoken']}}},
-    'required': ['status', 'reason', 'markdown', 'math_pronunciations'],
+                       'required': ['latex', 'spoken']}},
+                   'phrase_groups': {'type': 'array', 'items': {'type': 'array', 'items': {'type': 'string'}}}},
+    'required': ['status', 'reason', 'markdown', 'math_pronunciations', 'phrase_groups'],
 }
 COMPLETE = {'published', 'no-batch'}
 
@@ -330,7 +331,7 @@ def validate_result(result, snapshot, day):
             raise ValueError(f"Title does not match verified announcement metadata for {paper['id']}")
         if 'priority' in paper:
             raise ValueError('New digests must omit priority verdicts')
-    make_script(digest, result.get('math_pronunciations', []))
+    make_script(digest, result.get('math_pronunciations', []), phrase_groups=result.get('phrase_groups', []))
     return text, digest
 
 
@@ -377,7 +378,7 @@ def run_pipeline(limit=None, automatic=False):
                 markdown, digest = validate_result(result, snapshot, day)
                 draft = RUNTIME / 'runs' / day / f'{day}.md'
                 draft.write_text(markdown, encoding='utf-8')
-                script = make_script(digest, result.get('math_pronunciations', []))
+                script = make_script(digest, result.get('math_pronunciations', []), phrase_groups=result.get('phrase_groups', []))
                 (draft.parent / 'speech.json').write_text(json.dumps(script, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
                 publication = publish_digest.publish(markdown, token, speech_script=script)
                 if publish_digest.check_date(day, token)['status'] != 'exists':

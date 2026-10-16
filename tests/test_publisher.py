@@ -1,4 +1,5 @@
 import base64
+import json
 import unittest
 import urllib.error
 from unittest.mock import patch
@@ -13,7 +14,7 @@ class PublisherTests(unittest.TestCase):
     @patch('tools.publish_digest.api_request', return_value=None)
     def test_text_and_speech_are_published_in_one_protected_commit(self, api, git):
         text = example_digest(include_priority=False)
-        script = make_script(parse_digest(text), [])
+        script = make_script(parse_digest(text), [], phrase_groups=[['A useful concept']])
         git.side_effect = [{'object': {'sha': 'base'}}, {'tree': {'sha': 'base-tree'}},
                            {'sha': 'new-tree'}, {'sha': 'new-commit'}, {'object': {'sha': 'new-commit'}}]
         result = publish(text, 'test-credential', speech_script=script)
@@ -21,6 +22,8 @@ class PublisherTests(unittest.TestCase):
         tree = git.call_args_list[2].args[3]
         self.assertEqual({entry['path'] for entry in tree['tree']}, {'incoming/2026-10-06.md', 'audio/scripts/2026-10-06.json'})
         self.assertEqual(tree['base_tree'], 'base-tree')
+        speech = next(entry for entry in tree['tree'] if entry['path'].startswith('audio/scripts/'))
+        self.assertEqual(json.loads(speech['content'])['phrase_groups'], [['A useful concept']])
         self.assertEqual(git.call_args_list[3].args[3]['parents'], ['base'])
         self.assertEqual(git.call_args_list[4].args[3], {'sha': 'new-commit', 'force': False})
         self.assertEqual([call.args[0] for call in api.call_args_list], ['GET', 'GET'])

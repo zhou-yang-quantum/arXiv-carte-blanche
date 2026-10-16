@@ -33,6 +33,12 @@ The builder requires at least one digest. If starting a fresh archive, keep an e
 
 The full, executable research prompt is [prompts/local-research.md](../prompts/local-research.md). The controller appends the exact target date, a compact catalog path, and a command to retrieve stored abstracts:
 
+The prompt reads the durable [researcher profile](../prompts/researcher-profile.md)
+before screening and the frozen [renewed October 6 digest](../prompts/examples/2026-10-06.md)
+once after selection as a writing reference. The example guides explanatory depth
+and structure; current dated sources supply facts. A dedicated editorial pass
+checks motivation, mechanism, targeted background, and significance before output.
+
 ```sh
 python tools/local_pipeline.py paper YYYY-MM-DD ID1 ID2
 ```
@@ -43,7 +49,7 @@ The prompt also instructs each fresh generator to read [prompts/researcher-profi
 
 The model screens the catalog, reads saved announcement abstracts for plausible candidates, and consults original arXiv sources as needed. It uses the frozen source version recorded in the metadata: `source_v1` for legacy snapshots or `versioned_url` for Atom snapshots. It selects ten papers by default, with a maximum of twenty, using only distinct IDs from that date's verified first-announcement batch. Historical catch-up uses the historical batch. Replacement announcements and old papers newly cross-listed on the date are excluded; a new announcement may already be v2. Explanations include summary, background/motivation, and personal relevance, with numerical ranking and no priority verdicts.
 
-The controller requests `status` (`ready` or `insufficient`), `reason`, `markdown`, and `math_pronunciations`. The last field provides an exact English reading for each distinct item equation, without duplicating the prose or making another model call. An insufficient selection becomes `needs-review` rather than padded content. Validation checks the date, 10–20 distinct consecutive ranks, required sections, catalog membership, exact stored titles, and complete pronunciation coverage. These checks do not independently verify every scientific claim or the semantics of every spoken formula.
+The controller requests `status` (`ready` or `insufficient`), `reason`, `markdown`, `math_pronunciations`, and `phrase_groups`. The pronunciation list provides an exact English reading for each distinct item equation; phrase groups mark source-exact terminology and optional pauses between meaningful parts. Both come from the same research run without duplicating the prose or making another model call. An insufficient selection becomes `needs-review` rather than padded content. Validation checks the date, 10–20 distinct consecutive ranks, required sections, catalog membership, exact stored titles, complete pronunciation coverage, and nonoverlapping phrase groups that preserve whole equations. These checks do not independently verify every scientific claim, the semantics of every spoken formula, or the intended modifier scope of a technical phrase.
 
 [The prompt map](../prompts/README.md) identifies the active research prompt, runtime instructions, and saved scheduled-task prompt. Earlier conversational and cloud prompts have been removed; Git history retains them. This guide is the current reference for setup and recovery.
 
@@ -77,7 +83,7 @@ Bookmarks persist in browser storage and can optionally sync through each reader
 
 The theme follows the operating system until the reader chooses light or dark; that choice and the archive-sidebar preference persist in browser storage. The calendar picker and paginated **All** view remain future work, tracked in the [README to-do list](../README.md#to-do-future-implementations).
 
-**Play day** and **Play item** open the same continuous day recording, using item boundaries as chapters. The player offers track selection, previous/next, seeking within the current item, speed controls, Media Session controls, and automatic recovery after stalled playback. **Download playlist (ZIP)** appears when the published audio index includes the archive of dated individual MP3s. New narration uses version 4: item number, a pause, then the title without repeating the digest date. See [audio/README.md](../audio/README.md) for generation, recovery limits, and the remaining physical-device lock-screen check.
+**Play day** and **Play item** open the same continuous day recording, using item boundaries as chapters. The player offers track selection, previous/next, seeking within the current item, speed controls, Media Session controls, and automatic recovery after stalled playback. **Download playlist (ZIP)** appears when the published audio index includes the archive of dated individual MP3s. New narration uses version 6: item number, a pause, then the title without repeating the digest date, plus optional short pauses and slightly faster groups within equations, and normal-speed grouping for multiword technical terms. See [audio/README.md](../audio/README.md) for generation, recovery limits, and the remaining physical-device lock-screen check.
 
 ## Local installation and schedule
 
