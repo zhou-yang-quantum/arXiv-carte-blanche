@@ -25,5 +25,5 @@ COPY --from=build /app/dist/ ./
 USER 65534:65534
 EXPOSE 8080
 HEALTHCHECK --interval=10s --timeout=3s --start-period=3s --retries=3 \
-    CMD python -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/data/archive.json', timeout=2).close()"
+    CMD python -c "import urllib.request; urllib.request.urlopen(urllib.request.Request('http://127.0.0.1:8080/data/archive.json', method='HEAD'), timeout=2).close()"
 CMD ["python", "-m", "http.server", "8080", "--bind", "0.0.0.0", "--directory", "/site"]

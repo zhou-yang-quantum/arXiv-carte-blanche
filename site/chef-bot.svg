@@ -1,25 +1,20 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" fill="none">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" fill="none" color="#202d32">
   <title>Chef-bot serving a dish</title>
-  <g stroke="#285753" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M24 78v9m19-9v9M18 87h10m11 0h10"/>
-    <rect x="15" y="58" width="35" height="24" rx="9" fill="#cfe4d6"/>
-    <path d="M25 61h14l5 20H20z" fill="#fffaf0"/>
-    <path d="m17 64-8 7 2 7m38-14 9 7 17-10"/>
-    <path d="M29 66h7" stroke="#bd6245"/>
-    <rect x="8" y="39" width="8" height="13" rx="4" fill="#e7b56b"/>
-    <rect x="49" y="39" width="8" height="13" rx="4" fill="#e7b56b"/>
-    <rect x="12" y="28" width="42" height="32" rx="11" fill="#cfe4d6"/>
-    <rect x="18" y="35" width="30" height="18" rx="6" fill="#285753" stroke="none"/>
-    <path d="M20 29v-8c-9 0-11-12-2-14 4-8 15-8 19 0 9-4 19 6 12 13l-4 2v7z" fill="#fffaf0"/>
-    <path d="M27 12v6m11-7v7" stroke="#d3d9cb" stroke-width="2"/>
-    <path d="M20 25h25"/>
-    <circle cx="26" cy="42" r="2.5" fill="#f5cf89" stroke="none"/>
-    <circle cx="40" cy="42" r="2.5" fill="#f5cf89" stroke="none"/>
-    <path d="M29 48q4 3 8 0" stroke="#fffaf0" stroke-width="2"/>
-    <path d="M57 56a16 16 0 0 1 32 0z" fill="#e7b56b"/>
-    <path d="M73 39v-3m-3-1h6"/>
-    <path d="M79 45q4 2 5 6" stroke="#fff3d7" stroke-width="2.5"/>
-    <path d="M53 59h39l-4 4H57z" fill="#fffaf0"/>
-    <path d="m69 66 7-3"/>
+  <style>@media(prefers-color-scheme:dark){:root{color:#e5e9e1}}</style>
+  <defs>
+    <mask id="face" maskUnits="userSpaceOnUse" x="8" y="25" width="32" height="23">
+      <rect x="8" y="25" width="32" height="23" rx="7" fill="white"/>
+      <circle cx="18" cy="34" r="2.2" fill="black"/>
+      <circle cx="30" cy="34" r="2.2" fill="black"/>
+      <path d="M20 41h8" stroke="black" stroke-width="2" stroke-linecap="round"/>
+    </mask>
+  </defs>
+  <g stroke="currentColor" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M14 24v-6c-7-2-7-11 0-12 4-6 12-5 14 1 7-1 10 8 4 11v6z"/>
+    <rect x="8" y="25" width="32" height="23" rx="7" fill="currentColor" stroke="none" mask="url(#face)"/>
+    <path d="M4 32v9m40-9v9M15 52h14l8 15H8z"/>
+    <path d="m36 56 9 6 17-11"/>
+    <path d="M46 44a14 14 0 0 1 28 0m-14-14v-3m-3 0h6"/>
+    <path d="M43 48h34l-4 4H47z"/>
   </g>
 </svg>

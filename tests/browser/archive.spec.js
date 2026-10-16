@@ -23,14 +23,14 @@ test('dated digest, readable math, and complete paper sections', async ({ page }
   const errors = [];
   page.on('pageerror', (error) => errors.push(error.message));
   await page.goto('/');
-  await expect(page.getByRole('heading', { name: 'arXiv-2026-10-06', exact: true })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Le menu · 2026/10/06', exact: true })).toBeVisible();
   await expect(page.locator('.paper-card')).toHaveCount(10);
   await expect(page.locator('.paper-background')).toHaveCount(10);
   await expect(page.locator('.paper-why')).toHaveCount(10);
   await expect(page.locator('.priority-tag')).toHaveCount(0);
   await expect(page.locator('.paper-label, .read-button')).toHaveCount(0);
   await expect(page.locator('.paper-tag')).toHaveCount(0);
-  await expect(page.locator('.brand-symbol')).toHaveAttribute('src', './chef-bot.svg');
+  await expect(page.locator('.brand-symbol')).toHaveCSS('mask-image', /chef-bot\.svg/);
   await expect(page.locator('.paper-summary').first()).toHaveCSS('font-size', '17.5px');
   await expect(page.locator('.katex').first()).toBeVisible();
   expect(await page.locator('.katex-error').count()).toBe(0);
@@ -44,17 +44,30 @@ test('hiding the archive centers reading and remembers the choice across reloads
   await page.goto('/');
   const sidebar = page.getByRole('complementary', { name: 'Digest archive' });
   await expect(sidebar).toBeVisible();
+  for (const width of [1600, 1280, 1050, 761]) {
+    await page.setViewportSize({ width, height: 1000 });
+    const mainBefore = await page.locator('main').boundingBox();
+    const proseBefore = await page.locator('.paper-summary').first().boundingBox();
+    await page.getByRole('button', { name: 'Hide sidebar', exact: true }).click();
+    const mainAfter = await page.locator('main').boundingBox();
+    const proseAfter = await page.locator('.paper-summary').first().boundingBox();
+    expect(Math.abs(mainAfter.width - mainBefore.width)).toBeLessThan(1);
+    expect(Math.abs(proseAfter.width - proseBefore.width)).toBeLessThan(1);
+    expect(Math.abs(mainAfter.x + mainAfter.width / 2 - width / 2)).toBeLessThan(1);
+    await page.getByRole('button', { name: 'Show sidebar', exact: true }).click();
+  }
+  await page.setViewportSize({ width: 1440, height: 1000 });
   await page.getByRole('button', { name: 'Hide sidebar', exact: true }).click();
   await expect(sidebar).toBeHidden();
   await expect(page.getByRole('button', { name: 'Show sidebar', exact: true })).toHaveAttribute('aria-expanded', 'false');
-  await expect(page.getByRole('combobox', { name: 'Choose a digest date' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Choose a digest date' })).toBeVisible();
   const shell = await page.locator('.page-shell').boundingBox();
   expect(Math.abs(shell.x + shell.width / 2 - 720)).toBeLessThan(1);
   await page.reload();
   await expect(sidebar).toBeHidden();
   await page.getByRole('button', { name: 'Show sidebar', exact: true }).click();
   await expect(sidebar).toBeVisible();
-  await expect(page.getByRole('combobox', { name: 'Choose a digest date' })).toBeHidden();
+  await expect(page.getByRole('button', { name: 'Choose a digest date' })).toBeHidden();
   await page.reload();
   await expect(sidebar).toBeVisible();
 });
@@ -133,7 +146,7 @@ test('mobile reading, deep links, preferences, and no horizontal overflow', asyn
   await page.goto('/#date=2026-10-06&paper=4');
   const card = page.locator('#paper-2026-10-06-4');
   await expect(card).toBeInViewport();
-  await expect(page.getByRole('combobox', { name: 'Choose a digest date' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Choose a digest date' })).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
   await page.getByRole('button', { name: 'View selection preferences' }).click();
   await expect(page.getByRole('dialog')).toBeVisible();
@@ -154,7 +167,7 @@ test('mobile reading, deep links, preferences, and no horizontal overflow', asyn
   const layout = await buttons.evaluateAll(elements => elements.map(element => ({
     y: element.getBoundingClientRect().y, font: getComputedStyle(element).fontSize,
   })));
-  expect(layout).toHaveLength(3);
+  expect(layout).toHaveLength(4);
   expect(new Set(layout.map(button => button.y)).size).toBe(1);
   expect(new Set(layout.map(button => button.font)).size).toBe(1);
   await actions.getByRole('button', { name: 'Hide details', exact: true }).click();
@@ -176,7 +189,7 @@ test('additional dates navigate and search across the entire archive', async ({ 
   await page.goto('/');
   await expect(page.locator('.paper-card')).toHaveCount(10);
   await page.getByRole('button', { name: 'Earlier selection' }).click();
-  await expect(page.getByRole('heading', { name: 'arXiv-2026-10-02', exact: true })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Le menu · 2026/10/02', exact: true })).toBeVisible();
   await page.getByRole('button', { name: 'Later selection' }).click();
   await page.goto('/#q=older%20unique');
   await expect(page.locator('.paper-card')).toHaveCount(1);
@@ -317,7 +330,7 @@ async function audioFixture(page, { legacy = false } = {}) {
   const manifestBase = legacy ? base.replace('/arXiv-carte-blanche/', '/daily-arXiv/') : base;
   await page.route('**/data/audio/index.json', (route) => route.fulfill({ json: { days: { '2026-10-06': {
     day: { url: manifestBase + 'day.mp3', duration: 360 },
-    items: Array.from({ length: 12 }, (_, index) => ({ rank: index + 1, id: '2610.' + String(index + 1).padStart(5, '0'),
+    items: Array.from({ length: 12 }, (_, index) => ({ rank: index + 1, id: originalDigest.papers[index]?.id || '2610.' + String(index + 1).padStart(5, '0'),
       title: 'Paper ' + (index + 1), url: manifestBase + 'item-' + String(index + 1).padStart(2, '0') + '.mp3', start: index * 30, duration: 30 })),
     playlist_url: manifestBase + 'arxiv-2026-10-06-playlist.zip',
   } } } }));
@@ -346,9 +359,9 @@ test('a twelve-track playlist supports item jumps, previous/next, speed and lock
   await page.getByRole('button', { name: 'Play day', exact: true }).click();
   await expect.poll(() => page.locator('audio').evaluate((a) => a.paused)).toBe(false);
   await expect.poll(() => page.locator('audio').evaluate((a) => a.readyState >= 2 && Number.isFinite(a.duration))).toBe(true);
-  await expect(page.locator('#audio-title')).toHaveText('arXiv-2026-10-06 — Item 1 of 12');
+  await expect(page.locator('#audio-title')).toHaveText('Le menu · 2026/10/06 — Item 1 of 12');
   await expect(page.locator('#audio-track option')).toHaveCount(12);
-  await expect(page.getByRole('button', { name: 'Previous track', exact: true })).toBeDisabled();
+  await expect(page.getByRole('button', { name: 'Previous track', exact: true })).toBeEnabled();
   await expect(page.getByRole('button', { name: 'Reconnect audio', exact: true })).toHaveCount(0);
   expect(await page.evaluate(() => window.mediaActions.seekbackward)).toBeNull();
   expect(await page.evaluate(() => window.mediaActions.seekforward)).toBeNull();
@@ -364,13 +377,15 @@ test('a twelve-track playlist supports item jumps, previous/next, speed and lock
   expect(await page.evaluate(() => window.mediaPosition.duration)).toBe(30);
   expect(await page.evaluate(() => window.mediaPosition.position)).toBeCloseTo(5, 0);
   await page.evaluate(() => window.mediaActions.previoustrack());
+  expect(await page.locator('audio').evaluate((a) => a.currentTime)).toBeCloseTo(30, 0);
+  await page.evaluate(() => window.mediaActions.previoustrack());
   expect(await page.locator('audio').evaluate((a) => a.currentTime)).toBeCloseTo(0, 0);
   await page.getByRole('combobox', { name: 'Playback speed' }).selectOption('1.5');
   expect(await page.locator('audio').evaluate((a) => a.playbackRate)).toBe(1.5);
   await page.evaluate(() => window.mediaActions.play());
   await expect.poll(() => page.locator('audio').evaluate((a) => a.paused)).toBe(false);
   await page.getByRole('button', { name: 'Play item 4', exact: true }).click();
-  await expect(page.locator('#audio-title')).toHaveText('arXiv-2026-10-06 — Item 4 of 12');
+  await expect(page.locator('#audio-title')).toHaveText('Le menu · 2026/10/06 — Item 4 of 12');
   expect(await page.locator('audio').evaluate((a) => a.currentTime)).toBeGreaterThanOrEqual(90);
   await page.getByRole('combobox', { name: 'Choose a playlist track' }).selectOption('11');
   await expect(page.getByRole('button', { name: 'Next track', exact: true })).toBeDisabled();
@@ -391,6 +406,62 @@ test('a twelve-track playlist supports item jumps, previous/next, speed and lock
   expect(await page.evaluate(() => navigator.mediaSession.playbackState)).toBe('none');
 });
 
+for (const control of ['browser', 'lock screen']) {
+  test(`${control} previous restarts after three seconds and otherwise selects the previous chapter`, async ({ page }) => {
+    await startAudio(page);
+    await page.evaluate(() => window.mediaActions.pause());
+    const previous = () => control === 'browser'
+      ? page.getByRole('button', { name: 'Previous track', exact: true }).click()
+      : page.evaluate(() => window.mediaActions.previoustrack());
+    // Times are relative to a chapter, rather than the full day's recording.
+    for (const [time, expected] of [[63.01, 60], [63, 30], [62.99, 30], [60, 30], [15, 0], [3, 0], [0, 0], [335, 330]]) {
+      await page.locator('audio').evaluate((audio, time) => { audio.currentTime = time; }, time);
+      await expect.poll(() => page.locator('audio').evaluate(audio => audio.seeking)).toBe(false);
+      await previous();
+      expect(await page.locator('audio').evaluate(audio => audio.currentTime)).toBeCloseTo(expected, 2);
+      expect(await page.locator('audio').evaluate(audio => audio.paused)).toBe(true);
+    }
+    await page.evaluate(() => window.mediaActions.play());
+    await page.locator('audio').evaluate(audio => { audio.currentTime = 70; });
+    await previous();
+    await expect(page.locator('#audio-track')).toHaveValue('2');
+    expect(await page.locator('audio').evaluate(audio => audio.currentTime)).toBeLessThan(63);
+    expect(await page.locator('audio').evaluate(audio => audio.paused)).toBe(false);
+  });
+}
+
+test('player bookmark follows the spoken paper and stays in sync with saved papers', async ({ page }) => {
+  await startAudio(page);
+  await page.evaluate(() => window.mediaActions.pause());
+  const save = page.locator('#audio-save');
+  const cardSave = rank => page.locator('.paper-card').filter({ has: page.getByRole('button', { name: new RegExp(`^(?:Unsave|Save) item ${rank}$`) }) }).locator('[data-action="save"]');
+  await expect(page.locator('.audio-controls button')).toHaveCount(4);
+  await expect(page.locator('.audio-controls button svg')).toHaveCount(5);
+  await expect(page.locator('#audio-toggle .audio-play-icon')).toBeVisible();
+  await expect(page.locator('#audio-toggle .audio-pause-icon')).toBeHidden();
+  await save.click();
+  await expect(save).toHaveAttribute('aria-pressed', 'true');
+  await expect(cardSave(1)).toHaveAttribute('aria-pressed', 'true');
+  await expect(page.locator('#saved-count')).toHaveText('1');
+  await cardSave(1).click();
+  await expect(save).toHaveAttribute('aria-pressed', 'false');
+  await cardSave(1).click();
+  // Native playback advances chapters even without choosing a track in the UI.
+  await page.locator('audio').evaluate(audio => { audio.currentTime = 65; });
+  await expect(page.locator('#audio-track')).toHaveValue('2');
+  await expect(save).toHaveAttribute('aria-pressed', 'false');
+  await page.getByRole('button', { name: /^Saved/ }).click();
+  await expect(page.locator('.paper-card')).toHaveCount(1);
+  await save.click();
+  await expect(page.locator('.paper-card')).toHaveCount(2);
+  await expect(cardSave(3)).toHaveAttribute('aria-pressed', 'true');
+  await expect(save).toHaveAttribute('aria-label', 'Unsave current paper');
+  await page.reload();
+  await expect(page.locator('#saved-count')).toHaveText('2');
+  await expect(cardSave(1)).toHaveAttribute('aria-pressed', 'true');
+  await expect(cardSave(3)).toHaveAttribute('aria-pressed', 'true');
+});
+
 test('pre-rename audio manifests play and download through the renamed repository', async ({ page }) => {
   await audioFixture(page, { legacy: true });
   const legacyRequests = [];
@@ -409,12 +480,12 @@ test('playing an item first opens the complete playlist at that item and advance
   page.on('request', (request) => { if (request.url().includes('/day.mp3')) loads++; });
   await page.goto('/');
   await page.getByRole('button', { name: 'Play item 3', exact: true }).click();
-  await expect(page.locator('#audio-title')).toHaveText('arXiv-2026-10-06 — Item 3 of 12');
+  await expect(page.locator('#audio-title')).toHaveText('Le menu · 2026/10/06 — Item 3 of 12');
   await expect(page.locator('#audio-status')).toHaveText('Playing');
   expect(await page.locator('audio').evaluate((audio) => audio.currentTime)).toBeGreaterThanOrEqual(60);
   const requests = loads;
   await page.locator('audio').evaluate((audio) => { audio.currentTime = 89.9; });
-  await expect(page.locator('#audio-title')).toHaveText('arXiv-2026-10-06 — Item 4 of 12');
+  await expect(page.locator('#audio-title')).toHaveText('Le menu · 2026/10/06 — Item 4 of 12');
   expect(loads).toBe(requests);
   await page.getByRole('button', { name: 'Play day', exact: true }).click();
   await expect(page.locator('#audio-track')).toHaveValue('0');
@@ -552,7 +623,7 @@ test('a reconnect waiting for metadata respects pause and cannot restore into an
   await expect.poll(() => Boolean(pending)).toBe(true);
   await page.getByRole('button', { name: 'Play item 1', exact: true }).click();
   await pending.fallback();
-  await expect(page.locator('#audio-title')).toHaveText('arXiv-2026-10-06 — Item 1 of 12');
+  await expect(page.locator('#audio-title')).toHaveText('Le menu · 2026/10/06 — Item 1 of 12');
   await expect(page.locator('#audio-status')).toHaveText('Playing');
   expect(await page.locator('audio').evaluate((audio) => audio.currentTime)).toBeLessThan(3);
 });

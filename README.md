@@ -8,7 +8,7 @@ The current selection focuses on theoretical physics and quantum information: qu
 
 ## What it does
 
-- Browse by date and filter by topic.
+- Browse a monthly calendar with available digests highlighted, jump to a month or year, and filter by topic.
 - Read summaries with equations and links to the original arXiv papers.
 - Hide the archive sidebar, switch to compact view, or expand individual paper details.
 - Save papers locally or sync them across devices with your own Dropbox account.
@@ -76,9 +76,9 @@ See **[Technical setup and agent reference](docs/technical-setup.md)** for the e
 
 ## To-do: future implementations
 
-- [ ] Improve date browsing:
-  - [x] Organize the left sidebar by month, then by date within each month (month/year headings are already implemented).
-  - [ ] When the left sidebar is hidden, replace the date dropdown with a calendar icon to the right of the title. Clicking the icon opens a calendar view with available dates highlighted and unavailable dates greyed out.
+- [x] Improve date browsing:
+  - [x] Show a monthly calendar in the left sidebar, with digest dates highlighted, arrows that skip empty months, and month/year selectors limited to available digests.
+  - [x] When the left sidebar is hidden, show a calendar icon to the right of the title. Clicking the icon opens a calendar view with available dates highlighted and unavailable dates greyed out.
 - [ ] Add an **All** button to the right of **Latest**:
   - [ ] Display all papers, ordered from newest to oldest.
   - [ ] Paginate with 10 papers per page.

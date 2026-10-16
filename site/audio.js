@@ -9,7 +9,7 @@
     return url.startsWith(audioBase + 'audio-') ? url : null;
   }
   class DigestAudio {
-    constructor(panel) {
+    constructor(panel, { isSaved, toggleSaved }) {
       this.panel = panel;
       this.audio = panel.querySelector('audio');
       this.title = panel.querySelector('#audio-title');
@@ -21,6 +21,9 @@
       this.time = panel.querySelector('#audio-time');
       this.previous = panel.querySelector('#audio-previous');
       this.next = panel.querySelector('#audio-next');
+      this.save = panel.querySelector('#audio-save');
+      this.isSaved = isSaved;
+      this.toggleSaved = toggleSaved;
       this.index = { days: {} };
       this.track = null;
       this.items = [];
@@ -35,6 +38,11 @@
       this.previous.addEventListener('click', () => this.skip(-1));
       this.next.addEventListener('click', () => this.skip(1));
       this.toggle.addEventListener('click', () => this.togglePlayback());
+      this.save.addEventListener('click', () => {
+        this.syncTrack();
+        const item = this.items[this.trackIndex];
+        if (item?.id) this.toggleSaved(item.id);
+      });
       this.picker.addEventListener('change', () => this.selectTrack(Number(this.picker.value)));
       this.timeline.addEventListener('input', () => this.seekTo(Number(this.timeline.value)));
       panel.querySelector('#audio-close').addEventListener('click', () => this.close());
@@ -103,7 +111,7 @@
       const source = rank == null ? data.day : data.items.find((item) => item.rank === rank);
       const url = canonicalAudioURL(source?.url);
       if (!url) return null;
-      return { ...source, url, label: day.title, date: day.date };
+      return { ...source, url, label: 'Le menu · ' + day.date.replaceAll('-', '/'), date: day.date };
     }
     async play(day, rank) {
       const track = this.entry(day);
@@ -113,7 +121,8 @@
       const items = data.items.map((item) => {
         const start = Number.isFinite(item.start) ? item.start : elapsed;
         elapsed = start + item.duration;
-        return { ...item, start, title: item.title || day.papers.find((paper) => paper.rank === item.rank)?.title || 'Item ' + item.rank };
+        const paper = day.papers.find((paper) => paper.rank === item.rank);
+        return { ...item, id: item.id || paper?.id, start, title: item.title || paper?.title || 'Item ' + item.rank };
       });
       const selected = rank == null ? 0 : items.findIndex((item) => item.rank === rank);
       if (selected < 0) return;
@@ -183,7 +192,21 @@
     }
     skip(offset) {
       this.syncTrack();
-      this.selectTrack(this.trackIndex + offset, this.wantsPlayback);
+      const item = this.items[this.trackIndex];
+      if (!item) return;
+      const elapsed = (this.pendingSeek?.time ?? this.audio.currentTime) - item.start;
+      const index = offset === -1
+        ? (elapsed > 3 ? this.trackIndex : Math.max(0, this.trackIndex - 1))
+        : this.trackIndex + offset;
+      this.selectTrack(index, this.wantsPlayback);
+    }
+    refreshSave() {
+      const item = this.items[this.trackIndex];
+      const saved = Boolean(item?.id && this.isSaved(item.id));
+      this.save.disabled = !item?.id;
+      this.save.setAttribute('aria-pressed', String(saved));
+      this.save.setAttribute('aria-label', saved ? 'Unsave current paper' : 'Save current paper');
+      this.save.title = saved ? 'Unsave current paper' : 'Save current paper';
     }
     syncTrack() {
       if (!this.track) return;
@@ -195,8 +218,9 @@
       const item = this.items[index];
       this.title.textContent = this.track.label + ' — Item ' + item.rank + ' of ' + this.items.length;
       this.picker.value = index;
-      this.previous.disabled = index === 0;
+      this.previous.disabled = false;
       this.next.disabled = index === this.items.length - 1;
+      this.refreshSave();
       if ('mediaSession' in navigator && 'MediaMetadata' in root) {
         navigator.mediaSession.metadata = new MediaMetadata({ title: 'Item ' + item.rank + ' — ' + item.title,
           artist: 'arXiv carte blanche', album: this.track.label });
@@ -312,8 +336,9 @@
         waiting ? (navigator.onLine === false ? 'Waiting for connection…' : 'Buffering audio…') : 'Playing');
       if (this.status.textContent !== status) this.status.textContent = status;
       const playing = this.wantsPlayback && !this.audio.paused;
-      this.toggle.textContent = playing ? 'Pause' : 'Play';
+      this.toggle.dataset.playing = String(playing);
       this.toggle.setAttribute('aria-label', playing ? 'Pause audio' : 'Play audio');
+      this.toggle.title = playing ? 'Pause audio' : 'Play audio';
       this.mediaState(this.audio.paused || waiting || this.failure ? 'paused' : 'playing');
       this.position();
     }
@@ -327,7 +352,7 @@
         },
         pause: () => this.pause(), stop: () => this.close(),
         seekbackward: null, seekforward: null,
-        previoustrack: this.trackIndex > 0 ? () => this.skip(-1) : null,
+        previoustrack: this.trackIndex >= 0 ? () => this.skip(-1) : null,
         nexttrack: this.trackIndex >= 0 && this.trackIndex < this.items.length - 1 ? () => this.skip(1) : null,
         seekto: (details) => this.seekTo(details.seekTime),
       };
@@ -343,6 +368,8 @@
       this.track = null;
       this.items = [];
       this.trackIndex = -1;
+      this.refreshSave();
+      this.mediaHandlers();
       this.audio.pause();
       this.audio.removeAttribute('src');
       this.audio.load();

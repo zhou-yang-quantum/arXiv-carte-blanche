@@ -138,6 +138,17 @@ class AudioTests(unittest.TestCase):
                 for rank in range(1, 13):
                     self.assertEqual(archive.read(f'arxiv-2026-10-15-item-{rank:02}.mp3'), b'ID3' + bytes([rank]) * 64)
 
+    def test_playlist_checksum_is_identical_on_windows_and_linux(self):
+        manifest = {'date': '2026-10-15', 'items': [{'rank': 1}]}
+        with tempfile.TemporaryDirectory() as folder:
+            folder = Path(folder)
+            (folder / 'item-01.mp3').write_bytes(b'ID3 original recording')
+            with patch('zipfile.sys.platform', 'linux'):
+                linux = build_playlist_archive(manifest, folder).read_bytes()
+            with patch('zipfile.sys.platform', 'win32'):
+                windows = build_playlist_archive(manifest, folder).read_bytes()
+            self.assertEqual(linux, windows)
+
     def test_incomplete_playlist_is_not_published_as_a_download(self):
         with tempfile.TemporaryDirectory() as folder:
             folder = Path(folder)

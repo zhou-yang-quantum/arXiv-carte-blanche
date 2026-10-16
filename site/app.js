@@ -2,15 +2,22 @@
 'use strict';
 const $ = (selector) => document.querySelector(selector);
 const icons = {
+  play: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 4 12 8-12 8z"/></svg>',
+  bot: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="7" width="14" height="13" rx="3"/><path d="M12 3v4M3 11v5m18-5v5M9 16h6"/><circle cx="9" cy="12" r=".8"/><circle cx="15" cy="12" r=".8"/></svg>',
+  plus: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5v14"/></svg>',
+  minus: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/></svg>',
   bookmark: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12v18l-6-4-6 4z"/></svg>',
   arrow: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19 19 5M5 5h14v14"/></svg>',
 };
 const state = { archive: null, date: '', query: '', topic: '', savedOnly: false, compact: false };
+const calendarToday = new Date();
+let calendarMonth = new Date(calendarToday.getFullYear(), calendarToday.getMonth(), 1);
 const escapeHTML = (value) => String(value).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const bookmarkSync = new DropboxBookmarks();
 const saved = bookmarkSync.saved;
-const player = new DigestAudio($('#audio-player'));
+const player = new DigestAudio($('#audio-player'), { isSaved: id => saved.has(id), toggleSaved });
 function setSidebarHidden(hidden, savePreference = false) {
+  $('#calendar-popover').hidePopover();
   $('.page-shell').classList.toggle('sidebar-hidden', hidden);
   const button = $('#sidebar-button');
   button.setAttribute('aria-expanded', String(!hidden));
@@ -28,12 +35,12 @@ function refreshAudioButtons() {
   if (!state.archive) return;
   const day = currentDay();
   $('#play-day').disabled = !player.entry(day);
-  $('#play-day').title = player.entry(day) ? '' : 'Audio is not available yet';
+  $('#play-day').title = player.entry(day) ? 'Play day' : 'Audio is not available yet';
   for (const card of document.querySelectorAll('.paper-card')) {
     const source = state.archive.days.find((entry) => entry.date === card.dataset.date);
     const button = card.querySelector('[data-action="play"]');
     button.disabled = !source || !player.entry(source, Number(card.dataset.rank));
-    button.title = button.disabled ? 'Audio is not available yet' : '';
+    button.title = button.disabled ? 'Audio is not available yet' : 'Play item ' + card.dataset.rank;
   }
 }
 function refreshSyncStatus() {
@@ -48,15 +55,17 @@ function refreshSyncStatus() {
   $('#save-storage-status').textContent = bookmarkSync.connected || status === 'expired' ? message : 'Saved papers stay in this browser.';
 }
 bookmarkSync.addEventListener('status', refreshSyncStatus);
-bookmarkSync.addEventListener('change', event => {
+bookmarkSync.addEventListener('change', () => {
   $('#saved-count').textContent = String(saved.size);
-  if (!state.archive || event.detail.origin === 'local') return;
+  player.refreshSave();
+  if (!state.archive) return;
   if (state.savedOnly) render();
   else for (const card of document.querySelectorAll('.paper-card')) {
     const button = card.querySelector('[data-action="save"]');
     const isSaved = saved.has(card.dataset.id);
     button.setAttribute('aria-pressed', String(isSaved));
     button.setAttribute('aria-label', (isSaved ? 'Unsave' : 'Save') + ' item ' + card.dataset.rank);
+    button.title = button.getAttribute('aria-label');
   }
 });
 $('#sync-settings').addEventListener('click', () => { refreshSyncStatus(); $('#sync-dialog').showModal(); });
@@ -70,6 +79,11 @@ function toast(message) {
   $('#toast').hidden = false;
   clearTimeout(toast.timer);
   toast.timer = setTimeout(() => { $('#toast').hidden = true; }, 2800);
+}
+function toggleSaved(id) {
+  const stored = bookmarkSync.toggle(id);
+  if (stored) toast(saved.has(id) ? 'Paper saved' : 'Removed from saved papers');
+  else toast('Your browser could not save this change. It will last for this visit.');
 }
 function formatDate(date, options = { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' }) {
   return new Intl.DateTimeFormat('en-US', { ...options, timeZone: 'UTC' }).format(new Date(date + 'T12:00:00Z'));
@@ -130,28 +144,135 @@ function applyHash() {
   state.query = params.get('q') || '';
   state.topic = state.archive.topics.includes(params.get('topic')) ? params.get('topic') : '';
   state.savedOnly = params.get('saved') === '1';
+  if (params.get('date') === state.date) calendarMonth = new Date(state.date.slice(0, 7) + '-01T12:00:00');
   render();
   const rank = Number(params.get('paper'));
   if (currentDay().papers.some((paper) => paper.rank === rank)) openPaper(state.date, rank);
 }
 function selectDate(date) {
   state.date = date; state.query = ''; state.topic = ''; state.savedOnly = false;
+  calendarMonth = new Date(date.slice(0, 7) + '-01T12:00:00');
+  $('#calendar-popover').hidePopover();
   syncHash(); render();
   window.scrollTo({ top: 0, behavior: 'instant' });
 }
 function renderArchive() {
   const days = state.archive.days;
   $('#archive-count').textContent = days.length + (days.length === 1 ? ' day' : ' days');
-  let month = '';
-  $('#archive-list').innerHTML = days.map((day) => {
-    const thisMonth = day.date.slice(0, 7);
-    let heading = '';
-    if (thisMonth !== month) { month = thisMonth; heading = '<div class="archive-month">' + formatDate(day.date, { month: 'long', year: 'numeric' }) + '</div>'; }
-    return heading + '<button class="archive-day' + (state.date === day.date && !isArchiveSearch() ? ' active' : '') + '" data-date="' + day.date + '" aria-label="Open arXiv-' + day.date + '"' + (state.date === day.date && !isArchiveSearch() ? ' aria-current="date"' : '') + '><span><span class="day-number">' + day.date.slice(-2) + '</span>' + formatDate(day.date, { weekday: 'short' }) + '</span><span class="archive-paper-count">' + day.papers.length + ' papers</span></button>';
-  }).join('');
-  $('#date-select').innerHTML = days.map((day) => '<option value="' + day.date + '">' + day.title + (day === days[0] ? ' · latest' : '') + '</option>').join('');
-  $('#date-select').value = state.date;
+  $('#calendar-button').disabled = false;
+  renderCalendars();
 }
+const monthNames = Array.from({ length: 12 }, (_, month) => new Intl.DateTimeFormat('en-US', { month: 'long' }).format(new Date(2000, month, 1)));
+function availableCalendarMonths() {
+  return [...new Set(state.archive.days.map(day => day.date.slice(0, 7)))].sort();
+}
+function calendarMonthKey(date = calendarMonth) {
+  return date.getFullYear() + '-' + String(date.getMonth() + 1).padStart(2, '0');
+}
+function calendarDateKey(date = new Date()) {
+  return calendarMonthKey(date) + '-' + String(date.getDate()).padStart(2, '0');
+}
+function todayMenu() {
+  const today = calendarDateKey();
+  return state.archive.days.filter(day => day.date <= today).sort((a, b) => b.date.localeCompare(a.date))[0];
+}
+function renderCalendars() {
+  if (!state.archive) return;
+  const months = availableCalendarMonths();
+  const requested = calendarMonthKey();
+  const selectedMonth = months.includes(requested) ? requested : months.filter(month => month < requested).at(-1) || months[0];
+  calendarMonth = new Date(selectedMonth + '-01T12:00:00');
+  const monthIndex = months.indexOf(selectedMonth);
+  const year = calendarMonth.getFullYear();
+  const month = calendarMonth.getMonth();
+  const firstWeekday = calendarMonth.getDay();
+  const dayCount = new Date(year, month + 1, 0).getDate();
+  const available = new Map(state.archive.days.map(day => [day.date, day]));
+  const today = calendarDateKey();
+  const currentMenu = todayMenu();
+  for (const calendar of document.querySelectorAll('.digest-calendar')) {
+    if (!calendar.children.length) {
+      calendar.innerHTML = '<div class="calendar-heading"><button class="calendar-arrow" data-month-step="-1" aria-label="Previous month"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14 6-6 6 6 6"/></svg></button><div class="calendar-selectors"><select class="calendar-month" aria-label="Month"></select><select class="calendar-year" aria-label="Year"></select></div><button class="calendar-arrow" data-month-step="1" aria-label="Next month"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m10 6 6 6-6 6"/></svg></button></div><table class="calendar-table"><thead><tr>' + ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'].map(name => '<th scope="col"><abbr title="' + name + '">' + name.slice(0, 2) + '</abbr></th>').join('') + '</tr></thead><tbody></tbody></table><p class="sr-only calendar-announcement" aria-live="polite"></p><div class="calendar-footer"><span class="calendar-key">Digest available</span><button class="text-button" data-calendar-today>Today</button></div>';
+    }
+    const yearSelect = calendar.querySelector('.calendar-year');
+    yearSelect.innerHTML = [...new Set(months.map(month => month.slice(0, 4)))].map(year => '<option>' + year + '</option>').join('');
+    calendar.querySelector('.calendar-month').innerHTML = months.filter(month => month.startsWith(year + '-')).map(month => {
+      const index = Number(month.slice(5)) - 1;
+      return '<option value="' + index + '">' + monthNames[index] + '</option>';
+    }).join('');
+    calendar.querySelector('.calendar-month').value = month;
+    calendar.querySelector('[data-month-step="-1"]').disabled = monthIndex === 0;
+    calendar.querySelector('[data-month-step="1"]').disabled = monthIndex === months.length - 1;
+    const todayButton = calendar.querySelector('[data-calendar-today]');
+    todayButton.disabled = !currentMenu;
+    todayButton.title = currentMenu?.date === today ? "Open today's menu" : currentMenu ? 'No menu for today; open the latest available (' + currentMenu.date.replaceAll('-', '/') + ')' : 'No menu is available for today yet';
+    yearSelect.value = year;
+    const label = monthNames[month] + ' ' + year;
+    calendar.querySelector('table').setAttribute('aria-label', label);
+    calendar.querySelector('.calendar-announcement').textContent = label;
+    let cells = '';
+    const cellCount = Math.ceil((firstWeekday + dayCount) / 7) * 7;
+    for (let cell = 0; cell < cellCount; cell++) {
+      if (cell % 7 === 0) cells += '<tr>';
+      const number = cell - firstWeekday + 1;
+      if (number < 1 || number > dayCount) cells += '<td></td>';
+      else {
+        const date = year + '-' + String(month + 1).padStart(2, '0') + '-' + String(number).padStart(2, '0');
+        const day = available.get(date);
+        const selected = state.date === date && !isArchiveSearch();
+        cells += '<td><button class="calendar-day' + (selected ? ' selected' : '') + (date === today ? ' today' : '') + '" data-date="' + date + '" aria-label="' + formatDate(date) + (day ? ' · ' + day.papers.length + ' papers' : ' · No digest') + '"' + (day ? '' : ' disabled') + (selected ? ' aria-pressed="true"' : day ? ' aria-pressed="false"' : '') + (date === today ? ' aria-current="date"' : '') + '>' + number + '</button></td>';
+      }
+      if (cell % 7 === 6) cells += '</tr>';
+    }
+    calendar.querySelector('tbody').innerHTML = cells;
+  }
+}
+for (const calendar of document.querySelectorAll('.digest-calendar')) {
+  calendar.addEventListener('click', event => {
+    const day = event.target.closest('[data-date]');
+    if (day && !day.disabled) { selectDate(day.dataset.date); return; }
+    const step = event.target.closest('[data-month-step]');
+    if (step) {
+      const months = availableCalendarMonths();
+      const next = months[months.indexOf(calendarMonthKey()) + Number(step.dataset.monthStep)];
+      if (!next) return;
+      calendarMonth = new Date(next + '-01T12:00:00');
+    }
+    else if (event.target.closest('[data-calendar-today]')) {
+      const day = todayMenu();
+      if (!day) return;
+      selectDate(day.date);
+      if (day.date !== calendarDateKey()) toast('No menu for today yet. Showing the latest available menu.');
+      return;
+    }
+    else return;
+    renderCalendars();
+  });
+  calendar.addEventListener('change', event => {
+    if (!event.target.matches('.calendar-month, .calendar-year')) return;
+    const year = calendar.querySelector('.calendar-year').value;
+    const requested = year + '-' + String(Number(calendar.querySelector('.calendar-month').value) + 1).padStart(2, '0');
+    const months = availableCalendarMonths().filter(month => month.startsWith(year + '-'));
+    calendarMonth = new Date((months.includes(requested) ? requested : months[0]) + '-01T12:00:00');
+    renderCalendars();
+  });
+}
+function positionCalendarPopover() {
+  const popover = $('#calendar-popover');
+  if (!popover.matches(':popover-open')) return;
+  const button = $('#calendar-button').getBoundingClientRect();
+  const width = popover.offsetWidth;
+  popover.style.left = Math.max(8, Math.min(button.left, innerWidth - width - 8)) + 'px';
+  popover.style.top = Math.max(8, Math.min(button.bottom + 8, innerHeight - popover.offsetHeight - 8)) + 'px';
+}
+$('#calendar-popover').addEventListener('toggle', event => {
+  if (event.newState !== 'open') return;
+  positionCalendarPopover();
+  const calendar = $('#popup-calendar');
+  (calendar.querySelector('.selected') || calendar.querySelector('.calendar-month')).focus({ preventScroll: true });
+});
+window.addEventListener('resize', () => { $('#calendar-popover').hidePopover(); });
+window.addEventListener('scroll', positionCalendarPopover, { passive: true });
 function renderTopics() {
   const topics = ['', ...state.archive.topics];
   $('#topic-filters').innerHTML = topics.map((topic) => '<button class="topic-chip" data-topic="' + escapeHTML(topic) + '" aria-pressed="' + (state.topic === topic) + '">' + escapeHTML(topic || 'All topics') + '</button>').join('');
@@ -170,12 +291,12 @@ function renderPaper(day, paper) {
   card.className = 'paper-card';
   card.id = 'paper-' + day.date + '-' + paper.rank;
   card.dataset.date = day.date; card.dataset.rank = paper.rank; card.dataset.id = paper.id;
-  card.innerHTML = '<div class="paper-header"><div class="paper-content"><div class="paper-title-row"><span class="paper-rank">' + String(paper.rank).padStart(2, '0') + '</span><h3></h3><button class="bookmark-button" aria-label="' + (saved.has(paper.id) ? 'Unsave' : 'Save') + ' item ' + paper.rank + '" aria-pressed="' + saved.has(paper.id) + '" data-action="save">' + icons.bookmark + '</button></div><p class="authors"></p></div></div><details class="paper-detail"' + (!state.compact ? ' open' : '') + '><summary hidden>Paper details</summary><h4 class="section-label">SUMMARY</h4><div class="prose paper-summary"></div><section class="background-note"><h4 class="section-label">BACKGROUND</h4><div class="prose paper-background"></div></section><section class="why-note"><h4 class="section-label">WHY IT MATTERS?</h4><div class="prose paper-why"></div></section><div class="paper-footer"><div class="paper-links"><a href="' + paper.url + '" target="_blank" rel="noopener noreferrer">arXiv ' + icons.arrow + '</a><a class="secondary" href="https://arxiv.org/pdf/' + paper.id + '" target="_blank" rel="noopener noreferrer">PDF ' + icons.arrow + '</a></div></div></details>';
+  card.innerHTML = '<div class="paper-header"><div class="paper-content"><div class="paper-title-row"><span class="paper-rank">' + String(paper.rank).padStart(2, '0') + '</span><h3></h3></div><p class="authors"></p></div></div><details class="paper-detail"' + (!state.compact ? ' open' : '') + '><summary hidden>Paper details</summary><h4 class="section-label">SUMMARY</h4><div class="prose paper-summary"></div><section class="background-note"><h4 class="section-label">BACKGROUND</h4><div class="prose paper-background"></div></section><section class="why-note"><h4 class="section-label">WHY IT MATTERS?</h4><div class="prose paper-why"></div></section><div class="paper-footer"><div class="paper-links"><a href="' + paper.url + '" target="_blank" rel="noopener noreferrer">arXiv ' + icons.arrow + '</a><a class="secondary" href="https://arxiv.org/pdf/' + paper.id + '" target="_blank" rel="noopener noreferrer">PDF ' + icons.arrow + '</a></div></div></details>';
   card.querySelector('h3').textContent = paper.title; math(card.querySelector('h3'));
   card.querySelector('.authors').textContent = (paper.authors ? paper.authors + '  ·  ' : '') + 'arXiv:' + paper.id;
   const actions = document.createElement('div');
   actions.className = 'reading-actions paper-actions';
-  actions.innerHTML = '<a class="text-button" data-action="ask" target="_blank" rel="noopener noreferrer" aria-label="Ask GPT about item ' + paper.rank + '" title="Open ChatGPT with this paper and a prepared prompt">Ask GPT</a><button class="text-button" data-action="play" aria-label="Play item ' + paper.rank + '">Play item</button><button class="text-button" data-action="details">' + (state.compact ? 'Show details' : 'Hide details') + '</button>';
+  actions.innerHTML = '<button class="text-button paper-action" data-action="play" aria-label="Play item ' + paper.rank + '" title="Play item ' + paper.rank + '">' + icons.play + '</button><button class="text-button bookmark-button paper-action" data-action="save" aria-label="' + (saved.has(paper.id) ? 'Unsave' : 'Save') + ' item ' + paper.rank + '" title="' + (saved.has(paper.id) ? 'Unsave' : 'Save') + ' item ' + paper.rank + '" aria-pressed="' + saved.has(paper.id) + '">' + icons.bookmark + '</button><a class="text-button paper-action" data-action="ask" target="_blank" rel="noopener noreferrer" aria-label="Ask GPT about item ' + paper.rank + '" title="Ask GPT about this paper">' + icons.bot + '</a><button class="text-button paper-action" data-action="details"></button>';
   actions.querySelector('[data-action="ask"]').href = 'https://chatgpt.com/?prompt=' + encodeURIComponent(DigestReading.questionPrompt(day, paper));
   const play = actions.querySelector('[data-action="play"]');
   play.disabled = !player.entry(day, paper.rank);
@@ -194,7 +315,9 @@ function renderPaper(day, paper) {
 function syncDetails(card) {
   const open = card.querySelector('details').open;
   const button = card.querySelector('[data-action="details"]');
-  button.textContent = open ? 'Hide details' : 'Show details';
+  button.innerHTML = open ? icons.minus : icons.plus;
+  button.setAttribute('aria-label', open ? 'Hide details' : 'Show details');
+  button.title = open ? 'Hide details' : 'Show details';
   button.setAttribute('aria-expanded', String(open));
 }
 function render() {
@@ -202,12 +325,12 @@ function render() {
   const filtering = isArchiveSearch();
   const results = (filtering ? state.archive.days : [day]).flatMap((d) => d.papers.filter(matches).map((paper) => ({ day: d, paper })));
   document.title = day.title;
-  $('#page-title').textContent = state.savedOnly ? 'Saved papers' : filtering ? 'Search results' : day.title;
+  $('#page-title').textContent = state.savedOnly ? 'Saved papers' : filtering ? 'Search results' : 'Le menu · ' + day.date.replaceAll('-', '/');
   $('#date-subtitle').hidden = !filtering;
   $('#date-subtitle').textContent = filtering ? state.archive.days.length + ' archived day' + (state.archive.days.length === 1 ? '' : 's') : '';
   $('#day-actions').hidden = filtering;
   $('#play-day').disabled = !player.entry(day);
-  $('#play-day').title = player.entry(day) ? '' : 'Audio is not available yet';
+  $('#play-day').title = player.entry(day) ? 'Play day' : 'Audio is not available yet';
   $('#latest-button').classList.toggle('active', !state.savedOnly);
   $('#latest-button').setAttribute('aria-pressed', !state.savedOnly);
   $('#saved-button').classList.toggle('active', state.savedOnly);
@@ -235,8 +358,6 @@ function openPaper(date, rank) {
   element.scrollIntoView({ block: 'start', behavior: 'instant' });
 }
 function reset() { selectDate(state.archive.days[0].date); }
-$('#archive-list').addEventListener('click', (event) => { const button = event.target.closest('[data-date]'); if (button) selectDate(button.dataset.date); });
-$('#date-select').addEventListener('change', (event) => selectDate(event.target.value));
 $('#latest-button').addEventListener('click', () => { if (state.archive) reset(); });
 $('#saved-button').addEventListener('click', () => { if (!state.archive) return; state.savedOnly = !state.savedOnly; state.query = ''; state.topic = ''; syncHash(); render(); });
 $('#topic-filters').addEventListener('click', (event) => { const button = event.target.closest('[data-topic]'); if (button) { state.topic = button.dataset.topic; syncHash(); render(); } });
@@ -264,14 +385,7 @@ $('#papers').addEventListener('click', (event) => {
     if (!paper) return;
     player.play(day, paper.rank);
   } else if (button?.dataset.action === 'save') {
-    const id = card.dataset.id;
-    const stored = bookmarkSync.toggle(id);
-    $('#saved-count').textContent = String(saved.size);
-    button.setAttribute('aria-pressed', saved.has(id));
-    button.setAttribute('aria-label', (saved.has(id) ? 'Unsave' : 'Save') + ' item ' + card.dataset.rank);
-    if (stored) toast(saved.has(id) ? 'Paper saved' : 'Removed from saved papers');
-    else toast('Your browser could not save this change. It will last for this visit.');
-    if (state.savedOnly) render();
+    toggleSaved(card.dataset.id);
   }
 });
 $('#previous-day').addEventListener('click', () => { const i = state.archive.days.indexOf(currentDay()); if (state.archive.days[i + 1]) selectDate(state.archive.days[i + 1].date); });

@@ -9,7 +9,7 @@
   <meta name="application-name" content="arXiv carte blanche">
   <title>arXiv carte blanche</title>
   <script src="./theme.js"></script>
-  <link rel="icon" type="image/svg+xml" sizes="any" href="./chef-bot.svg">
+  <link rel="icon" type="image/svg+xml" sizes="any" href="./chef-bot.svg?v=minimal">
   <link rel="stylesheet" href="./vendor/katex/katex.min.css">
   <link rel="stylesheet" href="./styles.css">
   <script defer src="./vendor/marked.umd.js"></script>
@@ -26,7 +26,7 @@
     <div class="header-inner">
       <div class="brand-controls">
         <button id="sidebar-button" class="icon-button" aria-controls="archive-sidebar" aria-expanded="true" title="Hide archive sidebar"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16m6-11-3 3 3 3"/></svg><span class="sr-only">Hide sidebar</span></button>
-        <a class="brand" href="./" aria-label="arXiv carte blanche home"><img class="brand-symbol" src="./chef-bot.svg" alt="" width="38" height="38"><span class="brand-name"><span class="brand-arxiv">arXiv</span> <span class="brand-subtitle">carte blanche</span></span></a>
+        <a class="brand" href="./" aria-label="arXiv carte blanche home"><span class="brand-symbol" aria-hidden="true"></span><span class="brand-name"><span class="brand-arxiv">arXiv</span> <span class="brand-subtitle">carte blanche</span></span></a>
       </div>
       <nav aria-label="Main navigation">
         <button id="latest-button" class="nav-button active" aria-pressed="true">Latest</button>
@@ -40,7 +40,7 @@
   <div class="page-shell">
     <aside id="archive-sidebar" class="sidebar" aria-label="Digest archive">
       <div class="sidebar-heading"><span class="eyebrow">Archive</span><span id="archive-count" class="muted"></span></div>
-      <div id="archive-list" class="archive-list"></div>
+      <div id="archive-calendar" class="digest-calendar"></div>
       <a class="repo-link" href="https://github.com/zhou-yang-quantum/arXiv-carte-blanche" target="_blank" rel="noopener noreferrer">Repository <span aria-hidden="true">↗</span></a>
     </aside>
 
@@ -48,10 +48,14 @@
       <section class="digest-header" aria-labelledby="page-title">
         <div class="digest-title-row">
           <h1 id="page-title">arXiv carte blanche</h1>
+          <div class="date-picker">
+            <button id="calendar-button" class="icon-button" popovertarget="calendar-popover" aria-label="Choose a digest date" title="Choose a digest date" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18m-13 4h2m4 0h2"/></svg></button>
+            <div id="calendar-popover" popover="auto" role="dialog" aria-label="Choose a digest date"><div id="popup-calendar" class="digest-calendar"></div></div>
+          </div>
         </div>
         <p id="date-subtitle" class="date-subtitle">Loading the archive…</p>
         <div class="digest-actions">
-          <div id="day-actions" class="reading-actions"><button id="play-day" class="text-button" disabled>Play day</button></div>
+          <div id="day-actions" class="reading-actions"><button id="play-day" class="text-button" aria-label="Play day" title="Play day" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 4 12 8-12 8z"/></svg></button></div>
           <button id="view-button" class="text-button" aria-pressed="false" title="Compact view"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16M4 12h16M4 19h16"/></svg><span>Compact view</span></button>
           <button id="clear-filters" class="text-button" hidden>Clear filters</button>
           <button id="sync-settings" class="text-button" hidden>Dropbox sync</button>
@@ -59,7 +63,6 @@
       </section>
 
       <section class="discovery" aria-label="Browse papers">
-        <label class="mobile-date"><span class="sr-only">Choose a digest date</span><select id="date-select"></select></label>
         <div id="topic-filters" class="topic-filters" role="group" aria-label="Filter by topic"></div>
       </section>
 
@@ -88,7 +91,13 @@
     <div class="audio-heading"><span id="audio-title"></span><button id="audio-close" class="text-button" aria-label="Close audio player">Close</button></div>
     <div class="audio-playlist"><label for="audio-track">Playlist</label><select id="audio-track" aria-label="Choose a playlist track"></select></div>
     <audio id="digest-audio" preload="auto" aria-label="Audio playback"></audio>
-    <div class="audio-controls"><button id="audio-previous" class="audio-button" aria-label="Previous track">Previous</button><button id="audio-toggle" class="audio-button audio-toggle" aria-label="Play audio">Play</button><button id="audio-next" class="audio-button" aria-label="Next track">Next</button><input id="audio-progress" type="range" min="0" max="1" value="0" step="0.1" aria-label="Seek within track"><span id="audio-time">0:00 / 0:00</span></div>
+    <div class="audio-controls">
+      <button id="audio-previous" class="audio-button" aria-label="Previous track" title="Previous track"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4v16M19 4 8 12l11 8z"/></svg></button>
+      <button id="audio-toggle" class="audio-button audio-toggle" aria-label="Play audio" title="Play audio"><svg class="audio-play-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m8 4 12 8-12 8z"/></svg><svg class="audio-pause-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14M16 5v14"/></svg></button>
+      <button id="audio-next" class="audio-button" aria-label="Next track" title="Next track"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 4v16M5 4l11 8-11 8z"/></svg></button>
+      <button id="audio-save" class="audio-button" aria-label="Save current paper" title="Save current paper" aria-pressed="false" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12v18l-6-4-6 4z"/></svg></button>
+      <input id="audio-progress" type="range" min="0" max="1" value="0" step="0.1" aria-label="Seek within track"><span id="audio-time">0:00 / 0:00</span>
+    </div>
     <div class="audio-options"><span id="audio-status" role="status"></span><label>Speed <select id="audio-rate" aria-label="Playback speed"><option value="0.75">0.75×</option><option value="1" selected>1×</option><option value="1.25">1.25×</option><option value="1.5">1.5×</option><option value="1.75">1.75×</option><option value="2">2×</option></select></label><a id="audio-download" download hidden>Download playlist (ZIP)</a></div>
   </section>
   <div id="toast" class="toast" role="status" hidden></div>

@@ -58,6 +58,8 @@ def build_playlist_archive(manifest, folder):
         for rank in ranks:
             source = folder / f'item-{rank:02}.mp3'
             info = zipfile.ZipInfo(f'arxiv-{manifest["date"]}-item-{rank:02}.mp3')
+            # Keep the ZIP checksum stable when rendering on Linux and publishing on Windows.
+            info.create_system = 3
             info.external_attr = 0o644 << 16
             archive.writestr(info, source.read_bytes())
     partial.replace(target)
