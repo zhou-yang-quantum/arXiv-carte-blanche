@@ -1,99 +1,199 @@
 {
   "version": 4,
   "date": "2026-10-07",
-  "source_hash": "37a0dac51c63d672d682fd88297e5d73d8989f5394427df1eb391ea23bcb29ab",
+  "source_hash": "1f19869fc6244b5f04cbdb523935b43af47cbac337a67f1785124550adb8ee94",
   "pronunciations": [
-    {
-      "latex": "$$H=2\\sqrt{p^2+m^2}+\\sigma|x|,\\qquad \\sigma=g^2N/4.$$",
-      "spoken": "H equals two times the square root of the quantity p squared plus m squared, plus sigma times the absolute value of x. Sigma equals g squared times capital N divided by four."
-    },
-    {
-      "latex": "$(-1,-1/2]$",
-      "spoken": "the interval from minus one to minus one half, excluding minus one and including minus one half"
-    },
-    {
-      "latex": "$1/2$",
-      "spoken": "one half"
-    },
-    {
-      "latex": "$2.5\\%$",
-      "spoken": "two point five percent"
-    },
-    {
-      "latex": "$7.7\\times10^8$",
-      "spoken": "seven point seven times ten to the eighth power"
-    },
-    {
-      "latex": "$N$",
-      "spoken": "capital N"
-    },
-    {
-      "latex": "$N\\to\\infty$",
-      "spoken": "capital N tends to infinity"
-    },
-    {
-      "latex": "$[[19,1,3]]_3$",
-      "spoken": "code parameters nineteen, one, three, with local dimension three"
-    },
-    {
-      "latex": "$[[7,1,3]]_7$",
-      "spoken": "code parameters seven, one, three, with local dimension seven"
-    },
-    {
-      "latex": "$[[n,k,d]]_p$",
-      "spoken": "code parameters n, k, d, with local dimension p"
-    },
-    {
-      "latex": "$[[p,1,2\\lfloor p/6\\rfloor+1]]_p$",
-      "spoken": "code parameters p, one, and two times the floor of p divided by six plus one, with local dimension p"
-    },
-    {
-      "latex": "$\\Delta=0$",
-      "spoken": "delta equals zero"
-    },
-    {
-      "latex": "$\\mathbb{Z}^2$",
-      "spoken": "the Cartesian product of two copies of the integers"
-    },
     {
       "latex": "$\\mathbb{Z}_N$",
       "spoken": "Z sub capital N"
     },
     {
-      "latex": "$\\mathcal{R}$",
-      "spoken": "calligraphic R"
+      "latex": "\\((-1,-1/2]\\)",
+      "spoken": "the interval from minus one to minus one half, excluding minus one and including minus one half"
     },
     {
-      "latex": "$d$",
-      "spoken": "d"
+      "latex": "\\(2.5\\%\\)",
+      "spoken": "two point five percent"
     },
     {
-      "latex": "$g^2N$",
-      "spoken": "g squared times capital N"
+      "latex": "\\(2\\pi\\)",
+      "spoken": "two pi"
     },
     {
-      "latex": "$k$",
-      "spoken": "k"
+      "latex": "\\(7.7\\times10^8\\)",
+      "spoken": "seven point seven times ten to the eighth power"
     },
     {
-      "latex": "$n$",
-      "spoken": "n"
+      "latex": "\\(A\\)",
+      "spoken": "A"
     },
     {
-      "latex": "$n=3$",
+      "latex": "\\(A^{-n}a\\)",
+      "spoken": "A to the minus n times a"
+    },
+    {
+      "latex": "\\(L\\)",
+      "spoken": "capital L"
+    },
+    {
+      "latex": "\\(N\\)",
+      "spoken": "N"
+    },
+    {
+      "latex": "\\([[19,1,3]]_3\\)",
+      "spoken": "code parameters nineteen, one, three, with local dimension three"
+    },
+    {
+      "latex": "\\([[7,1,3]]_7\\)",
+      "spoken": "code parameters seven, one, three, with local dimension seven"
+    },
+    {
+      "latex": "\\([[p,1,2\\lfloor p/6\\rfloor+1]]_p\\)",
+      "spoken": "code parameters p, one, and two times the floor of p divided by six plus one, with local dimension p"
+    },
+    {
+      "latex": "\\(\\Delta=0\\)",
+      "spoken": "delta equals zero"
+    },
+    {
+      "latex": "\\(\\Delta\\)",
+      "spoken": "delta"
+    },
+    {
+      "latex": "\\(\\alpha\\)",
+      "spoken": "alpha"
+    },
+    {
+      "latex": "\\(\\beta\\)",
+      "spoken": "beta"
+    },
+    {
+      "latex": "\\(\\delta_L\\)",
+      "spoken": "delta sub L"
+    },
+    {
+      "latex": "\\(\\lambda,\\lambda^{-1}\\)",
+      "spoken": "lambda and lambda inverse"
+    },
+    {
+      "latex": "\\(\\lambda>1\\)",
+      "spoken": "lambda is greater than one"
+    },
+    {
+      "latex": "\\(\\mathbb R^2\\)",
+      "spoken": "R squared"
+    },
+    {
+      "latex": "\\(\\mathbb Z_2\\)",
+      "spoken": "Z two"
+    },
+    {
+      "latex": "\\(\\mathbb Z_N\\)",
+      "spoken": "Z sub N"
+    },
+    {
+      "latex": "\\(\\mathcal R\\)",
+      "spoken": "script R"
+    },
+    {
+      "latex": "\\(\\pm1\\)",
+      "spoken": "plus or minus one"
+    },
+    {
+      "latex": "\\(\\rho_0\\)",
+      "spoken": "rho sub zero"
+    },
+    {
+      "latex": "\\(\\sigma\\)",
+      "spoken": "sigma"
+    },
+    {
+      "latex": "\\(a\\)",
+      "spoken": "a"
+    },
+    {
+      "latex": "\\(f\\)",
+      "spoken": "f"
+    },
+    {
+      "latex": "\\(g\\)",
+      "spoken": "g"
+    },
+    {
+      "latex": "\\(h\\)",
+      "spoken": "h"
+    },
+    {
+      "latex": "\\(j(\\rho_0+u)=j(\\rho_0)+vu+\\tfrac12j''(\\rho_0)u^2+\\cdots\\)",
+      "spoken": "j of rho sub zero plus u equals j of rho sub zero, plus v times u, plus one half times j double prime of rho sub zero times u squared, plus higher-order terms"
+    },
+    {
+      "latex": "\\(m\\)",
+      "spoken": "m"
+    },
+    {
+      "latex": "\\(n=3\\)",
       "spoken": "n equals three"
     },
     {
-      "latex": "$t^{1/2}$",
-      "spoken": "t to the power one half"
+      "latex": "\\(n\\)",
+      "spoken": "n"
     },
     {
-      "latex": "$t^{2/3}$",
+      "latex": "\\(p=3\\)",
+      "spoken": "p equals three"
+    },
+    {
+      "latex": "\\(p=5,7\\)",
+      "spoken": "p equals five or seven"
+    },
+    {
+      "latex": "\\(p\\)",
+      "spoken": "p"
+    },
+    {
+      "latex": "\\(t^{2/3}\\)",
       "spoken": "t to the power two thirds"
     },
     {
-      "latex": "$z=3/2$",
+      "latex": "\\(u\\)",
+      "spoken": "u"
+    },
+    {
+      "latex": "\\(v=j'(\\rho_0)\\)",
+      "spoken": "v equals j prime of rho sub zero"
+    },
+    {
+      "latex": "\\(x\\)",
+      "spoken": "x"
+    },
+    {
+      "latex": "\\(x_n\\approx A^{-n}c\\)",
+      "spoken": "x sub n is approximately A to the minus n times c"
+    },
+    {
+      "latex": "\\(x_n\\in\\mathbb Z^2\\)",
+      "spoken": "x sub n belongs to Z squared"
+    },
+    {
+      "latex": "\\(z=3/2\\)",
       "spoken": "z equals three halves"
+    },
+    {
+      "latex": "\\[\nH=2\\sqrt{p^2+m^2}+\\sigma|x|,\\qquad \\sigma=\\frac{g^2N}{4}.\n\\]",
+      "spoken": "H equals two times the square root of p squared plus m squared, plus sigma times the absolute value of x; sigma equals g squared times N divided by four"
+    },
+    {
+      "latex": "\\[\nH=\\sum_n\\lVert x_n-Ax_{n+1}\\rVert_1,\n\\]",
+      "spoken": "H equals the sum over n of the one-norm of x sub n minus A times x sub n plus one"
+    },
+    {
+      "latex": "\\[\nK=\\int ds\\,f(s)e^{iHs}Ae^{-iHs}.\n\\]",
+      "spoken": "K equals the integral over s of f of s times e to the i H s times A times e to the minus i H s"
+    },
+    {
+      "latex": "\\[\nS_{\\alpha,L}(m)\\simeq F_{\\alpha}^{(g)}\\bigl(h,\\delta_L(m)\\bigr).\n\\]",
+      "spoken": "S sub alpha L of m is approximately F sub alpha with superscript g, evaluated at h and delta sub L of m"
     }
   ]
 }

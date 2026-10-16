@@ -1,8 +1,12 @@
 {
   "version": 4,
   "date": "2026-10-08",
-  "source_hash": "ecf505cbb55cb5db0b7931ef5c0b429e4c97b954cfcc7aaf74af37e0ec81a5f3",
+  "source_hash": "a859248f6ca47a64c2cb3e92a820c8e831575eb8c880d98204b0c59a5d638788",
   "pronunciations": [
+    {
+      "latex": "\\((-1)^{x_1x_2x_3}\\)",
+      "spoken": "minus one raised to the power x one times x two times x three"
+    },
     {
       "latex": "\\(3+1\\)",
       "spoken": "three plus one"
@@ -12,8 +16,20 @@
       "spoken": "D sub n"
     },
     {
+      "latex": "\\(F(f)\\)",
+      "spoken": "F of f"
+    },
+    {
+      "latex": "\\(M\\)",
+      "spoken": "capital M"
+    },
+    {
       "latex": "\\(N\\)",
-      "spoken": "capital N"
+      "spoken": "N"
+    },
+    {
+      "latex": "\\(P_{\\mathbf p}(f)\\)",
+      "spoken": "P sub vector p of f"
     },
     {
       "latex": "\\(T/T^\\dagger\\)",
@@ -24,8 +40,8 @@
       "spoken": "T"
     },
     {
-      "latex": "\\(U(1)\\)",
-      "spoken": "U one"
+      "latex": "\\(T^\\dagger\\)",
+      "spoken": "T dagger"
     },
     {
       "latex": "\\(X\\)",
@@ -34,6 +50,14 @@
     {
       "latex": "\\(Z\\)",
       "spoken": "Z"
+    },
+    {
+      "latex": "\\(Z_n\\)",
+      "spoken": "Z sub n"
+    },
+    {
+      "latex": "\\([D_n]_2\\to[D_n]_1\\)",
+      "spoken": "D sub n with overall subscript two maps to D sub n with overall subscript one"
     },
     {
       "latex": "\\([[48,3,3]]\\)",
@@ -48,24 +72,36 @@
       "spoken": "alpha"
     },
     {
-      "latex": "\\(\\eta<1/4\\)",
-      "spoken": "eta is less than one quarter"
+      "latex": "\\(\\beta\\)",
+      "spoken": "beta"
     },
     {
-      "latex": "\\(\\eta>2-\\sigma\\)",
-      "spoken": "eta is greater than two minus sigma"
+      "latex": "\\(\\boldsymbol B\\)",
+      "spoken": "the vector B"
+    },
+    {
+      "latex": "\\(\\boldsymbol{\\Lambda}_\\alpha\\)",
+      "spoken": "the vector capital lambda sub alpha"
+    },
+    {
+      "latex": "\\(\\eta\\)",
+      "spoken": "eta"
+    },
+    {
+      "latex": "\\(\\mu\\)",
+      "spoken": "mu"
+    },
+    {
+      "latex": "\\(\\nabla_{\\mathbf p}p_L\\)",
+      "spoken": "the gradient with respect to the vector p of p sub L"
+    },
+    {
+      "latex": "\\(\\nu\\)",
+      "spoken": "nu"
     },
     {
       "latex": "\\(\\nu^{-1}\\sim\\sqrt{7/4-\\sigma}\\)",
       "spoken": "one over nu scales as the square root of the quantity seven quarters minus sigma"
-    },
-    {
-      "latex": "\\(\\nu_i=\\partial p_L/\\partial p_i\\)",
-      "spoken": "nu sub i equals the partial derivative of p sub capital L with respect to p sub i"
-    },
-    {
-      "latex": "\\(\\sigma<7/4\\)",
-      "spoken": "sigma is less than seven quarters"
     },
     {
       "latex": "\\(\\sigma>7/4\\)",
@@ -76,28 +112,72 @@
       "spoken": "the square root of the quantity n divided by two"
     },
     {
-      "latex": "\\(d_Z\\geq3\\)",
-      "spoken": "d sub Z is greater than or equal to three"
+      "latex": "\\(e^{-\\beta H/2}\\)",
+      "spoken": "e raised to minus beta H divided by two"
+    },
+    {
+      "latex": "\\(f\\)",
+      "spoken": "f"
+    },
+    {
+      "latex": "\\(k\\)",
+      "spoken": "k"
     },
     {
       "latex": "\\(k^2\\)",
       "spoken": "k squared"
     },
     {
+      "latex": "\\(m/p-(M-m)/(1-p)\\)",
+      "spoken": "m divided by p, minus the fraction with numerator capital M minus m and denominator one minus p"
+    },
+    {
+      "latex": "\\(m\\)",
+      "spoken": "m"
+    },
+    {
+      "latex": "\\(n\\)",
+      "spoken": "n"
+    },
+    {
+      "latex": "\\(n\\geq4\\)",
+      "spoken": "n is greater than or equal to four"
+    },
+    {
+      "latex": "\\(p\\)",
+      "spoken": "p"
+    },
+    {
       "latex": "\\(r^{-2-\\sigma}\\)",
       "spoken": "r raised to the power of the quantity minus two minus sigma"
     },
     {
-      "latex": "\\(|111\\rangle\\)",
-      "spoken": "the ket with three ones"
+      "latex": "\\(x_i\\)",
+      "spoken": "x sub i"
     },
     {
-      "latex": "\\[\nZ(\\beta,\\mu)=\\sum_n e^{\\beta\\mu n}Z_n(\\beta).\n\\]",
+      "latex": "\\(|a\\rangle\\langle b|\\)",
+      "spoken": "ket a bra b"
+    },
+    {
+      "latex": "\\(|a\\rangle\\otimes|b\\rangle\\)",
+      "spoken": "ket a tensor ket b"
+    },
+    {
+      "latex": "\\[\n2-\\sigma<\\eta<\\frac14,\n\\]",
+      "spoken": "two minus sigma is less than eta, which is less than one quarter"
+    },
+    {
+      "latex": "\\[\nQ^{\\mathrm{geo}}_\\alpha=\\oint\\boldsymbol{\\Lambda}_\\alpha(\\boldsymbol B)\\cdot d\\boldsymbol B,\n\\]",
+      "spoken": "Q sub alpha superscript geo equals the closed contour integral of the vector capital lambda sub alpha, evaluated at the vector B, dotted with d vector B"
+    },
+    {
+      "latex": "\\[\nZ(\\beta,\\mu)=\\sum_n e^{\\beta\\mu n}Z_n(\\beta),\n\\]",
       "spoken": "Z of beta and mu equals the sum over n of the exponential of beta times mu times n, multiplied by Z sub n of beta."
     },
     {
-      "latex": "\\[\n\\delta p_L\\approx\\sum_i\\nu_i\\,\\delta p_i.\n\\]",
-      "spoken": "delta p sub capital L is approximately the sum over i of nu sub i times delta p sub i."
+      "latex": "\\[\n\\frac{\\partial p_L}{\\partial p_i}\n=\\mathbb E\\!\\left[F(f)\\,\\frac{\\partial}{\\partial p_i}\\log P_{\\mathbf p}(f)\\right].\n\\]",
+      "spoken": "the partial derivative of p sub L with respect to p sub i equals the expectation of F of f times the partial derivative with respect to p sub i of log P sub vector p of f"
     }
   ]
 }

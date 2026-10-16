@@ -1,47 +1,91 @@
 {
   "version": 4,
   "date": "2026-10-12",
-  "source_hash": "ccf06801f029136ff80fa94bc304f40749001f070778cfcd55a3cd27f5fd53d5",
+  "source_hash": "e11a7af1a7c50484afa531ccbfe775f74dcdbde5f2ce0eb884528754a0a9eb4c",
   "pronunciations": [
-    {
-      "latex": "$I(A:C|B)=S(AB)+S(BC)-S(B)-S(ABC)$",
-      "spoken": "The conditional mutual information between A and C given B equals the entropy of A B plus the entropy of B C minus the entropy of B minus the entropy of A B C."
-    },
     {
       "latex": "$M(4,3)$",
       "spoken": "M of four, three"
     },
     {
-      "latex": "$Q\\to1$",
-      "spoken": "Q tends to one"
+      "latex": "$λφ^4$",
+      "spoken": "lambda times phi to the fourth power"
     },
     {
-      "latex": "$S^4$",
+      "latex": "\\(-p\\log p\\)",
+      "spoken": "minus p times log p"
+    },
+    {
+      "latex": "\\(D\\)",
+      "spoken": "D"
+    },
+    {
+      "latex": "\\(M(4,3)\\)",
+      "spoken": "M of four, three"
+    },
+    {
+      "latex": "\\(N\\)",
+      "spoken": "N"
+    },
+    {
+      "latex": "\\(Q=1\\)",
+      "spoken": "Q equals one"
+    },
+    {
+      "latex": "\\(S^4\\)",
       "spoken": "S four"
     },
     {
-      "latex": "$\\phi^4$",
+      "latex": "\\(T\\)",
+      "spoken": "T"
+    },
+    {
+      "latex": "\\(Z\\)",
+      "spoken": "Z"
+    },
+    {
+      "latex": "\\(\\beta_k\\)",
+      "spoken": "beta sub k"
+    },
+    {
+      "latex": "\\(\\kappa\\)",
+      "spoken": "kappa"
+    },
+    {
+      "latex": "\\(\\phi^4\\)",
       "spoken": "phi to the fourth power"
     },
     {
-      "latex": "$\\tau\\sim N^{2n}/\\kappa$",
+      "latex": "\\(\\rho\\)",
+      "spoken": "rho"
+    },
+    {
+      "latex": "\\(\\tau\\)",
+      "spoken": "tau"
+    },
+    {
+      "latex": "\\(\\tau\\sim N^{2n}/\\kappa\\)",
       "spoken": "tau scales as N raised to the power two n, divided by kappa"
     },
     {
-      "latex": "$c=1/2$",
-      "spoken": "c equals one half"
+      "latex": "\\(m_n=\\int x^n\\,d\\mu(x)\\)",
+      "spoken": "m sub n equals the integral of x to the n with respect to the measure mu of x"
     },
     {
-      "latex": "$d_s$",
-      "spoken": "d sub s"
+      "latex": "\\(p=0\\)",
+      "spoken": "p equals zero"
     },
     {
-      "latex": "$r^{-(n+1)}$",
+      "latex": "\\(r\\)",
+      "spoken": "r"
+    },
+    {
+      "latex": "\\(r^{-(n+1)}\\)",
       "spoken": "r raised to the negative of the quantity n plus one"
     },
     {
-      "latex": "$λφ^4$",
-      "spoken": "lambda times phi to the fourth power"
+      "latex": "\\(|\\beta_k|^2\\)",
+      "spoken": "the squared absolute value of beta sub k"
     }
   ]
 }

@@ -1,11 +1,35 @@
 {
   "version": 4,
   "date": "2026-10-14",
-  "source_hash": "b91a9e590a82ac60a01368f66dcc3a1c5527186223aed0fc99a6d122ff1562f6",
+  "source_hash": "bc3c0ec4f35ea15eccd4657a388e3164d6cff55418ddff633da420b504fbddfe",
   "pronunciations": [
+    {
+      "latex": "$0.52<z<0.88$",
+      "spoken": "zero point five two is less than z, which is less than zero point eight eight"
+    },
+    {
+      "latex": "$0.65(8)$",
+      "spoken": "zero point six five with uncertainty zero point zero eight"
+    },
     {
       "latex": "$0<\\alpha<1$",
       "spoken": "zero is less than alpha, which is less than one"
+    },
+    {
+      "latex": "$A$",
+      "spoken": "A"
+    },
+    {
+      "latex": "$N$",
+      "spoken": "N"
+    },
+    {
+      "latex": "$N=\\sigma^2/(\\epsilon^2|\\mu|^2)$",
+      "spoken": "N equals sigma squared divided by the product of epsilon squared and the squared absolute value of mu"
+    },
+    {
+      "latex": "$O$",
+      "spoken": "O"
     },
     {
       "latex": "$O(N^{-1})$",
@@ -14,6 +38,14 @@
     {
       "latex": "$O(N^{-2})$",
       "spoken": "big O of N to the minus two"
+    },
+    {
+      "latex": "$O-cf$",
+      "spoken": "O minus c times f"
+    },
+    {
+      "latex": "$Q_t$",
+      "spoken": "Q sub t"
     },
     {
       "latex": "$SU(2)$",
@@ -28,12 +60,20 @@
       "spoken": "V of x equals V sub zero divided by the quantity one plus the absolute value of x raised to beta"
     },
     {
-      "latex": "$[X,A]$",
-      "spoken": "the commutator of X and A"
+      "latex": "$X$",
+      "spoken": "X"
+    },
+    {
+      "latex": "$X=H$",
+      "spoken": "X equals H"
     },
     {
       "latex": "$[[16,4,4]]$",
       "spoken": "double bracket sixteen, four, four, close double bracket"
+    },
+    {
+      "latex": "$\\Delta\\propto\\langle S^-\\rangle$",
+      "spoken": "delta is proportional to the expectation value of S minus"
     },
     {
       "latex": "$\\alpha<d$",
@@ -44,32 +84,100 @@
       "spoken": "alpha equals one"
     },
     {
+      "latex": "$\\beta$",
+      "spoken": "beta"
+    },
+    {
       "latex": "$\\beta>1$",
       "spoken": "beta is greater than one"
+    },
+    {
+      "latex": "$\\epsilon$",
+      "spoken": "epsilon"
     },
     {
       "latex": "$\\epsilon_k=u|k|^z$",
       "spoken": "epsilon sub k equals u times the absolute value of k raised to z"
     },
     {
+      "latex": "$\\eta_r(t)$",
+      "spoken": "eta sub r of t"
+    },
+    {
+      "latex": "$\\hbar=k_B=1$",
+      "spoken": "h-bar equals k sub B equals one"
+    },
+    {
+      "latex": "$\\lambda$",
+      "spoken": "lambda"
+    },
+    {
+      "latex": "$\\lambda=2\\pi/\\beta$",
+      "spoken": "lambda equals two pi divided by beta"
+    },
+    {
       "latex": "$\\mathrm{SL}(2,\\mathbb{R})$",
       "spoken": "S L two over the real numbers"
+    },
+    {
+      "latex": "$\\mu$",
+      "spoken": "mu"
+    },
+    {
+      "latex": "$\\rho$",
+      "spoken": "rho"
+    },
+    {
+      "latex": "$\\sigma^2$",
+      "spoken": "sigma squared"
+    },
+    {
+      "latex": "$f=i[X,A]$",
+      "spoken": "f equals i times the commutator of X and A"
+    },
+    {
+      "latex": "$r$",
+      "spoken": "r"
     },
     {
       "latex": "$r^{-\\alpha}$",
       "spoken": "r raised to minus alpha"
     },
     {
+      "latex": "$t$",
+      "spoken": "t"
+    },
+    {
+      "latex": "$t^{-1/2}$",
+      "spoken": "t to the minus one half"
+    },
+    {
+      "latex": "$u$",
+      "spoken": "u"
+    },
+    {
       "latex": "$w_{\\max}\\geq\\lceil d/2\\rceil$",
       "spoken": "w sub max is greater than or equal to the ceiling of d divided by two"
     },
     {
-      "latex": "$|\\alpha|=0.65(8)$",
-      "spoken": "the absolute value of alpha equals zero point six five, with uncertainty zero point zero eight"
+      "latex": "$x/t$",
+      "spoken": "x divided by t"
     },
     {
-      "latex": "$|\\alpha|>1$",
-      "spoken": "the absolute value of alpha is greater than one"
+      "latex": "$z$",
+      "spoken": "z"
+    },
+    {
+      "latex": "$z<1$",
+      "spoken": "z is less than one"
+    },
+    {
+      "latex": "$|\\Delta|$",
+      "spoken": "the absolute value of delta"
+    },
+    {
+      "latex": "\\[\nw_r(t;\\lambda)=\\frac{\\langle\\eta_r(t)e^{\\lambda Q_t}\\rangle}{\\langle e^{\\lambda Q_t}\\rangle}.\n\\]",
+      "spoken": "w sub r of t and lambda equals the expectation of eta sub r of t times e to the lambda Q sub t, divided by the expectation of e to the lambda Q sub t"
     }
   ]
 }

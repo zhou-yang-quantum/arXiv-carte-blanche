@@ -1,67 +1,191 @@
 {
   "version": 4,
   "date": "2026-10-06",
-  "source_hash": "2199de5c9457277b112148f540fdc64d301bcd327e5e21156392fdcd7e936cbe",
+  "source_hash": "164e3f6879992d816721ffd8a10f0524b7959d45d7434262c4f4036b77bbb81c",
   "pronunciations": [
     {
       "latex": "$O(\\sqrt{t})$",
       "spoken": "big O of the square root of t"
     },
     {
-      "latex": "\\(L\\)",
-      "spoken": "capital L"
+      "latex": "\\(1/2\\)",
+      "spoken": "one half"
     },
     {
-      "latex": "\\(O(T\\operatorname{polylog}(nT/\\epsilon))\\)",
-      "spoken": "big O of T times a polynomial in the logarithm of the ratio n times T to epsilon"
+      "latex": "\\(7\\times8\\)",
+      "spoken": "seven by eight"
+    },
+    {
+      "latex": "\\(A=\\sum_i a_iO_i\\)",
+      "spoken": "A equals the sum over i of a sub i times O sub i"
+    },
+    {
+      "latex": "\\(A\\)",
+      "spoken": "A"
+    },
+    {
+      "latex": "\\(A_1,A_2\\)",
+      "spoken": "A one and A two"
+    },
+    {
+      "latex": "\\(D\\)",
+      "spoken": "D"
+    },
+    {
+      "latex": "\\(J(\\omega,k)=-ikD(\\omega,k)\\rho(\\omega,k)\\)",
+      "spoken": "J of omega and k equals minus i k times D of omega and k times rho of omega and k"
+    },
+    {
+      "latex": "\\(M\\succeq0\\)",
+      "spoken": "M is positive semidefinite"
+    },
+    {
+      "latex": "\\(M_{ij}=\\langle O_i^\\dagger O_j\\rangle\\)",
+      "spoken": "M sub i j equals the expectation value of O sub i dagger times O sub j"
     },
     {
       "latex": "\\(O(\\log\\log t)\\)",
       "spoken": "big O of the logarithm of the logarithm of t"
     },
     {
-      "latex": "\\(O(\\sqrt{t})\\)",
-      "spoken": "big O of the square root of t"
+      "latex": "\\(O(n\\log n)\\)",
+      "spoken": "big O of n times log n"
     },
     {
-      "latex": "\\(O(nT\\operatorname{polylog}(nT/\\epsilon))\\)",
-      "spoken": "big O of n times T times a polynomial in the logarithm of the ratio n times T to epsilon"
+      "latex": "\\(O_i\\)",
+      "spoken": "O sub i"
     },
     {
       "latex": "\\(T\\geq1\\)",
       "spoken": "T is greater than or equal to one"
     },
     {
+      "latex": "\\(T_i\\)",
+      "spoken": "T sub i"
+    },
+    {
+      "latex": "\\(U(t)\\)",
+      "spoken": "U of t"
+    },
+    {
+      "latex": "\\(U^2=I\\)",
+      "spoken": "U squared equals the identity"
+    },
+    {
+      "latex": "\\(Z(F_i)\\)",
+      "spoken": "Z of F sub i"
+    },
+    {
+      "latex": "\\(Z_i\\)",
+      "spoken": "Z sub i"
+    },
+    {
+      "latex": "\\([[37,1,7]]\\)",
+      "spoken": "a code with thirty-seven physical qubits, one logical qubit, and distance seven"
+    },
+    {
+      "latex": "\\([[59,1,9]]\\)",
+      "spoken": "a code with fifty-nine physical qubits, one logical qubit, and distance nine"
+    },
+    {
+      "latex": "\\(\\Delta\\)",
+      "spoken": "delta"
+    },
+    {
+      "latex": "\\(\\boldsymbol\\zeta\\)",
+      "spoken": "the vector zeta"
+    },
+    {
       "latex": "\\(\\epsilon\\)",
       "spoken": "epsilon"
+    },
+    {
+      "latex": "\\(\\lambda_2\\)",
+      "spoken": "lambda sub two"
+    },
+    {
+      "latex": "\\(\\langle A^\\dagger A\\rangle\\geq0\\)",
+      "spoken": "the expectation value of A dagger times A is greater than or equal to zero"
+    },
+    {
+      "latex": "\\(\\mathbb Z_2\\)",
+      "spoken": "Z two"
     },
     {
       "latex": "\\(\\nu=0.60\\pm0.02\\)",
       "spoken": "nu equals zero point six zero, plus or minus zero point zero two"
     },
     {
-      "latex": "\\(d_A^2\\operatorname{Tr}\\rho_{A_1A_2}^2\\)",
-      "spoken": "d sub A squared times the trace of the square of rho on the joint subsystem A one and A two"
+      "latex": "\\(\\psi\\)",
+      "spoken": "psi"
     },
     {
-      "latex": "\\(m e^{-cL}\\)",
-      "spoken": "m times the exponential of minus c times capital L"
+      "latex": "\\(\\rho\\)",
+      "spoken": "rho"
     },
     {
-      "latex": "\\(m\\)",
-      "spoken": "m"
+      "latex": "\\(\\sqrt t\\)",
+      "spoken": "the square root of t"
+    },
+    {
+      "latex": "\\(\\theta\\)",
+      "spoken": "theta"
+    },
+    {
+      "latex": "\\(d_A\\)",
+      "spoken": "d sub A"
+    },
+    {
+      "latex": "\\(i\\)",
+      "spoken": "i"
+    },
+    {
+      "latex": "\\(k\\)",
+      "spoken": "k"
     },
     {
       "latex": "\\(n\\)",
       "spoken": "n"
     },
     {
+      "latex": "\\(z<2\\)",
+      "spoken": "z is less than two"
+    },
+    {
       "latex": "\\(z=1.986\\pm0.005\\)",
       "spoken": "z equals one point nine eight six, plus or minus zero point zero zero five"
     },
     {
+      "latex": "\\(z=2\\)",
+      "spoken": "z equals two"
+    },
+    {
       "latex": "\\(z\\)",
       "spoken": "z"
+    },
+    {
+      "latex": "\\(|0\\rangle\\)",
+      "spoken": "ket zero"
+    },
+    {
+      "latex": "\\(|A|\\)",
+      "spoken": "the size of A"
+    },
+    {
+      "latex": "\\[\nP_A=d_A^2\\,\\overline{\\operatorname{Tr}\\rho_{A_1A_2}^{\\,2}},\n\\]",
+      "spoken": "P sub A equals d sub A squared times the average of the trace of rho sub A one A two squared"
+    },
+    {
+      "latex": "\\[\n\\Psi(\\boldsymbol\\zeta+\\Delta\\mathbf e_i)=T_i(\\boldsymbol\\zeta)\\Psi(\\boldsymbol\\zeta),\n\\]",
+      "spoken": "Psi evaluated at the vector zeta plus delta times the vector e sub i equals T sub i evaluated at the vector zeta times Psi evaluated at the vector zeta"
+    },
+    {
+      "latex": "\\[\n\\text{depth}=O\\!\\left(T\\operatorname{polylog}(nT/\\epsilon)\\right),\\qquad\n\\text{gates}=O\\!\\left(nT\\operatorname{polylog}(nT/\\epsilon)\\right).\n\\]",
+      "spoken": "depth is big O of T times polylog of n T divided by epsilon, and the gate count is big O of n T times polylog of n T divided by epsilon"
+    },
+    {
+      "latex": "\\[\ni\\psi\\partial_\\tau\\theta+\\frac{D_\\theta}{2}(\\partial_x\\theta)^2+\n\\frac{D_\\psi}{2}(\\partial_x\\psi)^2+\\lambda_2\\psi^2+\\lambda_4\\psi^4.\n\\]",
+      "spoken": "i psi times the tau derivative of theta, plus D sub theta divided by two times the square of the x derivative of theta, plus D sub psi divided by two times the square of the x derivative of psi, plus lambda sub two times psi squared, plus lambda sub four times psi to the fourth"
     }
   ]
 }

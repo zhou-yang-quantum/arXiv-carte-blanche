@@ -1,11 +1,15 @@
 {
   "version": 4,
   "date": "2026-10-09",
-  "source_hash": "777fc292405d0a18579230f3cae78b5beaa5f86bbcbfd936996c2dc32567a5ed",
+  "source_hash": "7dbbf57c25a9d621803558b602b8a3b35fb99e5569f725e305b5588a3fa8667a",
   "pronunciations": [
     {
       "latex": "$1/(\\lambda z^3)$",
       "spoken": "one divided by the product of lambda and z cubed"
+    },
+    {
+      "latex": "$1/2$",
+      "spoken": "one half"
     },
     {
       "latex": "$1/N$",
@@ -20,6 +24,10 @@
       "spoken": "ten to the power minus nine"
     },
     {
+      "latex": "$D$",
+      "spoken": "D"
+    },
+    {
       "latex": "$D\\leq2$",
       "spoken": "D is less than or equal to two"
     },
@@ -28,68 +36,160 @@
       "spoken": "D is less than or equal to four"
     },
     {
-      "latex": "$I(A:C|B)=S(AB)+S(BC)-S(B)-S(ABC)$",
-      "spoken": "the conditional mutual information between A and C given B equals the entropy of A B plus the entropy of B C minus the entropy of B minus the entropy of A B C"
+      "latex": "$L$",
+      "spoken": "capital L"
     },
     {
       "latex": "$N$",
-      "spoken": "capital N"
+      "spoken": "N"
+    },
+    {
+      "latex": "$Q$",
+      "spoken": "capital Q"
     },
     {
       "latex": "$S$",
       "spoken": "S"
     },
     {
-      "latex": "$SU(N)$",
-      "spoken": "S U of capital N"
+      "latex": "$S=(q+1)/2$",
+      "spoken": "S equals the quantity q plus one divided by two"
     },
     {
-      "latex": "$U(1)\\rtimes\\mathbb Z_2$",
-      "spoken": "U one semidirect product Z two"
+      "latex": "$S_j^+(S_{j+1}^-)^q$",
+      "spoken": "S sub j plus times the q-th power of S sub j plus one minus"
     },
     {
-      "latex": "$\\lambda\\sim\\Delta_Hg_{\\rm YM}^2$",
+      "latex": "$\\Delta_H$",
+      "spoken": "delta sub H"
+    },
+    {
+      "latex": "$\\alpha$",
+      "spoken": "alpha"
+    },
+    {
+      "latex": "$\\delta>0$",
+      "spoken": "delta is greater than zero"
+    },
+    {
+      "latex": "$\\lambda z\\sim1$",
+      "spoken": "lambda times z is of order one"
+    },
+    {
+      "latex": "$\\lambda$",
+      "spoken": "lambda"
+    },
+    {
+      "latex": "$\\lambda\\sim\\Delta_H g_{\\rm YM}^2$",
       "spoken": "lambda scales as delta sub H times g sub Y M squared"
     },
     {
-      "latex": "$\\lambda^{-1/3}$",
-      "spoken": "lambda raised to the power negative one third"
+      "latex": "$\\lambda^{-1}\\lesssim z\\lesssim\\lambda^{-1/3}$",
+      "spoken": "lambda to the minus one is less than or of the order of z, which is less than or of the order of lambda to the minus one third"
     },
     {
-      "latex": "$\\lambda^{-1}$",
-      "spoken": "lambda to the power minus one"
+      "latex": "$\\log\\tau\\sim\\xi^\\psi$",
+      "spoken": "log tau scales as xi to the power psi"
+    },
+    {
+      "latex": "$\\mathbb E[w]=1$",
+      "spoken": "the expectation of w equals one"
+    },
+    {
+      "latex": "$\\mathbb E[wp_\\alpha]=0$",
+      "spoken": "the expectation of w times p sub alpha equals zero"
+    },
+    {
+      "latex": "$\\mathcal N=4$",
+      "spoken": "script N equals four"
+    },
+    {
+      "latex": "$\\mathcal O$",
+      "spoken": "script O"
+    },
+    {
+      "latex": "$\\mathcal O|\\psi\\rangle=0$",
+      "spoken": "script O acting on ket psi equals zero"
     },
     {
       "latex": "$\\mathcal{N}=4$",
       "spoken": "calligraphic N equals four"
     },
     {
-      "latex": "$\\mathfrak{sl}(2,\\mathbb{C})$",
+      "latex": "$\\mathfrak{sl}(2,\\mathbb C)$",
       "spoken": "the Lie algebra s l two over the complex numbers"
     },
     {
-      "latex": "$\\rho\\propto\\exp[-\\sum_s\\mu_sQ_s]$",
-      "spoken": "rho is proportional to the exponential of minus the sum over s of mu sub s times Q sub s"
+      "latex": "$\\theta$",
+      "spoken": "theta"
     },
     {
       "latex": "$\\xi(q)$",
       "spoken": "xi of q"
     },
     {
+      "latex": "$a$",
+      "spoken": "a"
+    },
+    {
+      "latex": "$a\\to0$",
+      "spoken": "a tends to zero"
+    },
+    {
+      "latex": "$g(x)\\sim x^{-\\delta}$",
+      "spoken": "g of x scales as x to the minus delta"
+    },
+    {
+      "latex": "$j$",
+      "spoken": "j"
+    },
+    {
+      "latex": "$j+1$",
+      "spoken": "j plus one"
+    },
+    {
+      "latex": "$l$",
+      "spoken": "ell"
+    },
+    {
+      "latex": "$l_B$",
+      "spoken": "ell sub B"
+    },
+    {
+      "latex": "$p_\\alpha$",
+      "spoken": "p sub alpha"
+    },
+    {
       "latex": "$q$",
       "spoken": "q"
     },
     {
-      "latex": "$q^{L-j}$",
-      "spoken": "q raised to the power of the quantity L minus j"
+      "latex": "$q/2$",
+      "spoken": "q divided by two"
+    },
+    {
+      "latex": "$q\\geq2$",
+      "spoken": "q is greater than or equal to two"
     },
     {
       "latex": "$z=(1-\\cos\\theta)/2$",
       "spoken": "z equals the quantity one minus cosine theta, divided by two"
     },
     {
+      "latex": "$z\\ll\\lambda^{-1}$",
+      "spoken": "z is much less than lambda inverse"
+    },
+    {
       "latex": "$φ^4$",
       "spoken": "phi-four"
+    },
+    {
+      "latex": "\\[\nI(A:C|B)\\simeq (l/l_B)^2 g(l_B/a).\n\\]",
+      "spoken": "the conditional mutual information between A and C given B is approximately the square of ell divided by ell sub B, times g of ell sub B divided by a"
+    },
+    {
+      "latex": "\\[\nQ=\\sum_{j=1}^{L}q^{L-j}S_j^z,\n\\]",
+      "spoken": "Q equals the sum from j equals one to L of q to the power L minus j times S sub j superscript z"
     }
   ]
 }
