@@ -1,11 +1,15 @@
 {
-  "version": 4,
+  "version": 6,
   "date": "2026-10-15",
-  "source_hash": "4b6bad18cb74dcd79c16c2be44f701e03d80a4af09c348af157b0e1d8dd1b3d9",
+  "source_hash": "5a13dcd99cc7d9e72bbae54ff72e9bf956153e8e9800d161b6d21ee62357a442",
   "pronunciations": [
     {
       "latex": "$(\\Delta-\\tfrac12)^2$",
-      "spoken": "the quantity delta minus one half, squared"
+      "spoken": "the quantity (delta minus one half) squared"
+    },
+    {
+      "latex": "$-x\\log x$",
+      "spoken": "minus X times log X"
     },
     {
       "latex": "$0.01\\%$",
@@ -21,7 +25,7 @@
     },
     {
       "latex": "$4.10\\times10^{-7}$",
-      "spoken": "four point one zero times ten to the power minus seven"
+      "spoken": "four point one zero [p] times ten to the power (minus seven)"
     },
     {
       "latex": "$8.89\\%$",
@@ -29,23 +33,19 @@
     },
     {
       "latex": "$A=V\\sqrt{A^\\dagger A}$",
-      "spoken": "A equals V times the square root of A dagger times A"
+      "spoken": "A [p] equals [p] V times the square root of (A dagger times A)"
     },
     {
       "latex": "$F_j=c_j^\\dagger+c_{j+1}^\\dagger$",
-      "spoken": "F sub j equals c dagger at site j plus c dagger at site j plus one"
+      "spoken": "F sub J [p] equals [p] C sub J dagger [p] plus [p] C sub (J plus one) dagger"
     },
     {
       "latex": "$H=h/(k_BT)$",
-      "spoken": "capital H equals lowercase h divided by the product of k sub B and T"
-    },
-    {
-      "latex": "$I(A:C|B)=S(AB)+S(BC)-S(B)-S(ABC)$",
-      "spoken": "The conditional mutual information between A and C given B equals the entropy of region A B plus the entropy of region B C minus the entropy of B minus the entropy of region A B C"
+      "spoken": "capital H [p] equals [p] lowercase H divided by the product of (K sub B and T)"
     },
     {
       "latex": "$K=J/(k_BT)$",
-      "spoken": "K equals J divided by the product of k sub B and T"
+      "spoken": "K [p] equals [p] J divided by the product of (K sub B and T)"
     },
     {
       "latex": "$N$",
@@ -53,31 +53,215 @@
     },
     {
       "latex": "$[[2844,1426,18]]$",
-      "spoken": "the quantum code with parameters two thousand eight hundred forty-four, one thousand four hundred twenty-six, eighteen"
-    },
-    {
-      "latex": "$\\Delta$",
-      "spoken": "delta"
+      "spoken": "two thousand eight hundred forty four [p] one thousand four hundred twenty six [p] eighteen"
     },
     {
       "latex": "$\\eta,\\kappa\\propto t^{3/8}$",
-      "spoken": "eta and kappa are proportional to t to the power three eighths"
+      "spoken": "eta and kappa [p] are proportional to [p] T to the power (three eighths)"
+    },
+    {
+      "latex": "$\\mathbb{Z}_4$",
+      "spoken": "Z sub four"
     },
     {
       "latex": "$\\tau\\times\\tau=\\mathbf{1}+\\tau$",
-      "spoken": "tau fused with tau equals the identity plus tau"
+      "spoken": "tau fused with tau [p] equals [p] the identity [p] plus [p] tau"
+    },
+    {
+      "latex": "$d\\geq2$",
+      "spoken": "D [p] greater than or equal to [p] two"
     },
     {
       "latex": "$k$",
-      "spoken": "k"
+      "spoken": "K"
     },
     {
       "latex": "$n_k\\propto k^{-d}$",
-      "spoken": "n sub k is proportional to k to the power minus d"
+      "spoken": "N sub K [p] is proportional to [p] K to the power (minus D)"
     },
     {
       "latex": "$z=1$",
-      "spoken": "z equals one"
+      "spoken": "Z equals one"
     }
+  ],
+  "phrase_groups": [
+    [
+      "CCZ states"
+    ],
+    [
+      "Chebyshev-Based Quantum Subspace Diagonalization"
+    ],
+    [
+      "Chebyshev–Krylov"
+    ],
+    [
+      "Decoder-based postselection"
+    ],
+    [
+      "Differential transcendence"
+    ],
+    [
+      "Fibonacci anyons"
+    ],
+    [
+      "Gaussian functional determinants"
+    ],
+    [
+      "Haar moment operator"
+    ],
+    [
+      "Hayden–Preskill"
+    ],
+    [
+      "Jordan–Wigner"
+    ],
+    [
+      "Large $N$",
+      "Vector and SYK-like Models"
+    ],
+    [
+      "Lieb–Robinson light cone"
+    ],
+    [
+      "Lyapunov exponents"
+    ],
+    [
+      "Lyapunov gaps"
+    ],
+    [
+      "Markov length"
+    ],
+    [
+      "Onsager-type representations"
+    ],
+    [
+      "Painlevé expressions"
+    ],
+    [
+      "Petz map"
+    ],
+    [
+      "Petz recovery isometry"
+    ],
+    [
+      "Ritz vector"
+    ],
+    [
+      "Sachdev–Ye–Kitaev"
+    ],
+    [
+      "T-state cultivation"
+    ],
+    [
+      "XXZ chain"
+    ],
+    [
+      "algebraic conditional-information tails"
+    ],
+    [
+      "algebraic differential equation"
+    ],
+    [
+      "auxiliary Majorana"
+    ],
+    [
+      "bivariate bicycle codes"
+    ],
+    [
+      "bivariate tricycle codes"
+    ],
+    [
+      "block-encoding normalization"
+    ],
+    [
+      "classical-shadow application"
+    ],
+    [
+      "code automorphism"
+    ],
+    [
+      "conditional mutual information"
+    ],
+    [
+      "conformal two-point data"
+    ],
+    [
+      "cup-product CCZ circuit"
+    ],
+    [
+      "cup-product gate"
+    ],
+    [
+      "finite $N$ interacting-CFT formulas"
+    ],
+    [
+      "finite-depth local circuit"
+    ],
+    [
+      "fixed-magnetization sector"
+    ],
+    [
+      "golden chain"
+    ],
+    [
+      "inverse-polynomial error"
+    ],
+    [
+      "large $N$ conformal regime"
+    ],
+    [
+      "large $N$ expansions"
+    ],
+    [
+      "large $N$ random-coupling models"
+    ],
+    [
+      "local data processing"
+    ],
+    [
+      "logical Pauli representative"
+    ],
+    [
+      "magic-state factories"
+    ],
+    [
+      "matching bridge"
+    ],
+    [
+      "moment gap"
+    ],
+    [
+      "non-invertible symmetry"
+    ],
+    [
+      "polar decomposition"
+    ],
+    [
+      "projection-preserving lift"
+    ],
+    [
+      "quantum Zeno effect"
+    ],
+    [
+      "quantum cellular automaton"
+    ],
+    [
+      "quantum singular value transformation"
+    ],
+    [
+      "quasi-classical kinetic structure"
+    ],
+    [
+      "semion and anti-semion algebras"
+    ],
+    [
+      "thermal conductivity"
+    ],
+    [
+      "time-local kinetic closure"
+    ],
+    [
+      "unitary limit"
+    ]
   ]
 }
