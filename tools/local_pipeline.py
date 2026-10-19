@@ -6,11 +6,11 @@ import html
 import json
 import os
 from pathlib import Path
+import random
 import re
 import shutil
 import subprocess
 import sys
-import tomllib
 import urllib.error
 import urllib.request
 from zoneinfo import ZoneInfo
@@ -40,6 +40,8 @@ SCHEMA = {
     'required': ['status', 'reason', 'markdown', 'math_pronunciations', 'phrase_groups'],
 }
 COMPLETE = {'published', 'no-batch'}
+# Leave headroom below the tool's combined output limit, even for non-ASCII text.
+LOOKUP_PAGE_BYTES = 8000
 
 
 class SnapshotPending(RuntimeError):
@@ -48,22 +50,10 @@ class SnapshotPending(RuntimeError):
 
 def load_config():
     config = json.loads(CONFIG.read_text(encoding='utf-8'))
-    # The app schedule controls the same model used by startup catch-up runs.
-    runtime_file = RUNTIME / 'runtime.json'
-    if runtime_file.exists():
-        runtime = json.loads(runtime_file.read_text(encoding='utf-8'))
-        automation_id = runtime.get('automation_id')
-        if automation_id and all(character.isalnum() or character in '-_' for character in automation_id):
-            state_root = Path(os.environ.get('CODEX_HOME', str(Path.home() / '.codex')))
-            automation_file = state_root / 'automations' / automation_id / 'automation.toml'
-            if automation_file.exists():
-                saved = tomllib.loads(automation_file.read_text(encoding='utf-8'))
-                config['enabled'] = saved.get('status') == 'ACTIVE'
-                if saved.get('model'):
-                    config['model'] = saved['model']
-                effort = saved.get('reasoning_effort') or saved.get('model_reasoning_effort')
-                if effort:
-                    config['reasoning_effort'] = effort
+    # Windows checks the queue directly; no model-backed app schedule is needed.
+    config.setdefault('enabled', True)
+    if not isinstance(config['enabled'], bool):
+        raise ValueError('enabled must be true or false')
     date.fromisoformat(config['start_date'])
     ZoneInfo(config['timezone'])
     if config.get('allow_paid_api') is not False or config.get('require_chatgpt_login') is not True:
@@ -74,6 +64,15 @@ def load_config():
         raise ValueError('Choose an available GPT model explicitly; no automatic fallback is allowed')
     time(config['hour'], config['minute'])
     return config
+
+
+def set_enabled(enabled):
+    config = json.loads(CONFIG.read_text(encoding='utf-8'))
+    config['enabled'] = enabled
+    temporary = CONFIG.with_suffix('.tmp')
+    temporary.write_text(json.dumps(config, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+    temporary.replace(CONFIG)
+    return {'status': 'enabled' if enabled else 'paused', 'enabled': enabled}
 
 
 def expected_dates(config, now):
@@ -275,8 +274,107 @@ def get_snapshot(day, config, token):
 
 def catalog(snapshot):
     return {'date': snapshot['date'], 'paper_count': len(snapshot['papers']),
-            'listing_sources': snapshot['listing_sources'],
             'papers': [{key: paper[key] for key in ('id', 'title', 'categories')} for paper in snapshot['papers']]}
+
+
+def compact_paper(paper):
+    """Preserve research evidence verbatim; keep collection bookkeeping elsewhere."""
+    result = {key: paper[key] for key in ('id', 'title', 'authors', 'abstract', 'categories')}
+    source_key = 'versioned_url' if paper.get('versioned_url') else 'source_v1'
+    if not paper.get(source_key):
+        raise ValueError(f'Missing recorded source version for {paper["id"]}')
+    result[source_key] = paper[source_key]
+    return result
+
+
+def lookup_json(value):
+    return json.dumps(value, ensure_ascii=False, separators=(',', ':'))
+
+
+def lookup_page(day, papers, command, start=0, offset=0):
+    """Bound the entire serialized response; never silently shorten a record."""
+    if start < 0 or offset < 0 or (papers and start >= len(papers)) or (not papers and start != 0):
+        raise ValueError('Invalid lookup start or offset')
+    if not papers and offset:
+        raise ValueError('An empty lookup has no fragment offset')
+
+    def response(records, next_start, next_offset=0, fragment=None):
+        more = next_start < len(papers)
+        next_command = f'{command} --start {next_start}' if more else None
+        if more and next_offset:
+            next_command += f' --offset {next_offset}'
+        result = {'date': day, 'total_papers': len(papers), 'papers': records}
+        if fragment is not None:
+            result['fragment'] = fragment
+        result['next_command'] = next_command
+        result['complete'] = not more
+        return result
+
+    def fits(result):
+        return len(lookup_json(result).encode('utf-8')) + 1 <= LOOKUP_PAGE_BYTES
+
+    records = []
+    index = start
+    if not offset:
+        while index < len(papers):
+            candidate = response(records + [papers[index]], index + 1)
+            if not fits(candidate):
+                break
+            records.append(papers[index])
+            index += 1
+        if records or not papers:
+            return response(records, index)
+
+    # An oversized single record is delivered losslessly as JSON text fragments.
+    # This also covers unusually long author lists or titles, not just abstracts.
+    text = lookup_json(papers[index])
+    if offset >= len(text):
+        raise ValueError('Fragment offset is outside this paper record')
+
+    def fragment_response(end):
+        done = end == len(text)
+        fragment = {'id': papers[index]['id'], 'format': 'json-text', 'offset': offset,
+                    'end': end, 'total_characters': len(text),
+                    'record_complete': done, 'text': text[offset:end]}
+        return response([], index + 1 if done else index, 0 if done else end, fragment)
+
+    low, high = offset + 1, len(text)
+    best = None
+    while low <= high:
+        end = (low + high) // 2
+        candidate = fragment_response(end)
+        if fits(candidate):
+            best = candidate
+            low = end + 1
+        else:
+            high = end - 1
+    if best is None:
+        raise ValueError('Lookup envelope exceeds the page budget')
+    return best
+
+
+def paper_page(snapshot, day, ids, start=0, offset=0, details=False, command_prefix='python tools/local_pipeline.py'):
+    date.fromisoformat(day)
+    if snapshot.get('date') != day:
+        raise ValueError('Snapshot date mismatch')
+    if not 1 <= len(ids) <= 20:
+        raise ValueError('Request 1–20 paper IDs at a time')
+    selected = {paper['id']: paper for paper in snapshot['papers']}
+    if any(paper_id not in selected for paper_id in ids):
+        raise ValueError('ID is outside this dated batch')
+    unique = list(dict.fromkeys(ids))
+    records = [selected[paper_id] if details else compact_paper(selected[paper_id]) for paper_id in unique]
+    command = f'{command_prefix} paper {day} ' + ' '.join(unique)
+    if details:
+        command += ' --details'
+    return lookup_page(day, records, command, start, offset)
+
+
+def catalog_page(snapshot, day, start=0, offset=0, command_prefix='python tools/local_pipeline.py'):
+    date.fromisoformat(day)
+    if snapshot.get('date') != day:
+        raise ValueError('Snapshot date mismatch')
+    return lookup_page(day, catalog(snapshot)['papers'], f'{command_prefix} catalog {day}', start, offset)
 
 
 def generation_command(executable, config, output, schema):
@@ -285,6 +383,81 @@ def generation_command(executable, config, output, schema):
             '-c', 'service_tier="standard"', '-c', f'model_reasoning_effort="{config["reasoning_effort"]}"',
             '-m', config['model'], '--approve-for-me',
             '-C', str(ROOT), '--output-schema', str(schema), '--output-last-message', str(output), '--json', '-']
+
+
+def prepare_style_example(day, folder):
+    """Keep one random item from the latest available earlier digest per run."""
+    date.fromisoformat(day)
+    target = folder / 'style-example.md'
+    if target.exists():
+        return target
+    sources = [(path.stem, 0, path) for path in (ROOT / 'incoming').glob('*.md')]
+    sources += [(path.stem, 1, path) for path in (ROOT / 'content/digests').glob('*.json')]
+    # Publication does not necessarily update this checkout's incoming/ files.
+    sources += [(previous, 2, RUNTIME / 'runs' / previous / 'result.json')
+                for previous, item in read_state().get('days', {}).items()
+                if item.get('status') == 'published']
+    sources += [(path.stem, 3, path) for path in (ROOT / 'prompts/examples').glob('*.md')]
+    for previous, _, source in sorted(sources, key=lambda item: (item[0], -item[1]), reverse=True):
+        if not re.fullmatch(r'\d{4}-\d{2}-\d{2}', previous) or previous >= day:
+            continue
+        try:
+            date.fromisoformat(previous)
+            text = source.read_text(encoding='utf-8-sig')
+            if source.suffix == '.json':
+                saved = json.loads(text)
+                digest = parse_digest(saved['markdown']) if 'markdown' in saved else saved
+            else:
+                digest = parse_digest(text)
+            if digest['date'] != previous:
+                continue
+            papers = [paper for paper in digest['papers']
+                      if all(paper.get(key) for key in ('rank', 'id', 'title', 'authors', 'summary', 'background', 'why', 'url'))]
+            if not papers:
+                continue
+        except (OSError, ValueError, KeyError, TypeError):
+            continue
+        paper = random.choice(papers)
+        example = (
+            '# Style and format reference only\n\n'
+            f'One randomly selected item from the {previous} digest. '
+            'Read after selecting and studying the current papers. '
+            'This illustrates presentation only: it is not evidence, a selection criterion, '
+            'or a source of technical claims for the new digest.\n\n'
+            f'## arXiv-{previous} — Item {paper["rank"]}\n\n'
+            f'### {paper["title"]}\n**{paper["authors"]} — arXiv:{paper["id"]}**\n\n'
+            f'{paper["summary"]}\n\n**Background.** {paper["background"]}\n\n'
+            f'**Why it matters?** {paper["why"]}\n\n[arXiv {paper["id"]}]({paper["url"]})\n'
+        )
+        folder.mkdir(parents=True, exist_ok=True)
+        target.write_text(example, encoding='utf-8')
+        return target
+    return None
+
+
+def research_prompt(day, style_example=None):
+    """Supply all research, writing, and audio instructions at startup."""
+    screening_path = ROOT / 'prompts/local-research.md'
+    writing_path = ROOT / 'prompts/local-research-writing.md'
+    audio_path = ROOT / 'prompts/local-research-audio.md'
+    # Fail before spending tokens if a required instruction file is missing.
+    for path in (screening_path, writing_path, audio_path):
+        if not path.is_file():
+            raise ValueError(f'Missing instruction file: {path}')
+    prompt = screening_path.read_text(encoding='utf-8')
+    prompt += '\nWriting instructions (already supplied; do not reread their files):\n'
+    prompt += writing_path.read_text(encoding='utf-8')
+    prompt += '\nAudio annotation instructions (already supplied; do not reread their files):\n'
+    prompt += audio_path.read_text(encoding='utf-8')
+    prompt += f'\n\nExact target date: {day}.\nCatalog lookup: python tools/local_pipeline.py catalog {day}\n'
+    prompt += f'Metadata lookup: python tools/local_pipeline.py paper {day} ID1 ID2 ...\n'
+    prompt += f'Catalog and metadata pages are each bounded to {LOOKUP_PAGE_BYTES} UTF-8 bytes including their JSON envelope. Follow next_command until complete is true; paper --details uses the same paging for archive-validation evidence. Do not dump catalog.json or the full input archive.\n'
+    prompt += 'The metadata lookup only reads saved announcement data and preserves complete abstracts. Use the exact source version recorded in source_v1 (legacy snapshots) or versioned_url (feed snapshots). You may read files and use live web search. Use automatic approval review for required read commands. Return the digest in your final JSON, not through file writes.\n'
+    if style_example:
+        prompt += f'Style reference (one item only): {style_example}. Read it once after source verification; do not load the full previous digest.\n'
+    else:
+        prompt += 'No earlier style reference is available. Follow the format and editorial guidance in the writing instructions.\n'
+    return prompt
 
 
 def generate(day, snapshot, config):
@@ -302,10 +475,8 @@ def generate(day, snapshot, config):
     catalog_file.write_text(json.dumps(catalog(snapshot), ensure_ascii=False) + '\n', encoding='utf-8')
     schema_file = folder / 'result-schema.json'
     schema_file.write_text(json.dumps(SCHEMA), encoding='utf-8')
-    prompt = (ROOT / 'prompts/local-research.md').read_text(encoding='utf-8')
-    prompt += f'\n\nExact target date: {day}.\nCatalog: {catalog_file}.\n'
-    prompt += f'Metadata lookup: python tools/local_pipeline.py paper {day} ID1 ID2 ...\n'
-    prompt += 'The metadata lookup only reads saved announcement data. Use the exact source version recorded in source_v1 (legacy snapshots) or versioned_url (feed snapshots). You may read files and use live web search. Use automatic approval review for required read commands. Return the digest in your final JSON, not through file writes.\n'
+    style_example = prepare_style_example(day, folder)
+    prompt = research_prompt(day, style_example)
     with (folder / 'events.jsonl').open('w', encoding='utf-8') as events, (folder / 'stderr.log').open('w', encoding='utf-8') as errors:
         result = subprocess.run(generation_command(executable, config, output, schema_file), input=prompt,
                                 text=True, encoding='utf-8', stdout=events, stderr=errors,
@@ -417,13 +588,18 @@ def run_pipeline(limit=None, automatic=False):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('command', choices=('plan', 'run', 'paper', 'status', 'retry'), nargs='?', default='plan')
+    parser.add_argument('command', choices=('plan', 'run', 'catalog', 'paper', 'status', 'retry', 'pause', 'resume'), nargs='?', default='plan')
     parser.add_argument('date', nargs='?')
     parser.add_argument('ids', nargs='*')
     parser.add_argument('--limit', type=int)
-    parser.add_argument('--automatic', action='store_true', help='Honor the saved task pause setting')
+    parser.add_argument('--automatic', action='store_true', help='Honor enabled in local-pipeline.json')
+    parser.add_argument('--start', type=int, default=0, help='Lookup continuation record index')
+    parser.add_argument('--offset', type=int, default=0, help='Lookup continuation offset for an oversized record')
+    parser.add_argument('--details', action='store_true', help='Include full stored paper evidence, with the same page limit')
     args = parser.parse_args()
-    if args.command == 'retry':
+    if args.command in ('pause', 'resume'):
+        print(json.dumps(set_enabled(args.command == 'resume')))
+    elif args.command == 'retry':
         date.fromisoformat(args.date)
         with pipeline_lock() as acquired:
             if not acquired:
@@ -439,15 +615,21 @@ def main():
             state.pop('pause_until', None)
             save_state(state)
         print(json.dumps({'status': 'retry-enabled', 'date': args.date}))
-    elif args.command == 'paper':
+    elif args.command in ('catalog', 'paper'):
         date.fromisoformat(args.date)
-        if not 1 <= len(args.ids) <= 20:
-            parser.error('Request 1–20 paper IDs at a time')
         snapshot = json.loads((RUNTIME / 'inputs' / f'{args.date}.json').read_text(encoding='utf-8'))
-        selected = {paper['id']: paper for paper in snapshot['papers']}
-        if any(paper_id not in selected for paper_id in args.ids):
-            raise SystemExit('ID is outside this dated batch')
-        print(json.dumps([selected[paper_id] for paper_id in args.ids], ensure_ascii=False))
+        try:
+            if args.command == 'paper':
+                page = paper_page(snapshot, args.date, args.ids, args.start, args.offset, args.details)
+            else:
+                if args.ids or args.details:
+                    parser.error('catalog accepts a date and continuation options only')
+                page = catalog_page(snapshot, args.date, args.start, args.offset)
+        except ValueError as error:
+            parser.error(str(error))
+        if hasattr(sys.stdout, 'reconfigure'):
+            sys.stdout.reconfigure(encoding='utf-8')
+        print(lookup_json(page))
     elif args.command == 'run':
         print(json.dumps(run_pipeline(args.limit, automatic=args.automatic), ensure_ascii=False))
     else:

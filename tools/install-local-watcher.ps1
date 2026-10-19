@@ -9,10 +9,6 @@ $pythonPath = (Get-Command python -ErrorAction Stop).Source
 $codexPath = (Get-Command codex -ErrorAction Stop).Source
 $runtimePath = Join-Path $runtimeRoot 'runtime.json'
 $runtime = @{python=$pythonPath; codex=$codexPath}
-if (Test-Path -LiteralPath $runtimePath) {
-    $priorRuntime = Get-Content -LiteralPath $runtimePath -Raw | ConvertFrom-Json
-    if ($priorRuntime.automation_id) { $runtime.automation_id = $priorRuntime.automation_id }
-}
 [IO.File]::WriteAllText($runtimePath, (($runtime | ConvertTo-Json) + "`n"), (New-Object Text.UTF8Encoding($false)))
 $userName = [Security.Principal.WindowsIdentity]::GetCurrent().Name
 $taskName = 'Daily-arXiv startup catch-up'

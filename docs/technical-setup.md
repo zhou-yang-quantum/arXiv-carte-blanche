@@ -6,8 +6,8 @@ This documents the current local Codex → GitHub → GitHub Pages pipeline. It 
 
 ```text
 GitHub Actions collector → sources/YYYY-MM-DD.json
-Local Codex task or Windows watcher → tools/local_pipeline.py
-  → dated source snapshot + prompts/local-research.md
+Windows watcher (no model for queue checks) → tools/local_pipeline.py
+  → dated source snapshot + screening, writing, and audio instructions
   → fresh codex exec research context → validated Markdown
   → tools/publish_digest.py → incoming/YYYY-MM-DD.md on GitHub main
 Push to main → GitHub Actions build → dist/ → GitHub Pages
@@ -15,8 +15,10 @@ Push to main → GitHub Actions build → dist/ → GitHub Pages
 
 | File or directory | Role |
 | --- | --- |
-| `local-pipeline.json` | Categories, queue start date, due time, model defaults, retry and timeout settings. |
-| `prompts/local-research.md` | Actual research instructions passed to each local generation context. |
+| `local-pipeline.json` | Automatic-generation enabled state, categories, queue start date, due time, model, effort, retry and timeout settings. |
+| `prompts/local-research.md` | Startup screening, dated eligibility, and source-handling instructions. |
+| `prompts/local-research-writing.md` | Detailed editorial requirements and final digest format, supplied at startup. |
+| `prompts/local-research-audio.md` | Equation pronunciations and phrase groups, supplied at startup. |
 | `prompts/researcher-profile.md` | Durable interests, confirmed knowledge, and provisional publication-based context; the research prompt instructs each fresh generator to read it before screening. |
 | `preferences.json` | Public selection criteria copied into the website; not loaded by the research controller. |
 | `sources/` | Immutable dated announcement evidence and captured paper metadata. Legacy snapshots use v1; Atom snapshots record the version in the new announcement. |
@@ -31,17 +33,61 @@ The builder requires at least one digest. If starting a fresh archive, keep an e
 
 ## Research prompt and personalization
 
-The full, executable research prompt is [prompts/local-research.md](../prompts/local-research.md). The controller appends the exact target date, a compact catalog path, and a command to retrieve stored abstracts:
+The controller combines [screening and source instructions](../prompts/local-research.md),
+[writing instructions](../prompts/local-research-writing.md), and
+[audio instructions](../prompts/local-research-audio.md) into one startup prompt.
+All three files and the JSON output schema are available from the beginning of
+each fresh research session. Separate files make the requirements easier to edit;
+they do not introduce separate generation stages or model sessions. The isolated
+two-paper experiment found higher token usage with deferred loading, so that
+option was removed; see the [token economy report](token-economy.md).
+The controller appends the exact target date and commands to retrieve the paged
+catalog and stored abstracts.
 
 The prompt reads the durable [researcher profile](../prompts/researcher-profile.md)
-before screening and the frozen [renewed October 6 digest](../prompts/examples/2026-10-06.md)
-once after selection as a writing reference. The example guides explanatory depth
-and structure; current dated sources supply facts. A dedicated editorial pass
-checks motivation, mechanism, targeted background, and significance before output.
+before screening. The controller randomly extracts one item from the latest
+available earlier digest into the run's `style-example.md`, reused on retries.
+Sources include local Markdown/JSON archives and published cached results when
+the checkout has not yet synced; unpublished drafts are excluded. A single item
+from the frozen [October 6 digest](../prompts/examples/2026-10-06.md) is a bootstrap
+fallback for later dates. With no earlier example, the prompt's format stands alone.
+After selecting and carefully studying the current papers, the model reads only
+the extracted item for presentation guidance. It must derive selection, technical
+details, background, and significance independently from the current sources.
+A dedicated editorial pass checks motivation, mechanism, targeted background,
+and significance before output. The example's subject or length is not a constraint.
 
 ```sh
+python tools/local_pipeline.py catalog YYYY-MM-DD
 python tools/local_pipeline.py paper YYYY-MM-DD ID1 ID2
+python tools/local_pipeline.py paper YYYY-MM-DD ID1 --details
 ```
+
+Each lookup returns valid JSON bounded to **8,000 UTF-8 bytes**, including its
+envelope. The `papers` array contains the next records; `next_command` gives the
+exact continuation, and `complete: true` marks the end of the request. Read all
+catalog pages before screening, and follow every metadata continuation. Requests
+accept up to 20 IDs and deduplicate repeated IDs while preserving their order.
+No candidate is removed by paging or keyword filtering.
+
+The normal research view preserves exact titles, complete authors and abstracts,
+categories, and the recorded `source_v1` or `versioned_url`. Collection bookkeeping
+is omitted from this view, but `--details` exposes every stored field through the
+same paging. Source snapshots and publication validation remain unchanged. A single
+record larger than a page is delivered as contiguous `fragment.text` pieces of
+its compact JSON, with `offset`, `end`, `total_characters`, and `record_complete`.
+Concatenating the pieces reconstructs the entire record; there is no abstract
+shortening. Follow `next_command` and finish that record before assessing it.
+
+The generator must run each lookup page in a separate tool call, forward stdout
+without a JSON-escaped tool-result envelope, and keep both shell and enclosing
+output budgets at least 10,000 tokens. Combining several individually safe outputs
+can still exceed an enclosing limit; bounded CLI pages cannot enforce a caller's
+tool settings. A truncation warning or missing JSON ending requires recovery of
+that page alone before proceeding. Large primary-source pages should likewise be
+read in focused sections. Keep candidate notes and avoid repeating metadata reads
+without a concrete research or recovery need; necessary source checking and rereads
+remain allowed. These are delivery controls, not limits on scientific study or prose.
 
 Its current editorial rules prioritize quantum field theory, non-equilibrium physics, quantum error correction, quantum simulation, quantum algorithms, and exactly solvable models. They exclude materials, quantum chemistry, bilayer graphene, TMDs, high-temperature superconductivity, most experiments, overly mathematical string theory, and overly computer-science-heavy algorithms. Change these paragraphs and the assumed background to match the intended reader, and mirror the public criteria in `preferences.json`.
 
@@ -51,7 +97,7 @@ The model screens the catalog, reads saved announcement abstracts for plausible 
 
 The controller requests `status` (`ready` or `insufficient`), `reason`, `markdown`, `math_pronunciations`, and `phrase_groups`. The pronunciation list provides an exact English reading for each distinct item equation; phrase groups mark source-exact terminology and optional pauses between meaningful parts. Both come from the same research run without duplicating the prose or making another model call. An insufficient selection becomes `needs-review` rather than padded content. Validation checks the date, 10–20 distinct consecutive ranks, required sections, catalog membership, exact stored titles, complete pronunciation coverage, and nonoverlapping phrase groups that preserve whole equations. These checks do not independently verify every scientific claim, the semantics of every spoken formula, or the intended modifier scope of a technical phrase.
 
-[The prompt map](../prompts/README.md) identifies the active research prompt, runtime instructions, and saved scheduled-task prompt. Earlier conversational and cloud prompts have been removed; Git history retains them. This guide is the current reference for setup and recovery.
+[The prompt map](../prompts/README.md) identifies the active research prompt, runtime instructions, and local scheduling controls. Earlier conversational and cloud prompts have been removed; Git history retains them. This guide is the current reference for setup and recovery.
 
 Changing `categories` in `local-pipeline.json` affects collection of new snapshots. Existing snapshots are retained unchanged, so choose a new start date when beginning a different subject collection. If you need topic filters beyond the current physics labels, update both the keyword-to-tag rules in `tools/import_digest.py` (`TOPICS`) and the allowed labels in `tools/build.py` (`TOPICS`). Changing preferences alone does not change those filters or rerank old digests.
 
@@ -100,15 +146,9 @@ python tools/local_pipeline.py plan
 
 `tzdata` supplies IANA timezone data on Windows. Confirm the Codex login uses ChatGPT and the GitHub account has write access to your fork. The controller enforces ChatGPT authentication, removes model API keys and GitHub tokens from the model subprocess environment, and has no automatic paid-API or model fallback. It obtains the GitHub credential through `gh` only in the Python publishing process.
 
-Create a **local** task in Codex's Scheduled view, with this repository as its working directory. The current setup uses **10:00 Monday–Friday, America/Chicago**, **`gpt-6.1-sol`**, and **High** reasoning effort. Select a model available to your account if reproducing the setup. Match the task clock to `timezone`, `hour`, and `minute` in `local-pipeline.json`; changing the app's clock alone does not change when the controller considers a date due.
+The Windows watcher is the sole automatic entry point. Do not create a model-backed Codex scheduled task just to run the controller: that starts a model turn even when the queue is empty. The earlier Codex schedule has been retired (paused); its model and pause settings no longer control this pipeline.
 
-Save the checkout as a local project in the app and attach the task to that project. A projectless task starts from the home folder; putting an absolute checkout path in its prompt does not grant write access to the project's cache and can cause a `run.lock` permission error.
-
-The saved task's prompt, with only its absolute checkout path replaced by `<REPO_ROOT>`, is:
-
-> Run the local daily-arXiv controller from `<REPO_ROOT>` with the command `python tools/local_pipeline.py run`. This project uses local ChatGPT subscription authentication and the existing GitHub CLI login; no paid model API or purchased credits are authorized. The controller finds every missing due weekday from October 7, 2026 onward, reads saved arXiv announcement snapshots, runs fresh subscribed GPT research for each day, validates the dated digest, and publishes through Python. Its runtime model and reasoning effort should match this schedule's saved model and effort. Do not research or write a second digest yourself, expose credentials, alter website code, overwrite published days, create another schedule, or use a cloud environment. If the controller reports already-running, waiting-for-app, up-to-date, retry, or needs-review, report that status accurately. Report new published dates, paper counts, and website links briefly; do not repeat the complete digests. Startup catch-up is handled by the installed Windows watcher using the same controller and lock.
-
-For your copy, replace `<REPO_ROOT>` with your local checkout and the start date with your configured `start_date`.
+Configure `local-pipeline.json`: `enabled` controls automatic generation, `timezone`/`hour`/`minute` define when weekdays become due, and `model`/`reasoning_effort` control each fresh research run. The current clock and research settings remain **10:00 Monday–Friday, America/Chicago**, **`gpt-6.1-sol`**, **High** effort. Choose a model available to your account when reproducing the setup.
 
 Install the watcher from the checkout:
 
@@ -116,11 +156,18 @@ Install the watcher from the checkout:
 powershell.exe -NoProfile -File tools/install-local-watcher.ps1 -StartNow
 ```
 
-This records the local Python/Codex executable paths in ignored `.cache/local-pipeline/runtime.json` and registers a current-user login task. Add your saved Codex task's directory identifier as `automation_id` in that JSON, preserving the installer-generated fields. The controller reads the task from `<CODEX_HOME>/automations/<automation_id>/automation.toml` (default Codex home: `~/.codex`). This lets the task's saved model, reasoning effort, and pause status control automatic catch-up too. Without that link, the controller uses `local-pipeline.json` defaults and cannot observe an app-task pause. These saved-task fields are an implementation dependency; check `load_config()` if the app's storage format changes.
+This records Python/Codex executable paths in ignored `.cache/local-pipeline/runtime.json` and registers a current-user Windows login task. No Codex automation ID is needed; legacy `automation_id` fields are ignored and removed when reinstalling the watcher. If migrating an existing setup, pause its redundant Codex scheduled task after installing/verifying the watcher.
 
-The watcher checks once per minute while the Codex app is running and calls `run --automatic` when work is due. A five-minute Windows trigger restarts an interrupted watcher, while `IgnoreNew` leaves a running instance alone. It does not start the app or wake the computer. A process lock prevents concurrent triggers from generating the same day. Opening the app after an absence processes missing weekdays oldest first, including gaps before newer entries. Before the due time, only older missing days are eligible. An empty queue makes no research-model call.
+The watcher checks once per minute while the Codex app is running and calls `run --automatic` only when work is due and enabled. A five-minute Windows trigger restarts an interrupted watcher, while `IgnoreNew` leaves a running instance alone. It does not start the app or wake the computer. A process lock prevents concurrent workers from generating the same day. Opening the app after an absence processes missing weekdays oldest first, including gaps before newer entries. Before the due time, only older missing days are eligible. Queue checks and completed-date skips run ordinary code and consume no model tokens. Archive-wait retries check GitHub without a model; generation retries can consume tokens until a result succeeds.
 
-Pausing the linked saved task also pauses automatic startup catch-up. An already-running controller and its research process must be stopped separately. Manual `run` commands can still generate and publish while the schedule is paused, so use them only for an explicitly requested test or recovery.
+Pause or resume automatic generation without a model:
+
+```sh
+python tools/local_pipeline.py pause
+python tools/local_pipeline.py resume
+```
+
+These atomically update `enabled` in `local-pipeline.json`, preserving the other settings. They affect subsequent automatic runs; they do not terminate an already-running research process. Manual `run` commands can still generate and publish while paused, so use them only for an explicitly requested test or recovery. Inspect the queue with `plan` or `status`; daily results no longer create redundant Codex scheduled-chat reports. Publication state and run logs remain available locally.
 
 Each research run launches a fresh `codex exec` context with live search, the configured model/effort, automatic approval review, an output schema, and a saved final JSON result. See `generation_command()` in `tools/local_pipeline.py` for the exact flags and the [official non-interactive Codex documentation](https://learn.chatgpt.com/docs/non-interactive-mode) for the CLI interface.
 
@@ -189,5 +236,11 @@ For website interaction changes, additionally run:
 npx playwright install chromium
 npx playwright test
 ```
+
+The completed instruction-loading experiment and its quality checks are recorded
+in the [token economy report](token-economy.md). Deferred loading and its temporary
+benchmark runner are excluded from the production implementation. The production
+parser still requires 10–20 papers. Raw experiment artifacts remain in the ignored
+local cache; they are not published with the website.
 
 Keep credentials, auth files, absolute machine paths, local schedule IDs, and runtime logs out of committed documentation and digests. `.cache/` and `.env*` are ignored. The published site includes digest text and `preferences.json`, so use only information you intend readers to see.

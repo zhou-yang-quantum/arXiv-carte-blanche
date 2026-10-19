@@ -1,4 +1,5 @@
 {
+  "enabled": true,
   "start_date": "2026-10-07",
   "timezone": "America/Chicago",
   "hour": 10,

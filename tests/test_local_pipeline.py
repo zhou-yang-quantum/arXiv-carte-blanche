@@ -134,18 +134,28 @@ class QueueTests(unittest.TestCase):
         self.assertEqual(result['waiting'], ['2026-10-07', '2026-10-08', '2026-10-09'])
         self.assertEqual(len(pipeline.plan(self.config, state, datetime(2026, 10, 9, 19, tzinfo=timezone.utc))['due']), 3)
 
-    def test_saved_schedule_model_changes_apply_to_startup_worker(self):
+    def test_local_settings_are_independent_of_retired_app_schedule(self):
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)
             config_path = root / 'config.json'
-            config_path.write_text(json.dumps({**self.config, 'require_chatgpt_login': True, 'allow_paid_api': False}), encoding='utf-8')
+            config_path.write_text(json.dumps({**self.config, 'enabled': True, 'require_chatgpt_login': True, 'allow_paid_api': False}), encoding='utf-8')
             (root / 'runtime.json').write_text(json.dumps({'automation_id': 'fixture'}), encoding='utf-8')
             task_folder = root / 'automations/fixture'
             task_folder.mkdir(parents=True)
-            (task_folder / 'automation.toml').write_text('model = "gpt-6-sol"\nreasoning_effort = "medium"\n', encoding='utf-8')
+            (task_folder / 'automation.toml').write_text('status = "PAUSED"\nmodel = "gpt-6-sol"\nreasoning_effort = "medium"\n', encoding='utf-8')
             with patch.object(pipeline, 'RUNTIME', root), patch.object(pipeline, 'CONFIG', config_path), patch.dict(os.environ, {'CODEX_HOME': str(root)}):
                 loaded = pipeline.load_config()
-            self.assertEqual((loaded['model'], loaded['reasoning_effort']), ('gpt-6-sol', 'medium'))
+            self.assertEqual((loaded['model'], loaded['reasoning_effort']), ('gpt-6.1-sol', 'high'))
+            self.assertTrue(loaded['enabled'])
+
+    def test_pause_and_resume_preserve_local_generation_settings(self):
+        with tempfile.TemporaryDirectory() as folder, patch.object(pipeline, 'CONFIG', Path(folder) / 'config.json'):
+            original = {**self.config, 'enabled': True}
+            pipeline.CONFIG.write_text(json.dumps(original), encoding='utf-8')
+            self.assertFalse(pipeline.set_enabled(False)['enabled'])
+            self.assertEqual(json.loads(pipeline.CONFIG.read_text()), {**original, 'enabled': False})
+            self.assertTrue(pipeline.set_enabled(True)['enabled'])
+            self.assertEqual(json.loads(pipeline.CONFIG.read_text()), original)
 
     def test_kernel_lock_prevents_duplicate_workers_and_releases(self):
         with tempfile.TemporaryDirectory() as folder, patch.object(pipeline, 'RUNTIME', Path(folder)):
@@ -168,12 +178,27 @@ class QueueTests(unittest.TestCase):
             self.assertNotIn('GH_TOKEN', environment)
             self.assertEqual(environment['PYTHONUTF8'], '1')
 
-    def test_automatic_worker_honors_app_schedule_pause(self):
+    def test_automatic_worker_honors_local_pause(self):
         with tempfile.TemporaryDirectory() as folder, patch.object(pipeline, 'RUNTIME', Path(folder)), \
              patch.object(pipeline, 'load_config', return_value={**self.config, 'enabled': False}), \
              patch.object(pipeline, 'github_token') as credential:
             self.assertEqual(pipeline.run_pipeline(automatic=True)['status'], 'paused')
             credential.assert_not_called()
+
+    def test_repeated_idle_checks_never_reach_model_or_credentials(self):
+        with tempfile.TemporaryDirectory() as folder, patch.object(pipeline, 'RUNTIME', Path(folder)), \
+             patch.object(pipeline, 'load_config', return_value=self.config), \
+             patch.object(pipeline, 'expected_dates', return_value=['2026-10-07', '2026-10-08']), \
+             patch.object(pipeline, 'app_is_running') as app, \
+             patch.object(pipeline, 'github_token') as credential, \
+             patch.object(pipeline, 'generate') as generate:
+            pipeline.save_state({'days': {'2026-10-07': {'status': 'published'},
+                                          '2026-10-08': {'status': 'no-batch'}}})
+            for _ in range(3):
+                self.assertEqual(pipeline.run_pipeline(automatic=True)['status'], 'up-to-date')
+            app.assert_not_called()
+            credential.assert_not_called()
+            generate.assert_not_called()
 
     def test_rejects_wrong_date_wrong_batch_and_changed_title(self):
         result = {'status': 'ready', 'markdown': example_digest(include_priority=False).replace('2026-10-06', '2026-10-07')}
@@ -202,6 +227,8 @@ class QueueTests(unittest.TestCase):
             generate.assert_called_once()
             self.assertEqual(pipeline.read_state()['days']['2026-10-08']['status'], 'published')
             self.assertEqual(pipeline_plan(self.config, pipeline.read_state(), now)['due'], [])
+            self.assertEqual(pipeline.run_pipeline(automatic=True)['status'], 'up-to-date')
+            generate.assert_called_once()
 
     def test_missing_archive_never_starts_a_second_arxiv_collector(self):
         with tempfile.TemporaryDirectory() as folder, patch.object(pipeline, 'RUNTIME', Path(folder)), \
@@ -229,6 +256,112 @@ class QueueTests(unittest.TestCase):
             self.assertLessEqual(delay, 300)
             self.assertNotIn('pause_until', state)
             generate.assert_not_called()
+
+
+class StyleExampleTests(unittest.TestCase):
+    def setUp(self):
+        temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(temporary.cleanup)
+        self.root = Path(temporary.name)
+        for name, value in [('ROOT', self.root), ('RUNTIME', self.root / 'runtime')]:
+            patched = patch.object(pipeline, name, value)
+            patched.start()
+            self.addCleanup(patched.stop)
+        self.folder = pipeline.RUNTIME / 'runs/2026-10-19'
+
+    def write_digest(self, day, directory='incoming'):
+        path = self.root / directory / f'{day}.md'
+        path.parent.mkdir(parents=True, exist_ok=True)
+        text = example_digest(include_priority=False).replace('2026-10-06', day)
+        path.write_text(text + '\nMy reading order would be **1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 → 9 → 10**.', encoding='utf-8')
+        return path
+
+    def test_one_random_item_from_latest_earlier_digest_without_day_notes(self):
+        for day in ['2026-10-15', '2026-10-16', '2026-10-19', '2026-10-20']:
+            self.write_digest(day)
+        with patch.object(pipeline.random, 'choice', side_effect=lambda papers: papers[-1]) as choose:
+            path = pipeline.prepare_style_example('2026-10-19', self.folder)
+        text = path.read_text(encoding='utf-8')
+        choose.assert_called_once()
+        self.assertEqual(len(choose.call_args.args[0]), 10)
+        self.assertIn('## arXiv-2026-10-16 — Item 10', text)
+        self.assertEqual(text.count('\n## arXiv-'), 1)
+        self.assertIn('Summary of paper 10.', text)
+        self.assertNotIn('Summary of paper 9.', text)
+        self.assertNotIn('Overview', text)
+        self.assertNotIn('My reading order', text)
+        self.assertNotIn('Priority', text)
+        self.assertIn('not evidence, a selection criterion', text)
+
+    def test_retries_reuse_the_same_item(self):
+        self.write_digest('2026-10-16')
+        path = pipeline.prepare_style_example('2026-10-19', self.folder)
+        original = path.read_bytes()
+        self.write_digest('2026-10-18')
+        with patch.object(pipeline.random, 'choice') as choose:
+            self.assertEqual(pipeline.prepare_style_example('2026-10-19', self.folder).read_bytes(), original)
+            choose.assert_not_called()
+
+    def test_published_cached_result_is_available_before_checkout_sync(self):
+        self.write_digest('2026-10-15')
+        source = self.write_digest('2026-10-16', 'scratch')
+        folder = pipeline.RUNTIME / 'runs/2026-10-16'
+        folder.mkdir(parents=True)
+        (folder / 'result.json').write_text(json.dumps({'status': 'ready', 'markdown': source.read_text(encoding='utf-8')}), encoding='utf-8')
+        pipeline.save_state({'days': {'2026-10-16': {'status': 'published'}}})
+        text = pipeline.prepare_style_example('2026-10-19', self.folder).read_text(encoding='utf-8')
+        self.assertIn('## arXiv-2026-10-16', text)
+
+    def test_unpublished_draft_cannot_be_a_style_reference(self):
+        source = self.write_digest('2026-10-16', 'scratch')
+        folder = pipeline.RUNTIME / 'runs/2026-10-16'
+        folder.mkdir(parents=True)
+        (folder / 'result.json').write_text(json.dumps({'status': 'ready', 'markdown': source.read_text(encoding='utf-8')}), encoding='utf-8')
+        pipeline.save_state({'days': {'2026-10-16': {'status': 'needs-review'}}})
+        self.assertIsNone(pipeline.prepare_style_example('2026-10-19', self.folder))
+
+    def test_json_archive_and_malformed_newer_digest(self):
+        source = self.write_digest('2026-10-15', 'scratch')
+        folder = self.root / 'content/digests'
+        folder.mkdir(parents=True)
+        (folder / '2026-10-15.json').write_text(json.dumps(pipeline.parse_digest(source.read_text(encoding='utf-8'))), encoding='utf-8')
+        invalid = self.root / 'incoming/2026-10-16.md'
+        invalid.parent.mkdir()
+        invalid.write_text('Incomplete digest', encoding='utf-8')
+        self.assertIn('## arXiv-2026-10-15', pipeline.prepare_style_example('2026-10-19', self.folder).read_text(encoding='utf-8'))
+
+    def test_bootstrap_uses_one_frozen_item_only_for_a_later_day(self):
+        self.write_digest('2026-10-06', 'prompts/examples')
+        self.assertIsNone(pipeline.prepare_style_example('2026-10-06', self.folder))
+        text = pipeline.prepare_style_example('2026-10-07', self.folder).read_text(encoding='utf-8')
+        self.assertEqual(text.count('\n## arXiv-'), 1)
+        self.assertIn('## arXiv-2026-10-06', text)
+
+    def test_generate_supplies_only_single_item_path_and_reuses_final_result(self):
+        self.write_digest('2026-10-16')
+        prompts = self.root / 'prompts'
+        prompts.mkdir()
+        (prompts / 'local-research.md').write_text('Study current sources independently.', encoding='utf-8')
+        (prompts / 'local-research-writing.md').write_text('Write source-grounded prose.', encoding='utf-8')
+        (prompts / 'local-research-audio.md').write_text('Annotate the equations faithfully.', encoding='utf-8')
+        config = {'model': 'gpt-6.1-sol', 'reasoning_effort': 'high', 'generation_timeout_minutes': 45}
+        def run(command, **kwargs):
+            if command[-2:] == ['login', 'status']:
+                return type('Result', (), {'returncode': 0, 'stdout': 'ChatGPT', 'stderr': ''})()
+            prompt = kwargs['input']
+            self.assertIn(str(self.folder / 'style-example.md'), prompt)
+            self.assertIn('do not load the full previous digest', prompt)
+            self.assertIn('Catalog lookup: python tools/local_pipeline.py catalog 2026-10-19', prompt)
+            self.assertIn('Follow next_command until complete is true', prompt)
+            self.assertNotIn('Catalog: ', prompt)
+            self.assertNotIn('prompts/examples/2026-10-06.md', prompt)
+            (self.folder / 'result.json').write_text('{"status":"ready"}', encoding='utf-8')
+            return type('Result', (), {'returncode': 0})()
+        with patch.object(pipeline, 'find_codex', return_value='codex'), patch.object(pipeline.subprocess, 'run', side_effect=run) as process:
+            pipeline.generate('2026-10-19', snapshot(day='2026-10-19'), config)
+            self.assertEqual(process.call_count, 2)
+            pipeline.generate('2026-10-19', snapshot(day='2026-10-19'), config)
+            self.assertEqual(process.call_count, 2)
 
 
 pipeline_plan = pipeline.plan

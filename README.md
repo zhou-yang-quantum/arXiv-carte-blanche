@@ -69,7 +69,7 @@ The minimum changes for a personalized digest are:
 
 | File | What to change |
 | --- | --- |
-| [prompts/local-research.md](prompts/local-research.md) | Set your interests, exclusions, assumed background, and what makes a paper useful to you. This is the prompt the local generator actually reads. Keep its dated output format. |
+| [prompts/local-research.md](prompts/local-research.md) | Set your interests, exclusions, and selection rules. Edit [writing instructions](prompts/local-research-writing.md) for explanation depth and digest format, and [audio instructions](prompts/local-research-audio.md) for pronunciations. All three files are supplied together at startup. |
 | [prompts/researcher-profile.md](prompts/researcher-profile.md) | Set your durable interests and knowledge calibration. The research prompt instructs each fresh run to read this profile before screening papers. |
 | [preferences.json](preferences.json) | Match the interests and criteria shown on the website to your prompt. This file does not control generation. |
 | [local-pipeline.json](local-pipeline.json) | Set the arXiv `categories` to scan. For automation, also choose your `start_date`, timezone, time, model, and effort. |
@@ -86,9 +86,9 @@ Future digests use motivation-first summaries, paper-specific background explana
 
 **Manually:** save a digest as UTF-8 Markdown at `incoming/YYYY-MM-DD.md`, following the [format in the technical guide](docs/technical-setup.md#digest-format). Run `npm run build` to validate it, then commit the Markdown and push to `main`. GitHub Actions parses it during the build and deploys the updated archive; you do not need to commit generated JSON or `dist/`.
 
-**Automatically:** the current setup runs locally on Windows with Codex signed in through ChatGPT and GitHub CLI signed in to the destination repository. A Codex task runs at 10:00 on weekdays, and a startup watcher catches up missed days while the computer and Codex app are running. This uses the existing ChatGPT login with no paid model API fallback; account usage limits still apply.
+**Automatically:** a Windows startup watcher checks the local queue and launches Codex only for missing digests due at 10:00 on weekdays (America/Chicago), including missed days while the computer and Codex app are running. Completed and idle checks use no model tokens. Generation uses the existing ChatGPT login with no paid model API fallback; account usage limits still apply. The clock, model, effort, and automatic-generation switch live in `local-pipeline.json`.
 
-See **[Technical setup and agent reference](docs/technical-setup.md)** for the exact research prompt, sanitized scheduled-task prompt, installation steps, catch-up behavior, GitHub Actions workflows, and validation commands. Local schedules and logins must be set up separately for each person; cloning the repo does not create them.
+See **[Technical setup and agent reference](docs/technical-setup.md)** for the research prompt, watcher installation, pause/resume controls, catch-up behavior, GitHub Actions workflows, and validation commands. The local watcher and logins must be set up separately for each person; cloning the repo does not create them.
 
 ## To-do: future implementations
 
