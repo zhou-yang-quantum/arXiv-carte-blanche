@@ -1,0 +1,201 @@
+{
+  "version": 6,
+  "date": "2026-10-19",
+  "source_hash": "645171fb331ceb767539bf64b426a921d322a0e51a3138f0ffbc296afa840ef6",
+  "pronunciations": [
+    {
+      "latex": "$(p,q)$",
+      "spoken": "the ordered pair P and Q"
+    },
+    {
+      "latex": "$2\\pi T$",
+      "spoken": "two pi T"
+    },
+    {
+      "latex": "$B$",
+      "spoken": "B"
+    },
+    {
+      "latex": "$B\\sim B+1$",
+      "spoken": "B [p] is identified with [p] B plus one"
+    },
+    {
+      "latex": "$N$",
+      "spoken": "N"
+    },
+    {
+      "latex": "$\\Lambda a\\to 0$",
+      "spoken": "Lambda A [p] tends to [p] zero"
+    },
+    {
+      "latex": "$\\Lambda$",
+      "spoken": "Lambda"
+    },
+    {
+      "latex": "$\\alpha>0$",
+      "spoken": "alpha [p] is greater than [p] zero"
+    },
+    {
+      "latex": "$\\beta=6.0$",
+      "spoken": "beta [p] equals [p] six point zero"
+    },
+    {
+      "latex": "$a$",
+      "spoken": "A"
+    },
+    {
+      "latex": "$c=2$",
+      "spoken": "C [p] equals [p] two"
+    },
+    {
+      "latex": "$g(L)\\sim 1/\\log L$",
+      "spoken": "G of L [p] scales as [p] one divided by the logarithm of L"
+    },
+    {
+      "latex": "$gT$",
+      "spoken": "G T"
+    },
+    {
+      "latex": "$g^6$",
+      "spoken": "G to the sixth"
+    },
+    {
+      "latex": "$g^{2}T$",
+      "spoken": "G squared T"
+    },
+    {
+      "latex": "$k/n$",
+      "spoken": "K divided by N"
+    },
+    {
+      "latex": "$p+q\\leq 3$",
+      "spoken": "P plus Q [p] is less than or equal to [p] three"
+    },
+    {
+      "latex": "$t_{\\rm{mem}}\\gtrsim\\exp(N^{\\alpha})$",
+      "spoken": "T sub mem [p] is greater than or of order [p] the exponential of N to the alpha"
+    }
+  ],
+  "phrase_groups": [
+    [
+      "Abelian anyons"
+    ],
+    [
+      "Dimensional reduction"
+    ],
+    [
+      "Extraordinary-log Criticality"
+    ],
+    [
+      "Hamiltonian limit"
+    ],
+    [
+      "Hilbert-Subspace Cloning"
+    ],
+    [
+      "Hilbert-space fragmentation"
+    ],
+    [
+      "Jastrow factor"
+    ],
+    [
+      "Matsubara frequency sums"
+    ],
+    [
+      "Pauli-error distribution"
+    ],
+    [
+      "Renormalization group improvement"
+    ],
+    [
+      "Statistical transmutation"
+    ],
+    [
+      "Thermal loop-tree duality"
+    ],
+    [
+      "Topological Aspects of the $c=2$ Model"
+    ],
+    [
+      "Yang-Mills theory"
+    ],
+    [
+      "chiral Potts chain"
+    ],
+    [
+      "cluster expansion"
+    ],
+    [
+      "correction-class entropy"
+    ],
+    [
+      "eigenstate thermalization"
+    ],
+    [
+      "electrostatic screening"
+    ],
+    [
+      "extraordinary-log criticality"
+    ],
+    [
+      "fluctuation–dissipation relation"
+    ],
+    [
+      "gauge averaging"
+    ],
+    [
+      "generalized extrinsic information transfer"
+    ],
+    [
+      "group characters"
+    ],
+    [
+      "hard-core anyons"
+    ],
+    [
+      "higher-group structure"
+    ],
+    [
+      "magnetostatic fluctuations"
+    ],
+    [
+      "minus-one-form symmetry"
+    ],
+    [
+      "modified Villain formulation"
+    ],
+    [
+      "non-invertible translation symmetries"
+    ],
+    [
+      "nonlinear sigma model"
+    ],
+    [
+      "partial Gibbs ensemble"
+    ],
+    [
+      "quantum Volterra model"
+    ],
+    [
+      "quantum erasure channel"
+    ],
+    [
+      "quantum-to-classical mapping"
+    ],
+    [
+      "renormalization group improved"
+    ],
+    [
+      "site singlets"
+    ],
+    [
+      "step-scaling function"
+    ],
+    [
+      "target-space momentum symmetries"
+    ],
+    [
+      "topological theta-term"
+    ]
+  ]
+}
