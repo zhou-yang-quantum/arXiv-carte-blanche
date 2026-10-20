@@ -1,0 +1,279 @@
+{
+  "version": 6,
+  "date": "2026-10-20",
+  "source_hash": "ae7ee6eb22031820d0df98942c2f6ce26ed8c6cf1f839fbb52ceb0bff895016f",
+  "pronunciations": [
+    {
+      "latex": "$(d-1)/2$",
+      "spoken": "the quantity D minus one [p] divided by two"
+    },
+    {
+      "latex": "$5^{+4}_{-2}\\times10^{-6}$",
+      "spoken": "five with upper error four and lower error two [p] times ten to the minus six"
+    },
+    {
+      "latex": "$7^{+3}_{-3}\\times10^{-5}$",
+      "spoken": "seven with upper error three and lower error three [p] times ten to the minus five"
+    },
+    {
+      "latex": "$E_0$",
+      "spoken": "E sub zero"
+    },
+    {
+      "latex": "$E_D(t)-E_\\infty=(E_0-E_\\infty)e^{-2\\gamma t}$",
+      "spoken": "E sub D of T [p] minus [p] E sub infinity [p] equals [p] the quantity (E sub zero minus E sub infinity) [p] times [p] E to the power (minus two gamma T)"
+    },
+    {
+      "latex": "$E_\\infty$",
+      "spoken": "E sub infinity"
+    },
+    {
+      "latex": "$J(r)\\propto r^{-(d+s)}$",
+      "spoken": "J of R [p] is proportional to [p] R to the power (the negative of the quantity D plus S)"
+    },
+    {
+      "latex": "$O=Z_iZ_j$",
+      "spoken": "O [p] equals [p] Z sub I times Z sub J"
+    },
+    {
+      "latex": "$P_{\\mathrm{L}}\\propto p^{(d+1)/2}$",
+      "spoken": "P sub L [p] is proportional to [p] P to the power (D plus one all divided by two)"
+    },
+    {
+      "latex": "$P_{\\mathrm{L}}\\propto p^{(d-1)/2}$",
+      "spoken": "P sub L [p] is proportional to [p] P to the power (D minus one all divided by two)"
+    },
+    {
+      "latex": "$S$",
+      "spoken": "S"
+    },
+    {
+      "latex": "$SU(N)$",
+      "spoken": "S U of N"
+    },
+    {
+      "latex": "$T$",
+      "spoken": "T"
+    },
+    {
+      "latex": "$U$",
+      "spoken": "U"
+    },
+    {
+      "latex": "$U\\rho U^\\dagger=\\rho$",
+      "spoken": "U rho U dagger [p] equals [p] rho"
+    },
+    {
+      "latex": "$U\\rho=\\rho$",
+      "spoken": "U rho [p] equals [p] rho"
+    },
+    {
+      "latex": "$V(0)=V(T)=\\mathbb{1}$",
+      "spoken": "V of zero [p] equals [p] V of T [p] equals [p] the identity"
+    },
+    {
+      "latex": "$\\Delta_\\sigma=(d-s)/2$",
+      "spoken": "delta sub sigma [p] equals [p] the quantity D minus S [p] divided by two"
+    },
+    {
+      "latex": "$\\gamma$",
+      "spoken": "gamma"
+    },
+    {
+      "latex": "$\\mathrm{Tr}(\\rho O\\rho O^\\dagger)/\\mathrm{Tr}(\\rho^2)$",
+      "spoken": "the trace of rho O rho O dagger [p] divided by [p] the trace of rho squared"
+    },
+    {
+      "latex": "$\\partial_i\\rho_i=0$",
+      "spoken": "partial sub I rho sub I [p] equals [p] zero"
+    },
+    {
+      "latex": "$d$",
+      "spoken": "D"
+    },
+    {
+      "latex": "$j=1$",
+      "spoken": "J [p] equals [p] one"
+    },
+    {
+      "latex": "$j_{\\max}=1/2$",
+      "spoken": "J sub max [p] equals [p] one half"
+    },
+    {
+      "latex": "$m$",
+      "spoken": "M"
+    },
+    {
+      "latex": "$m\\mathcal{T}\\ll1$",
+      "spoken": "M times T [p] is much less than [p] one"
+    },
+    {
+      "latex": "$m^2\\log m$",
+      "spoken": "M squared times log M"
+    },
+    {
+      "latex": "$n_l\\in\\{0,1,2\\}$",
+      "spoken": "N sub L [p] belongs to [p] the set zero, one, two"
+    },
+    {
+      "latex": "$p$",
+      "spoken": "P"
+    },
+    {
+      "latex": "$s$",
+      "spoken": "S"
+    }
+  ],
+  "phrase_groups": [
+    [
+      "$SU(N)$ spin systems"
+    ],
+    [
+      "(1+1)D SU(2) lattice gauge theory"
+    ],
+    [
+      "Chern–Simons"
+    ],
+    [
+      "Counterdiabatic driving"
+    ],
+    [
+      "F-moves"
+    ],
+    [
+      "Floquet engineering"
+    ],
+    [
+      "Goldstone modes"
+    ],
+    [
+      "Hadamard test"
+    ],
+    [
+      "Haldane model"
+    ],
+    [
+      "Hamiltonian truncation"
+    ],
+    [
+      "Liouvillian modes"
+    ],
+    [
+      "Martin–Siggia–Rose"
+    ],
+    [
+      "Rényi-2 correlator"
+    ],
+    [
+      "SWAP-superdense syndrome extraction"
+    ],
+    [
+      "Schwinger effect"
+    ],
+    [
+      "Strong-to-Weak Spontaneous Symmetry Breaking Transitions"
+    ],
+    [
+      "Trotterized evolution"
+    ],
+    [
+      "Witt equivalence"
+    ],
+    [
+      "adiabatic gauge potential"
+    ],
+    [
+      "adiabatic regularization"
+    ],
+    [
+      "anyon condensation"
+    ],
+    [
+      "circuit-level noise"
+    ],
+    [
+      "coherence shells"
+    ],
+    [
+      "color-Dicke state"
+    ],
+    [
+      "conditional probabilities"
+    ],
+    [
+      "correlated decoding"
+    ],
+    [
+      "electric-flux sector"
+    ],
+    [
+      "fidelity correlator"
+    ],
+    [
+      "generalized Gauss’s law"
+    ],
+    [
+      "generalized free field"
+    ],
+    [
+      "higher-form symmetries"
+    ],
+    [
+      "hybrid boson–fermion method"
+    ],
+    [
+      "ideal hydrodynamics"
+    ],
+    [
+      "leakage reduction"
+    ],
+    [
+      "logical error probability"
+    ],
+    [
+      "long-range Ising CFT"
+    ],
+    [
+      "loop-string-hadron formulation"
+    ],
+    [
+      "modular $S$ and $T$ matrices"
+    ],
+    [
+      "non-Abelian Gauss’s law"
+    ],
+    [
+      "numerical renormalization group"
+    ],
+    [
+      "pentagon and hexagon equations"
+    ],
+    [
+      "power-law-correlated dephasing"
+    ],
+    [
+      "renormalization group flow"
+    ],
+    [
+      "strong quantum Mpemba effect"
+    ],
+    [
+      "strong-to-weak spontaneous symmetry breaking"
+    ],
+    [
+      "time-dependent unitary frame transformations"
+    ],
+    [
+      "transparent fermion"
+    ],
+    [
+      "transverse-field Ising chain"
+    ],
+    [
+      "triangular color codes"
+    ],
+    [
+      "two-qubit Clifford randomized benchmarking"
+    ]
+  ]
+}
