@@ -1,0 +1,237 @@
+{
+  "version": 6,
+  "date": "2026-10-21",
+  "source_hash": "831ac01911717a83a46b2de5af3cdf409738f95397fb4f287214e17e0143accf",
+  "pronunciations": [
+    {
+      "latex": "$$H_{\\rm cav}=\\omega_{0}N+UL^{2}$$",
+      "spoken": "H sub cavity [p] equals [p] omega sub zero times N [p] plus [p] U times L squared"
+    },
+    {
+      "latex": "$1/(2S+1)$",
+      "spoken": "one divided by the quantity two S plus one"
+    },
+    {
+      "latex": "$1\\le m\\le d-2$",
+      "spoken": "one [p] is less than or equal to M [p] which is less than or equal to D minus two"
+    },
+    {
+      "latex": "$K$",
+      "spoken": "K"
+    },
+    {
+      "latex": "$L$",
+      "spoken": "L"
+    },
+    {
+      "latex": "$N$",
+      "spoken": "N"
+    },
+    {
+      "latex": "$N^{-4/5}$",
+      "spoken": "N to the negative four fifths"
+    },
+    {
+      "latex": "$O(\\log N+\\log(1/\\epsilon))$",
+      "spoken": "order [p] log N plus log of one divided by epsilon"
+    },
+    {
+      "latex": "$S$",
+      "spoken": "S"
+    },
+    {
+      "latex": "$U$",
+      "spoken": "U"
+    },
+    {
+      "latex": "$\\alpha$",
+      "spoken": "alpha"
+    },
+    {
+      "latex": "$\\alpha\\approx 3.5$",
+      "spoken": "alpha [p] is approximately [p] three point five"
+    },
+    {
+      "latex": "$\\beta=2$",
+      "spoken": "beta [p] equals [p] two"
+    },
+    {
+      "latex": "$\\epsilon$",
+      "spoken": "epsilon"
+    },
+    {
+      "latex": "$\\mathbb Z_2$",
+      "spoken": "Z sub two"
+    },
+    {
+      "latex": "$\\omega_0$",
+      "spoken": "omega sub zero"
+    },
+    {
+      "latex": "$d$",
+      "spoken": "D"
+    },
+    {
+      "latex": "$m$",
+      "spoken": "M"
+    }
+  ],
+  "phrase_groups": [
+    [
+      "Airy Hankel determinant"
+    ],
+    [
+      "Baxter Q-function"
+    ],
+    [
+      "Bloch sphere"
+    ],
+    [
+      "Chen–Kastoryano–Gilyén"
+    ],
+    [
+      "Complete Modified Logarithmic Sobolev Inequalities"
+    ],
+    [
+      "Coulomb gauge"
+    ],
+    [
+      "Dyson--Riccati gas"
+    ],
+    [
+      "Dyson–Riccati gas"
+    ],
+    [
+      "Floquet ground state"
+    ],
+    [
+      "Fokker–Planck equation"
+    ],
+    [
+      "Functional Separation of Variables"
+    ],
+    [
+      "Ginzburg–Landau"
+    ],
+    [
+      "Hellmann–Feynman"
+    ],
+    [
+      "Hybrid Lattice Surgery"
+    ],
+    [
+      "Kontsevich integral"
+    ],
+    [
+      "Lifshitz tail"
+    ],
+    [
+      "Nambu-Goldstone"
+    ],
+    [
+      "Open XXZ Spin Chain"
+    ],
+    [
+      "Painlevé I"
+    ],
+    [
+      "SU(2)"
+    ],
+    [
+      "Spatial entropy factorization"
+    ],
+    [
+      "Stratonovich–Weyl correspondence"
+    ],
+    [
+      "Truncated Wigner Approximation"
+    ],
+    [
+      "Uhlmann curvature"
+    ],
+    [
+      "Zamolodchikov metric"
+    ],
+    [
+      "anyon condensation"
+    ],
+    [
+      "average-energy operator"
+    ],
+    [
+      "complete modified logarithmic Sobolev inequality"
+    ],
+    [
+      "condensable algebra"
+    ],
+    [
+      "controlled multiplication"
+    ],
+    [
+      "counterdiabatic driving"
+    ],
+    [
+      "density-density interactions"
+    ],
+    [
+      "diamond norm"
+    ],
+    [
+      "drive holonomy"
+    ],
+    [
+      "free-fermion representation"
+    ],
+    [
+      "fusion trees"
+    ],
+    [
+      "gauge-flavor angular momentum"
+    ],
+    [
+      "group surface codes"
+    ],
+    [
+      "inhomogeneous Baxter equation"
+    ],
+    [
+      "local indistinguishability"
+    ],
+    [
+      "local quantum channels"
+    ],
+    [
+      "logical $K$-coset measurement"
+    ],
+    [
+      "matrix product state"
+    ],
+    [
+      "open XXZ chain"
+    ],
+    [
+      "quantum Fisher matrix"
+    ],
+    [
+      "quasiadiabatic continuation"
+    ],
+    [
+      "symmetric logarithmic derivative"
+    ],
+    [
+      "two-boson exchange"
+    ],
+    [
+      "type-A and type-B Goldstone modes"
+    ],
+    [
+      "vortex–antivortex pairs"
+    ],
+    [
+      "whole-system trace error"
+    ],
+    [
+      "winding sectors"
+    ]
+  ]
+}
