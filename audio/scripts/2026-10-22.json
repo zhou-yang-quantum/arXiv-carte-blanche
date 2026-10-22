@@ -1,0 +1,200 @@
+{
+  "version": 6,
+  "date": "2026-10-22",
+  "source_hash": "bc25f2eb4c6acce7c5f8ea3e83eaee985c39bb8b917bebc425baa89eae3817aa",
+  "pronunciations": [
+    {
+      "latex": "$((6,2,3))$",
+      "spoken": "six two three"
+    },
+    {
+      "latex": "$12D_T$",
+      "spoken": "twelve D sub T"
+    },
+    {
+      "latex": "$D_T$",
+      "spoken": "D sub T"
+    },
+    {
+      "latex": "$G(t,s)$",
+      "spoken": "G of T and S"
+    },
+    {
+      "latex": "$G(t,s)\\simeq\\sum_{n=1}^{N}g_n(t)g_n^*(s)$",
+      "spoken": "G of T and S [p] is approximately [p] the sum from n equals one to N of G sub n of T times G sub n star of S"
+    },
+    {
+      "latex": "$L$",
+      "spoken": "L"
+    },
+    {
+      "latex": "$N$",
+      "spoken": "N"
+    },
+    {
+      "latex": "$O(mn^2+n^4)$",
+      "spoken": "order (M N squared plus N to the fourth)"
+    },
+    {
+      "latex": "$\\beta\\to\\beta-p$",
+      "spoken": "beta [p] maps to [p] beta minus P"
+    },
+    {
+      "latex": "$\\kappa$",
+      "spoken": "kappa"
+    },
+    {
+      "latex": "$\\mathbb{RP}^4$",
+      "spoken": "real projective four-space"
+    },
+    {
+      "latex": "$\\mathcal{N}=4$",
+      "spoken": "N equals four"
+    },
+    {
+      "latex": "$\\omega=4-n_Y$",
+      "spoken": "omega [p] equals [p] four minus N sub Y"
+    },
+    {
+      "latex": "$m$",
+      "spoken": "M"
+    },
+    {
+      "latex": "$m_{*}$",
+      "spoken": "M sub star"
+    },
+    {
+      "latex": "$m_{\\mathrm{b}}(t)=m_{*}e^{\\kappa t}$",
+      "spoken": "M sub B of T [p] equals [p] M sub star times E to the power (kappa T)"
+    },
+    {
+      "latex": "$n$",
+      "spoken": "N"
+    },
+    {
+      "latex": "$n_Y$",
+      "spoken": "N sub Y"
+    },
+    {
+      "latex": "$p=\\kappa L$",
+      "spoken": "P [p] equals [p] kappa L"
+    },
+    {
+      "latex": "$|H\\rangle^{\\otimes K}$",
+      "spoken": "ket H to the tensor power K"
+    }
+  ],
+  "phrase_groups": [
+    [
+      "$\\mathcal{N}=4$ Super-Yang-Mills"
+    ],
+    [
+      "Bemfica–Disconzi–Noronha–Kovtun"
+    ],
+    [
+      "Binary Pauli labels"
+    ],
+    [
+      "Coupling dilution"
+    ],
+    [
+      "Faddeev–Popov factor"
+    ],
+    [
+      "Gate teleportation"
+    ],
+    [
+      "Gaudin determinants"
+    ],
+    [
+      "Group averaging"
+    ],
+    [
+      "Hydrodynamic frame freedom"
+    ],
+    [
+      "Knill–Laflamme equations"
+    ],
+    [
+      "Page–Wootters conditioning"
+    ],
+    [
+      "Reflection positivity"
+    ],
+    [
+      "Routh–Hurwitz criteria"
+    ],
+    [
+      "Steane and Knill teleportation gadgets"
+    ],
+    [
+      "Yang–Yang entropy"
+    ],
+    [
+      "analytic difference equations"
+    ],
+    [
+      "concatenated cultivation"
+    ],
+    [
+      "continuum Weyl fermions"
+    ],
+    [
+      "coordinate Bethe ansatz"
+    ],
+    [
+      "correlation matrix eigenvalues"
+    ],
+    [
+      "determinant line"
+    ],
+    [
+      "flag-at-origin"
+    ],
+    [
+      "full counting statistics"
+    ],
+    [
+      "half-BPS"
+    ],
+    [
+      "high-rate concatenated self-dual codes"
+    ],
+    [
+      "local Clifford"
+    ],
+    [
+      "projective logical action"
+    ],
+    [
+      "quantum reference frames"
+    ],
+    [
+      "rank-one projector"
+    ],
+    [
+      "rapidity lattice"
+    ],
+    [
+      "sine-Gordon theory"
+    ],
+    [
+      "spin-chain crosscap state"
+    ],
+    [
+      "subset-sum linear programming"
+    ],
+    [
+      "supersymmetric localization"
+    ],
+    [
+      "telegrapher equation"
+    ],
+    [
+      "two-time correlation kernel"
+    ],
+    [
+      "von Neumann entropy"
+    ]
+  ]
+}
