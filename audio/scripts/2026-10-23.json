@@ -1,0 +1,92 @@
+{
+  "version": 6,
+  "date": "2026-10-23",
+  "source_hash": "52692ac3e726fa0d1de1241410bfe611245f0494d3b6a9efbbde209200ff6cfd",
+  "pronunciations": [
+    {
+      "latex": "$D(\\rho_t\\|\\sigma_\\beta)\\leq e^{-\\kappa t}D(\\rho_0\\|\\sigma_\\beta)$",
+      "spoken": "the relative entropy of rho sub T with respect to sigma sub beta [p] is less than or equal to [p] E to the (minus kappa T) [p] times the relative entropy of rho sub zero with respect to sigma sub beta"
+    },
+    {
+      "latex": "$L^2$",
+      "spoken": "L squared"
+    },
+    {
+      "latex": "$M$",
+      "spoken": "M"
+    },
+    {
+      "latex": "$N$",
+      "spoken": "N"
+    },
+    {
+      "latex": "$O(2)$",
+      "spoken": "O of two"
+    },
+    {
+      "latex": "$O(3)$",
+      "spoken": "O of three"
+    },
+    {
+      "latex": "$O(p^d)$",
+      "spoken": "big O of (P to the D)"
+    },
+    {
+      "latex": "$U(2N)$",
+      "spoken": "U of two N"
+    },
+    {
+      "latex": "$X$",
+      "spoken": "X"
+    },
+    {
+      "latex": "$Z^S_{ij}=Z\\!\\left(-1/(\\tau_i-\\overline{\\tau_j})\\right)$",
+      "spoken": "Z sub (I J) superscript S [p] equals [p] Z evaluated at minus the reciprocal of the difference between tau sub I and the complex conjugate of tau sub J"
+    },
+    {
+      "latex": "$[[8,2,3]]$",
+      "spoken": "eight two three"
+    },
+    {
+      "latex": "$\\kappa$",
+      "spoken": "kappa"
+    },
+    {
+      "latex": "$\\rho(X)=XMX^\\dagger/\\operatorname{Tr}(XMX^\\dagger)$",
+      "spoken": "rho of X [p] equals [p] X M X dagger [p] divided by [p] the trace of (X M X dagger)"
+    },
+    {
+      "latex": "$\\rho_t$",
+      "spoken": "rho sub T"
+    },
+    {
+      "latex": "$\\sigma_\\beta$",
+      "spoken": "sigma sub beta"
+    },
+    {
+      "latex": "$\\tau_i$",
+      "spoken": "tau sub I"
+    },
+    {
+      "latex": "$\\widehat{\\Delta}<1$",
+      "spoken": "delta [p] is less than [p] one"
+    },
+    {
+      "latex": "$d$",
+      "spoken": "D"
+    },
+    {
+      "latex": "$h=\\log u$",
+      "spoken": "H [p] equals [p] the logarithm of U"
+    },
+    {
+      "latex": "$n\\geq 2d$",
+      "spoken": "N [p] is greater than or equal to [p] two D"
+    },
+    {
+      "latex": "$p$",
+      "spoken": "P"
+    }
+  ],
+  "phrase_groups": []
+}
