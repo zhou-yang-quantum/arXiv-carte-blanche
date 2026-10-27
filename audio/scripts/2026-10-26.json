@@ -1,0 +1,194 @@
+{
+  "version": 6,
+  "date": "2026-10-26",
+  "source_hash": "2976a3eb91d77309d62c9e7c00cf7cfcb8b1aa510ac4fd768ce5c2bfa1726dac",
+  "pronunciations": [
+    {
+      "latex": "$$V(B)=\\frac{1}{2}\\left(B^{4}+\\tau B^{2}\\right).$$",
+      "spoken": "V of B [p] equals [p] one half times the quantity B to the fourth plus tau times B squared"
+    },
+    {
+      "latex": "$$\\gamma(k)\\geq\\frac{2|\\widetilde{V}_{\\circ}(2k)|}{\\pi\\hbar}$$",
+      "spoken": "gamma of K [p] is greater than or equal to [p] two times the absolute value of V tilde sub circle evaluated at two K [p] divided by pi times h bar"
+    },
+    {
+      "latex": "$B$",
+      "spoken": "B"
+    },
+    {
+      "latex": "$T_g=1+\\sqrt{\\alpha}$",
+      "spoken": "T sub G [p] equals [p] one plus the square root of alpha"
+    },
+    {
+      "latex": "$[[21,3,5]]$",
+      "spoken": "twenty one three five"
+    },
+    {
+      "latex": "$\\alpha$",
+      "spoken": "alpha"
+    },
+    {
+      "latex": "$\\gamma(k)$",
+      "spoken": "gamma of K"
+    },
+    {
+      "latex": "$\\hbar k$",
+      "spoken": "h bar times K"
+    },
+    {
+      "latex": "$\\omega(k)\\sim-i{\\cal D}k^2$",
+      "spoken": "omega of K [p] is asymptotic to [p] minus I times D times K squared"
+    },
+    {
+      "latex": "$\\tau$",
+      "spoken": "tau"
+    },
+    {
+      "latex": "$\\widetilde{V}_{\\circ}$",
+      "spoken": "V tilde sub circle"
+    }
+  ],
+  "phrase_groups": [
+    [
+      "Asymptotic quantum many-body scars"
+    ],
+    [
+      "Borel resummation"
+    ],
+    [
+      "Einstein gravity"
+    ],
+    [
+      "Fredkin and Motzkin chains"
+    ],
+    [
+      "Gaussian diffusion"
+    ],
+    [
+      "Gaussian-pattern version"
+    ],
+    [
+      "Gauss’s law"
+    ],
+    [
+      "Hamilton–Jacobi formulation"
+    ],
+    [
+      "Intertwining Defects"
+    ],
+    [
+      "Ising–spherical problem"
+    ],
+    [
+      "Mandelstam–Tamm bound"
+    ],
+    [
+      "Markovian collision model"
+    ],
+    [
+      "Padé approximants"
+    ],
+    [
+      "Pauli constructions"
+    ],
+    [
+      "Quasinormal modes"
+    ],
+    [
+      "Schwinger model"
+    ],
+    [
+      "Steane-code states"
+    ],
+    [
+      "T-gate cost"
+    ],
+    [
+      "Temporal Degeneracy"
+    ],
+    [
+      "Wigner function"
+    ],
+    [
+      "Wigner negativity"
+    ],
+    [
+      "Yukawa theory"
+    ],
+    [
+      "anti-de Sitter black brane"
+    ],
+    [
+      "bivariate bicycle codes"
+    ],
+    [
+      "block encoding"
+    ],
+    [
+      "conditional oscillator displacement"
+    ],
+    [
+      "current algebra"
+    ],
+    [
+      "density-matrix renormalization group"
+    ],
+    [
+      "error-detecting teleportation"
+    ],
+    [
+      "even-parity ambiguity"
+    ],
+    [
+      "fermion–antifermion packets"
+    ],
+    [
+      "frustration-free Hamiltonians"
+    ],
+    [
+      "matrix-product-state simulations"
+    ],
+    [
+      "message-passing decoders"
+    ],
+    [
+      "min-sum updates"
+    ],
+    [
+      "non-invertible topological lines"
+    ],
+    [
+      "patch routing"
+    ],
+    [
+      "phenomenological noise"
+    ],
+    [
+      "qubit–oscillator encoding"
+    ],
+    [
+      "replica symmetry"
+    ],
+    [
+      "replica-symmetric description"
+    ],
+    [
+      "superselection sectors"
+    ],
+    [
+      "topological quantum field theory"
+    ],
+    [
+      "tricritical Ising conformal field theory"
+    ],
+    [
+      "two-point correlator"
+    ],
+    [
+      "verification eigenvalues"
+    ],
+    [
+      "volume-law entanglement"
+    ]
+  ]
+}
