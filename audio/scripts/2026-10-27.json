@@ -1,0 +1,357 @@
+{
+  "version": 6,
+  "date": "2026-10-27",
+  "source_hash": "611b7d6a0a1e146d41bca8f670fd772c75f4dc2e199c0e5774123cf522adc551",
+  "pronunciations": [
+    {
+      "latex": "$$\\frac{\\partial\\langle\\sigma_y^i\\rangle}{\\partial\\Omega_j}=\\frac{\\partial\\langle\\sigma_y^j\\rangle}{\\partial\\Omega_i}.$$",
+      "spoken": "The partial derivative of the expectation of sigma sub Y superscript I with respect to omega sub J [p] equals [p] the partial derivative of the expectation of sigma sub Y superscript J with respect to omega sub I."
+    },
+    {
+      "latex": "$$\\partial_\\lambda\\mathcal L=X F(r),$$",
+      "spoken": "The partial derivative of L with respect to lambda [p] equals [p] X times F of R"
+    },
+    {
+      "latex": "$$c_S/C_T\\leq16\\pi\\zeta(3),$$",
+      "spoken": "C sub S divided by C sub T [p] is less than or equal to [p] sixteen pi times zeta of three"
+    },
+    {
+      "latex": "$$t_{\\mathrm{mem}}\\geq\\exp[\\Omega(N^{1/3})].$$",
+      "spoken": "T sub mem [p] is greater than or equal to [p] the exponential of big omega of N to the one third."
+    },
+    {
+      "latex": "$$|E_D(\\rho)-E_D(\\sigma)|\\leq4\\sqrt{\\epsilon}\\log_2 d+4h_2(\\sqrt{\\epsilon}).$$",
+      "spoken": "The absolute value of (E sub D of rho minus E sub D of sigma) [p] is less than or equal to [p] four times the square root of epsilon times log base two of D [p] plus [p] four times H sub two of the square root of epsilon."
+    },
+    {
+      "latex": "$C_T$",
+      "spoken": "C sub T"
+    },
+    {
+      "latex": "$E_D$",
+      "spoken": "E sub D"
+    },
+    {
+      "latex": "$N$",
+      "spoken": "N"
+    },
+    {
+      "latex": "$T\\bar T$",
+      "spoken": "T T bar"
+    },
+    {
+      "latex": "$T_0=(2\\pi R)^{-1}$",
+      "spoken": "T sub zero [p] equals [p] the reciprocal of two pi R"
+    },
+    {
+      "latex": "$U_f=\\exp(i\\sum_j f_jS_j^z)$",
+      "spoken": "U sub F [p] equals [p] the exponential of (I times the sum over J of F sub J times S sub J superscript Z)"
+    },
+    {
+      "latex": "$V,HV,H^2V,\\ldots$",
+      "spoken": "V [p] H V [p] H squared V [p] and so on"
+    },
+    {
+      "latex": "$X=T_{\\mu\\nu}T^{\\mu\\nu}$",
+      "spoken": "X [p] equals [p] T sub mu nu times T superscript mu nu"
+    },
+    {
+      "latex": "$Y=(T^\\mu{}_\\mu)^2$",
+      "spoken": "Y [p] equals [p] the square of T superscript mu sub mu"
+    },
+    {
+      "latex": "$\\Delta$",
+      "spoken": "delta"
+    },
+    {
+      "latex": "$\\epsilon$",
+      "spoken": "epsilon"
+    },
+    {
+      "latex": "$\\epsilon<1/16$",
+      "spoken": "epsilon [p] is less than [p] one sixteenth"
+    },
+    {
+      "latex": "$\\eta>0$",
+      "spoken": "eta [p] is greater than [p] zero"
+    },
+    {
+      "latex": "$\\lambda=\\Lambda/m$",
+      "spoken": "Lambda [p] equals [p] capital lambda divided by M"
+    },
+    {
+      "latex": "$\\operatorname{polylog}(N/\\epsilon)$",
+      "spoken": "polylog of (N divided by epsilon)"
+    },
+    {
+      "latex": "$\\phi$",
+      "spoken": "phi"
+    },
+    {
+      "latex": "$\\text{O}(N)$",
+      "spoken": "O of N"
+    },
+    {
+      "latex": "$\\widetilde O(\\sqrt{N}/\\epsilon)$",
+      "spoken": "soft O of (the square root of N divided by epsilon)"
+    },
+    {
+      "latex": "$c=1$",
+      "spoken": "C equals one"
+    },
+    {
+      "latex": "$d$",
+      "spoken": "D"
+    },
+    {
+      "latex": "$d-1$",
+      "spoken": "D minus one"
+    },
+    {
+      "latex": "$d-2$",
+      "spoken": "D minus two"
+    },
+    {
+      "latex": "$d=7,9,11$",
+      "spoken": "D [p] equals [p] seven, nine, eleven"
+    },
+    {
+      "latex": "$g_s(x)l_s$",
+      "spoken": "G sub S of X times L sub S"
+    },
+    {
+      "latex": "$h(\\lambda)\\geq\\lambda^{8/7-\\eta}$",
+      "spoken": "H of lambda [p] is greater than or equal to [p] lambda to the power (eight sevenths minus eta)"
+    },
+    {
+      "latex": "$h=m_{\\mathrm{eff}}/m$",
+      "spoken": "H [p] equals [p] M sub eff divided by M"
+    },
+    {
+      "latex": "$q=\\Theta(N)$",
+      "spoken": "Q [p] equals [p] theta of N"
+    },
+    {
+      "latex": "$r=-T^\\mu{}_\\mu/\\sqrt{4X-Y}$",
+      "spoken": "R [p] equals [p] negative T superscript mu sub mu divided by the square root of (four X minus Y)"
+    },
+    {
+      "latex": "$s=c_ST^2$",
+      "spoken": "S [p] equals [p] C sub S times T squared"
+    },
+    {
+      "latex": "$s\\to\\infty$",
+      "spoken": "S tends to infinity"
+    },
+    {
+      "latex": "$|2\\sin(\\phi/2)|^{-2\\Delta}$",
+      "spoken": "The absolute value of two times sine of phi divided by two [p] raised to the power negative two delta"
+    }
+  ],
+  "phrase_groups": [
+    [
+      "$T\\bar T$-like"
+    ],
+    [
+      "$\\text{O}(N)$ conformal field theories"
+    ],
+    [
+      "3D surface code"
+    ],
+    [
+      "Born-Infeld"
+    ],
+    [
+      "CCZ magic state"
+    ],
+    [
+      "Electric-magnetic duality"
+    ],
+    [
+      "Fisher metric"
+    ],
+    [
+      "Free cumulants"
+    ],
+    [
+      "Gottesman-Kitaev-Preskill"
+    ],
+    [
+      "Gross-Neveu model"
+    ],
+    [
+      "Haar-random circuits"
+    ],
+    [
+      "Hamiltonian simulation time"
+    ],
+    [
+      "Jacobian lattice"
+    ],
+    [
+      "Junction Hook Errors"
+    ],
+    [
+      "Knill-Laflamme conditions"
+    ],
+    [
+      "Krylov chain"
+    ],
+    [
+      "Lee metric"
+    ],
+    [
+      "Lindblad approximation"
+    ],
+    [
+      "Markov chain Monte Carlo"
+    ],
+    [
+      "Pauli powers"
+    ],
+    [
+      "Pauli-Fierz"
+    ],
+    [
+      "Ruelle-Pollicott Resonances"
+    ],
+    [
+      "Ruelle-Pollicott resonances"
+    ],
+    [
+      "Rydberg-atom arrays"
+    ],
+    [
+      "Schmidt spectra"
+    ],
+    [
+      "Weyl disks"
+    ],
+    [
+      "Wigner distribution"
+    ],
+    [
+      "Wilson fermions"
+    ],
+    [
+      "XXZ chains"
+    ],
+    [
+      "alternate boundary conditions"
+    ],
+    [
+      "asymptotic freeness"
+    ],
+    [
+      "binary entropy"
+    ],
+    [
+      "block Jacobi recurrence"
+    ],
+    [
+      "cluster-exchange move"
+    ],
+    [
+      "code automorphism"
+    ],
+    [
+      "code-capacity bit-flip noise"
+    ],
+    [
+      "compact-boson description"
+    ],
+    [
+      "conformal-collider positivity"
+    ],
+    [
+      "continuous-variable quantum information"
+    ],
+    [
+      "deficiency indices"
+    ],
+    [
+      "distillable entanglement"
+    ],
+    [
+      "double-scaled $c=1$ matrix model"
+    ],
+    [
+      "energy filter"
+    ],
+    [
+      "entanglement infidelity"
+    ],
+    [
+      "equilibrium propagation"
+    ],
+    [
+      "flat connection"
+    ],
+    [
+      "hidden time-reversal symmetry"
+    ],
+    [
+      "imaginary-time Mpemba effect"
+    ],
+    [
+      "large-deviation Hamiltonian"
+    ],
+    [
+      "local Metropolis dynamics"
+    ],
+    [
+      "local operations and classical communication"
+    ],
+    [
+      "local-unitary invariants"
+    ],
+    [
+      "macroscopic fluctuation theory"
+    ],
+    [
+      "mass renormalization"
+    ],
+    [
+      "modular Hamiltonian"
+    ],
+    [
+      "monodromy defects"
+    ],
+    [
+      "non-compact Ishimori spin chain"
+    ],
+    [
+      "out-of-time-ordered correlators"
+    ],
+    [
+      "photon cloud"
+    ],
+    [
+      "quantum detailed-balance condition"
+    ],
+    [
+      "self-adjoint extension"
+    ],
+    [
+      "self-dual kicked-Ising dynamics"
+    ],
+    [
+      "stress-tensor two-point coefficient"
+    ],
+    [
+      "system-bath interaction"
+    ],
+    [
+      "thermal encoding"
+    ],
+    [
+      "transverse-field Ising model"
+    ],
+    [
+      "ultraviolet cutoff"
+    ],
+    [
+      "variational quantum imaginary-time evolution"
+    ]
+  ]
+}
