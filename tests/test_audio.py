@@ -11,7 +11,7 @@ from unittest.mock import patch
 
 from tools.build import ROOT, audio_source_hash, audio_script_hash, load_audio_index
 from tools.generate_audio import fingerprint, concatenate, append_silence, text_chunks, build_playlist_archive, ensure_playlist, render
-from tools.speech_text import make_script
+from tools.speech_text import make_script, source_phrase_groups, source_pronunciations
 from tools.import_digest import parse_digest
 from tools.project import AUDIO_BASE, LEGACY_AUDIO_BASE, canonical_audio_manifest
 from test_archive import example_digest
@@ -198,6 +198,32 @@ class AudioTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             make_script(self.day, script['pronunciations'] * 2)
 
+    def test_generated_equation_key_can_copy_unique_source_sentence_punctuation(self):
+        formula = r'$$V(B)=\frac{1}{2}\left(B^{4}+\tau B^{2}\right)$$'
+        source = formula[:-2] + '.$$'
+        self.day['papers'][0]['summary'] = 'The potential is ' + source
+        readings = [{'latex': formula, 'spoken': 'V of B equals one half times B to the fourth plus tau B squared'}]
+        original = json.loads(json.dumps(self.day))
+        corrected = source_pronunciations(self.day, readings)
+        self.assertEqual(corrected, [{'latex': source, 'spoken': readings[0]['spoken']}])
+        make_script(self.day, corrected)
+        self.assertEqual(self.day, original)
+        self.assertEqual(readings[0]['latex'], formula)
+        with self.assertRaises(ValueError):
+            make_script(self.day, readings)
+
+    def test_equation_alignment_never_changes_tokens_or_guesses_between_variants(self):
+        self.day['papers'][0]['summary'] = r'$$x^2.$$ and $$x^2,$$'
+        readings = [{'latex': '$$x^2$$', 'spoken': 'x squared'}]
+        self.assertEqual(source_pronunciations(self.day, readings), readings)
+        for formula in ('$$X^2$$', '$$x^3$$', '$$x^2!$$', '$x^2$'):
+            readings = [{'latex': formula, 'spoken': 'a reading'}]
+            self.assertEqual(source_pronunciations(self.day, readings), readings)
+            with self.assertRaises(ValueError):
+                make_script(self.day, source_pronunciations(self.day, readings))
+        with self.assertRaises(ValueError):
+            make_script(self.day, source_pronunciations(self.day, []))
+
     def test_edited_pronunciation_cannot_use_old_audio(self):
         script = make_script(self.day, [])
         with tempfile.TemporaryDirectory() as folder, patch('tools.build.ROOT', Path(folder)):
@@ -217,6 +243,45 @@ class AudioTests(unittest.TestCase):
                 make_script(self.day, [{'latex': '$x$', 'spoken': spoken}])
         with self.assertRaises(ValueError):
             make_script(self.day, [{'latex': '$x$', 'spoken': 'x [p] equals one'}], version=4)
+
+    def test_generated_phrase_capitalization_copies_source_and_keeps_pauses(self):
+        self.day['papers'][0]['summary'] = 'Counterdiabatic driving uses Large $N$ Models.'
+        groups = [['counterdiabatic driving'], ['large $N$', 'models']]
+        before = json.loads(json.dumps(self.day))
+        corrected = source_phrase_groups(self.day, groups)
+        self.assertEqual(corrected, [['Counterdiabatic driving'], ['Large $N$', 'Models']])
+        self.assertEqual(groups, [['counterdiabatic driving'], ['large $N$', 'models']])
+        self.assertEqual(self.day, before)
+        script = make_script(self.day, [{'latex': '$N$', 'spoken': 'N'}], phrase_groups=corrected)
+        self.assertEqual(script['phrase_groups'], corrected)
+        with self.assertRaisesRegex(ValueError, 'copy phrases'):
+            make_script(self.day, [{'latex': '$N$', 'spoken': 'N'}], phrase_groups=groups)
+
+    def test_generated_phrase_repair_rejects_ambiguous_spelling_and_math_changes(self):
+        self.day['papers'][0]['summary'] = 'Counterdiabatic driving. Counterdiabatic Driving. Large $N$ Models.'
+        for groups in ([['counterdiabatic driving']], [['large $n$ models']], [['made-up jargon']],
+                       [['counterdiabatic', 'drive']], [['large $N', '$ models']],
+                       [['large $N$ models'], ['large $N$']]):
+            with self.subTest(groups=groups), self.assertRaises(ValueError):
+                source_phrase_groups(self.day, groups)
+        # An exact spelling stays valid even if other capitalization also occurs.
+        self.assertEqual(source_phrase_groups(self.day, [['Counterdiabatic driving']]),
+                         [['Counterdiabatic driving']])
+
+    def test_stale_optional_prose_group_can_be_skipped_without_changing_narration(self):
+        self.day['papers'][0]['summary'] = 'Global relative entropy has conditional contributions. Large $N$ Models.'
+        original = json.loads(json.dumps(self.day))
+        groups = [['conditional relative entropy'], ['large $N$', 'models']]
+        skipped = []
+        corrected = source_phrase_groups(self.day, groups, skip_missing_prose=True, on_skip=skipped.append)
+        self.assertEqual(skipped, ['conditional relative entropy'])
+        self.assertEqual(corrected, [['Large $N$', 'Models']])
+        self.assertEqual(self.day, original)
+        make_script(self.day, [{'latex': '$N$', 'spoken': 'N'}], phrase_groups=corrected)
+        for unsafe in ([['large $n$ models']], [['large $N', '$ models']],
+                       [['large $N$ models'], ['large $N$']]):
+            with self.subTest(groups=unsafe), self.assertRaises(ValueError):
+                source_phrase_groups(self.day, unsafe, skip_missing_prose=True)
 
     def test_phrase_groups_are_source_exact_nonoverlapping_and_cannot_split_math(self):
         self.day['papers'][0]['title'] = 'Large $N$ Vector and SYK-like Models'

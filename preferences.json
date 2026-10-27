@@ -2,8 +2,8 @@
   "prioritize": ["Quantum field theory", "Non-equilibrium physics", "Quantum error correction", "Quantum simulation", "Quantum algorithms", "Exactly solvable models"],
   "exclude": ["Materials", "Quantum chemistry", "Bilayer graphene", "TMDs", "High-temperature superconductivity", "Most experiments unless they demonstrate an important theoretical principle", "Overly mathematical string theory", "Overly computer-science-heavy quantum algorithms"],
   "principles": ["Broaden beyond topics closely related to my own publications", "Rank by conceptual interest and personal relevance", "Explain unfamiliar concepts with brief background and motivation"],
-  "selection": {"preferred_count": 10, "minimum_count": 10, "maximum_count": 20, "additional_papers": "Include additional papers only when they are important, interesting, and clearly fit my interests; do not pad the selection"},
-  "format": "Clean numerical ranking and daily overview; summary, background, and why it matters for each of 10–20 papers, without priority verdicts",
+  "selection": {"maximum_count": 20, "count_policy": "Rank all qualifying papers from the complete batch; include all if twenty or fewer qualify, otherwise select the top twenty", "additional_papers": "No minimum quota or preferred count; fewer than ten is acceptable; do not pad or add redundant contributions"},
+  "format": "Clean numerical ranking and daily overview; summary, background, and why it matters for each selected paper, up to twenty, without priority verdicts",
   "date_title": "arXiv-YYYY-MM-DD",
   "item_label": "arXiv-YYYY-MM-DD — Item N"
 }

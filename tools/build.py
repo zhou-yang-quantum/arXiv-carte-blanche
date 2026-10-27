@@ -78,7 +78,7 @@ def load_archive(folder, incoming_folder=None):
         count = len(papers)
         expected_ranks = list(range(1, count + 1))
         if not MIN_PAPERS <= count <= MAX_PAPERS or [p["rank"] for p in papers] != expected_ranks:
-            raise ValueError(f"{date}: expected 10–20 consecutively ranked papers")
+            raise ValueError(f"{date}: expected {MIN_PAPERS}–{MAX_PAPERS} consecutively ranked papers")
         if len({p["id"] for p in papers}) != count:
             raise ValueError(f"{date}: duplicate paper IDs")
         if sorted(day["reading_order"]) != expected_ranks:

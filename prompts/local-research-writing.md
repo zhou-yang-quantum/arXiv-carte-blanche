@@ -74,10 +74,12 @@ the scientific content and assessment from each current paper's own sources.
 Use the arXiv link at the bottom of each item, without redundant inline links
 labeled "v1 paper", "v1 abstract", or similar. Verify claims from the recorded source version.
 
-Return only the final JSON object matching the supplied schema. If at least ten
-appropriate papers cannot be supported, set status to "insufficient", explain
+Return only the final JSON object matching the supplied schema. If no
+appropriate papers can be supported, set status to "insufficient", explain
 briefly in reason, and leave markdown empty. Otherwise set status to "ready",
-reason to a brief explanation of the selection size, and markdown to a complete
+reason to a brief explanation of why the chosen number of papers met the criteria
+and why the remaining candidates did not warrant inclusion. Merely stating the
+selection count or catalog size is not an explanation. Set markdown to a complete
 UTF-8 digest with this structure for every item:
 
 # arXiv-YYYY-MM-DD

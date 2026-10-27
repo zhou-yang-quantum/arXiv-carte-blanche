@@ -1,11 +1,11 @@
-"""Import a dated ChatGPT digest of 10–20 ranked papers into the archive."""
+"""Import a dated ChatGPT digest of up to twenty ranked papers into the archive."""
 import argparse
 import json
 import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-MIN_PAPERS = 10
+MIN_PAPERS = 1
 MAX_PAPERS = 20
 TOPICS = {
     "Quantum field theory": r"field theor|worldline|instantons|matrix.model|topological order|fusion",
@@ -78,7 +78,7 @@ def parse_digest(text):
     count = len(papers)
     expected_ranks = list(range(1, count + 1))
     if not MIN_PAPERS <= count <= MAX_PAPERS or [p["rank"] for p in papers] != expected_ranks:
-        raise ValueError("Expected 10–20 items with consecutive ranks starting at 1")
+        raise ValueError(f"Expected {MIN_PAPERS}–{MAX_PAPERS} items with consecutive ranks starting at 1")
     if len({p["id"] for p in papers}) != count:
         raise ValueError("Duplicate paper IDs in digest")
     order_match = re.search(r"reading order.*?\*\*(.*?)\*\*", day_notes, re.I)

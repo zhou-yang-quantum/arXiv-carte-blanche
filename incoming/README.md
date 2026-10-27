@@ -4,7 +4,7 @@ Create one UTF-8 Markdown file here for each daily selection:
 
 `incoming/YYYY-MM-DD.md`
 
-Start with `# arXiv-YYYY-MM-DD` and a brief daily overview, followed by 10–20 consecutively ranked item headings:
+Start with `# arXiv-YYYY-MM-DD` and a brief daily overview, followed by 1–20 consecutively ranked item headings:
 `## arXiv-YYYY-MM-DD — Item N`.
 
 Each item must include a `###` paper title, authors and `arXiv:YYMM.NNNNN`,

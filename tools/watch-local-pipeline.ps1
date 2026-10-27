@@ -1,6 +1,7 @@
 param([switch]$Once)
 $ErrorActionPreference = 'Stop'
 $repoRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
+. (Join-Path $PSScriptRoot 'controller-process.ps1')
 $runtimeRoot = Join-Path $repoRoot '.cache/local-pipeline'
 [IO.Directory]::CreateDirectory($runtimeRoot) | Out-Null
 $mutex = New-Object Threading.Mutex($false, 'Local\DailyArxivStartupWatcher')
@@ -15,11 +16,16 @@ try {
                 $_.Path -and ($_.Path -like '*\WindowsApps\OpenAI.Codex_*\app\ChatGPT.exe' -or $_.Path -like '*\app\Codex.exe')
             })
             if ($app.Count -gt 0) {
-                $planText = & $pythonPath (Join-Path $repoRoot 'tools/local_pipeline.py') plan
-                if ($LASTEXITCODE -ne 0) { throw 'Could not inspect the catch-up queue.' }
-                $plan = $planText | ConvertFrom-Json
+                $planResult = Invoke-ArxivController $pythonPath (Join-Path $repoRoot 'tools/local_pipeline.py') @('plan')
+                if ($planResult.Stderr) { Add-Content -LiteralPath (Join-Path $runtimeRoot 'watcher.log') -Value $planResult.Stderr -Encoding UTF8 }
+                if ($planResult.ExitCode -ne 0) { throw 'Could not inspect the catch-up queue.' }
+                $plan = $planResult.Stdout | ConvertFrom-Json
                 if ($plan.enabled -ne $false -and @($plan.due).Count -gt 0) {
-                    & $pythonPath (Join-Path $repoRoot 'tools/local_pipeline.py') run --automatic >> (Join-Path $runtimeRoot 'watcher.log') 2>&1
+                    $runResult = Invoke-ArxivController $pythonPath (Join-Path $repoRoot 'tools/local_pipeline.py') @('run','--automatic')
+                    foreach ($outputText in @($runResult.Stdout, $runResult.Stderr)) {
+                        if ($outputText) { Add-Content -LiteralPath (Join-Path $runtimeRoot 'watcher.log') -Value $outputText -Encoding UTF8 }
+                    }
+                    if ($runResult.ExitCode -ne 0) { throw ('Controller exited with code {0}; see preceding log.' -f $runResult.ExitCode) }
                 }
             }
         } catch {

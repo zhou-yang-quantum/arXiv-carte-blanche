@@ -10,7 +10,7 @@ I started this project because I wanted to listen to arXiv papers during my comm
 
 ## Le menu
 
-- **A daily digest to your taste.** AI selects and ranks 10–20 newly announced papers, explaining the main result, motivation, background, and why each paper matters. Both the selection and the depth of explanation are catered to the researcher's interests and knowledge.
+- **A daily digest to your taste.** AI selects and ranks 1–20 newly announced papers, explaining the main result, motivation, background, and why each paper matters. Both the selection and the depth of explanation are catered to the researcher's interests and knowledge.
 - **Audio for the commute.** Accompanying recordings include experimental maths pronunciations: equations are given spoken English readings, with pauses and phrasing to help them make sense by ear. Listen by paper or play the day's menu, with playback speed controls and downloadable MP3s.
 - **Save something for later.** Bookmark papers from the page or audio player, and sync your saved papers across devices through your own Dropbox account.
 
@@ -74,7 +74,7 @@ The minimum changes for a personalized digest are:
 | [preferences.json](preferences.json) | Match the interests and criteria shown on the website to your prompt. This file does not control generation. |
 | [local-pipeline.json](local-pipeline.json) | Set the arXiv `categories` to scan. For automation, also choose your `start_date`, timezone, time, model, and effort. |
 
-For example, replace the prompt's topic paragraph with your preferred fields and ask for explanations at your own level. Keep the default ten papers, with up to twenty when warranted; the importer currently enforces 10–20. Edits affect future digests, so existing entries remain as examples until you replace them deliberately.
+For example, replace the prompt's topic paragraph with your preferred fields and ask for explanations at your own level. Assess and rank all qualifying papers, include all when twenty or fewer qualify, and otherwise select the top twenty. There is no minimum quota or preferred count; the importer accepts nonempty digests of up to twenty papers. Edits affect future digests, so existing entries remain as examples until you replace them deliberately.
 
 To host your own copy, enable Actions in your fork and select **Settings → Pages → Source → GitHub Actions**. Push to `main` to publish. Update the repository link in `site/index.html` and this README's website link. The [technical setup guide](docs/technical-setup.md#fork-specific-settings) lists the additional repository URLs to change before enabling automatic publishing or audio.
 

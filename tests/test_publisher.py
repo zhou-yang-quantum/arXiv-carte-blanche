@@ -14,11 +14,12 @@ class PublisherTests(unittest.TestCase):
     @patch('tools.publish_digest.git_request')
     @patch('tools.publish_digest.api_request', return_value=None)
     def test_text_and_speech_are_published_in_one_protected_commit(self, api, git):
-        text = example_digest(include_priority=False)
+        text = example_digest(7, include_priority=False)
         script = make_script(parse_digest(text), [], phrase_groups=[['A useful concept']])
         git.side_effect = [{'object': {'sha': 'base'}}, {'tree': {'sha': 'base-tree'}},
                            {'sha': 'new-tree'}, {'sha': 'new-commit'}, {'object': {'sha': 'new-commit'}}]
         result = publish(text, 'test-credential', speech_script=script)
+        self.assertEqual(result['papers'], 7)
         self.assertEqual(result['commit'], 'new-commit')
         self.assertEqual(result['website'], WEBSITE + '#date=2026-10-06')
         tree = git.call_args_list[2].args[3]
@@ -97,7 +98,7 @@ class PublisherTests(unittest.TestCase):
 
     @patch('tools.publish_digest.api_request')
     def test_out_of_range_counts_never_reach_github(self, api):
-        for count in (9, 21):
+        for count in (0, 21):
             with self.subTest(count=count), self.assertRaises(ValueError):
                 publish(example_digest(count, include_priority=False), 'test-credential')
         api.assert_not_called()

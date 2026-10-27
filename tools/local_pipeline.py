@@ -18,12 +18,12 @@ from zoneinfo import ZoneInfo
 if __package__:
     from . import collect_arxiv, publish_digest
     from .import_digest import parse_digest
-    from .speech_text import make_script
+    from .speech_text import make_script, source_phrase_groups, source_pronunciations
 else:
     import collect_arxiv
     import publish_digest
     from import_digest import parse_digest
-    from speech_text import make_script
+    from speech_text import make_script, source_phrase_groups, source_pronunciations
 
 ROOT = Path(__file__).resolve().parents[1]
 RUNTIME = ROOT / '.cache' / 'local-pipeline'
@@ -460,12 +460,37 @@ def research_prompt(day, style_example=None):
     return prompt
 
 
+def prepare_generated_result(result):
+    if result.get('status') != 'ready':
+        return result
+    digest = parse_digest(result['markdown'])
+    try:
+        groups = source_phrase_groups(
+            digest, result.get('phrase_groups', []), skip_missing_prose=True,
+            on_skip=lambda phrase: print(json.dumps({'status': 'audio-annotation-skipped',
+                                                    'phrase': phrase}), flush=True))
+    except ValueError as error:
+        # Delivery hints are optional. Normal narration still uses the exact
+        # digest and every required math reading, validated before publication.
+        groups = []
+        print(json.dumps({'status': 'audio-grouping-fallback', 'reason': str(error)}), flush=True)
+    pronunciations = source_pronunciations(
+        digest, result.get('math_pronunciations', []),
+        on_rekey=lambda old, new: print(json.dumps({'status': 'audio-equation-key-aligned',
+                                                   'original': old, 'source': new}), flush=True))
+    return {**result, 'phrase_groups': groups, 'math_pronunciations': pronunciations}
+
+
 def generate(day, snapshot, config):
     folder = RUNTIME / 'runs' / day
     folder.mkdir(parents=True, exist_ok=True)
     output = folder / 'result.json'
     if output.exists():
-        return json.loads(output.read_text(encoding='utf-8'))
+        return prepare_generated_result(json.loads(output.read_text(encoding='utf-8')))
+    pending_output = folder / 'result.pending.json'
+    if pending_output.exists():
+        stamp = datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S%f')
+        pending_output.replace(folder / f'result.incomplete-{stamp}.json')
     executable = find_codex()
     auth = subprocess.run([executable, '-c', 'forced_login_method="chatgpt"', 'login', 'status'],
                           capture_output=True, text=True, env=child_environment(), timeout=30)
@@ -478,12 +503,17 @@ def generate(day, snapshot, config):
     style_example = prepare_style_example(day, folder)
     prompt = research_prompt(day, style_example)
     with (folder / 'events.jsonl').open('w', encoding='utf-8') as events, (folder / 'stderr.log').open('w', encoding='utf-8') as errors:
-        result = subprocess.run(generation_command(executable, config, output, schema_file), input=prompt,
+        result = subprocess.run(generation_command(executable, config, pending_output, schema_file), input=prompt,
                                 text=True, encoding='utf-8', stdout=events, stderr=errors,
                                 cwd=ROOT, env=child_environment(), timeout=config['generation_timeout_minutes'] * 60)
-    if result.returncode or not output.exists():
+    if result.returncode or not pending_output.exists():
         raise RuntimeError(f'Codex generation failed for {day}; queued for retry, see its local run log')
-    return json.loads(output.read_text(encoding='utf-8'))
+    try:
+        saved = json.loads(pending_output.read_text(encoding='utf-8'))
+    except json.JSONDecodeError:
+        raise RuntimeError(f'Codex returned incomplete JSON for {day}; queued for retry') from None
+    pending_output.replace(output)
+    return prepare_generated_result(saved)
 
 
 def validate_result(result, snapshot, day):
@@ -520,8 +550,15 @@ def run_pipeline(limit=None, automatic=False):
             return {'status': 'up-to-date', **pending}
         if not app_is_running():
             return {'status': 'waiting-for-app', **pending}
-        token = github_token()
         results = []
+        try:
+            token = github_token()
+        except (OSError, RuntimeError, subprocess.SubprocessError) as error:
+            retry_at = (now + timedelta(minutes=config['retry_minutes'])).isoformat()
+            state['pause_until'] = retry_at
+            save_state(state)
+            return {'status': 'retry', 'reason': str(error), 'retry_at': retry_at,
+                    'remaining': plan(config, state, now)}
         for day in pending['due'][:limit] if limit else pending['due']:
             if not app_is_running():
                 return {'status': 'waiting-for-app', 'results': results, 'remaining': plan(config, state, datetime.now(timezone.utc))}

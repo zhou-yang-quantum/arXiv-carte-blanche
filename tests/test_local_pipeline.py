@@ -1,6 +1,11 @@
 import json
+import io
 import os
-from datetime import datetime, timezone
+import shutil
+import subprocess
+import sys
+from contextlib import redirect_stdout, redirect_stderr
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 import tempfile
 import unittest
@@ -200,6 +205,37 @@ class QueueTests(unittest.TestCase):
             credential.assert_not_called()
             generate.assert_not_called()
 
+    def test_login_failure_receives_cooldown_without_starting_research(self):
+        with tempfile.TemporaryDirectory() as folder, patch.object(pipeline, 'RUNTIME', Path(folder)), \
+             patch.object(pipeline, 'load_config', return_value=self.config), \
+             patch.object(pipeline, 'expected_dates', return_value=['2026-10-07']), \
+             patch.object(pipeline, 'app_is_running', return_value=True), \
+             patch.object(pipeline, 'github_token', side_effect=RuntimeError('Login unavailable')) as credential, \
+             patch.object(pipeline, 'generate') as generate:
+            first = pipeline.run_pipeline(automatic=True)
+            self.assertEqual(first['status'], 'retry')
+            self.assertEqual(first['remaining']['waiting'], ['2026-10-07'])
+            self.assertEqual(pipeline.run_pipeline(automatic=True)['status'], 'up-to-date')
+            credential.assert_called_once()
+            generate.assert_not_called()
+
+    def test_optional_delivery_errors_fall_back_but_required_equations_still_block(self):
+        text = example_digest(include_priority=False).replace('2026-10-06', '2026-10-07')
+        for groups in ([['A useful concept'], ['useful concept']], [['A useful concept'], ['A useful concept']],
+                       [[]], 'not a list'):
+            with self.subTest(groups=groups), redirect_stdout(io.StringIO()) as output:
+                prepared = pipeline.prepare_generated_result({'status': 'ready', 'markdown': text,
+                                                               'phrase_groups': groups})
+                self.assertEqual(prepared['phrase_groups'], [])
+                self.assertIn('audio-grouping-fallback', output.getvalue())
+                pipeline.validate_result(prepared, snapshot(), '2026-10-07')
+        text = text.replace('Summary of paper 1.', 'A quantity is $N$.')
+        with redirect_stdout(io.StringIO()):
+            prepared = pipeline.prepare_generated_result({'status': 'ready', 'markdown': text,
+                                                           'phrase_groups': 'bad'})
+        with self.assertRaisesRegex(ValueError, 'cover every distinct'):
+            pipeline.validate_result(prepared, snapshot(), '2026-10-07')
+
     def test_rejects_wrong_date_wrong_batch_and_changed_title(self):
         result = {'status': 'ready', 'markdown': example_digest(include_priority=False).replace('2026-10-06', '2026-10-07')}
         pipeline.validate_result(result, snapshot(), '2026-10-07')
@@ -355,13 +391,93 @@ class StyleExampleTests(unittest.TestCase):
             self.assertIn('Follow next_command until complete is true', prompt)
             self.assertNotIn('Catalog: ', prompt)
             self.assertNotIn('prompts/examples/2026-10-06.md', prompt)
-            (self.folder / 'result.json').write_text('{"status":"ready"}', encoding='utf-8')
+            text = example_digest(include_priority=False).replace('2026-10-06', '2026-10-19')
+            output = Path(command[command.index('--output-last-message') + 1])
+            output.write_text(json.dumps({'status': 'ready', 'markdown': text}), encoding='utf-8')
             return type('Result', (), {'returncode': 0})()
         with patch.object(pipeline, 'find_codex', return_value='codex'), patch.object(pipeline.subprocess, 'run', side_effect=run) as process:
             pipeline.generate('2026-10-19', snapshot(day='2026-10-19'), config)
             self.assertEqual(process.call_count, 2)
             pipeline.generate('2026-10-19', snapshot(day='2026-10-19'), config)
             self.assertEqual(process.call_count, 2)
+
+    def test_failed_or_interrupted_generation_never_becomes_a_cached_result(self):
+        self.write_digest('2026-10-16')
+        (self.root / 'prompts').mkdir()
+        (self.root / 'prompts/local-research.md').write_text('Research', encoding='utf-8')
+        (self.root / 'prompts/local-research-writing.md').write_text('Write', encoding='utf-8')
+        (self.root / 'prompts/local-research-audio.md').write_text('Annotate', encoding='utf-8')
+        config = {'model': 'gpt-6.1-sol', 'reasoning_effort': 'high', 'generation_timeout_minutes': 45}
+        failure = [1, 'timeout', 'json', 0]
+        def run(command, **kwargs):
+            if command[-2:] == ['login', 'status']:
+                return subprocess.CompletedProcess(command, 0, 'ChatGPT', '')
+            output = Path(command[command.index('--output-last-message') + 1])
+            current = failure.pop(0)
+            text = example_digest(include_priority=False).replace('2026-10-06', '2026-10-19')
+            output.write_text('{"status":' if current == 'json' else json.dumps(
+                {'status': 'ready', 'markdown': text}), encoding='utf-8')
+            if current == 'timeout':
+                raise subprocess.TimeoutExpired(command, 1)
+            return subprocess.CompletedProcess(command, current if isinstance(current, int) else 0)
+        with patch.object(pipeline, 'find_codex', return_value='codex'), \
+             patch.object(pipeline.subprocess, 'run', side_effect=run):
+            for _ in range(3):
+                with self.assertRaises((RuntimeError, subprocess.TimeoutExpired)):
+                    pipeline.generate('2026-10-19', snapshot(day='2026-10-19'), config)
+                self.assertFalse((self.folder / 'result.json').exists())
+            result = pipeline.generate('2026-10-19', snapshot(day='2026-10-19'), config)
+        pipeline.validate_result(result, snapshot(day='2026-10-19'), '2026-10-19')
+        self.assertTrue((self.folder / 'result.json').exists())
+        self.assertEqual(len(list(self.folder.glob('result.incomplete-*.json'))), 3)
+
+    def test_cached_generation_repairs_capitalization_without_another_model_call(self):
+        self.folder.mkdir(parents=True)
+        text = example_digest(include_priority=False).replace('2026-10-06', '2026-10-19')
+        text = text.replace('Summary of paper 1.', 'Counterdiabatic driving is useful.')
+        result = {'status': 'ready', 'markdown': text,
+                  'phrase_groups': [['counterdiabatic driving'], ['conditional relative entropy']]}
+        output = self.folder / 'result.json'
+        output.write_text(json.dumps(result), encoding='utf-8')
+        with patch.object(pipeline, 'find_codex') as cli, patch.object(pipeline.subprocess, 'run') as process:
+            log, errors = io.StringIO(), io.StringIO()
+            with redirect_stdout(log), redirect_stderr(errors):
+                prepared = pipeline.generate('2026-10-19', snapshot(day='2026-10-19'), {})
+        self.assertEqual(errors.getvalue(), '')
+        self.assertEqual(json.loads(log.getvalue()), {'status': 'audio-annotation-skipped',
+                                                     'phrase': 'conditional relative entropy'})
+        self.assertEqual(prepared['phrase_groups'], [['Counterdiabatic driving']])
+        pipeline.validate_result(prepared, snapshot(day='2026-10-19'), '2026-10-19')
+        self.assertEqual(json.loads(output.read_text(encoding='utf-8')), result)
+        cli.assert_not_called()
+        process.assert_not_called()
+
+    @unittest.skipUnless(shutil.which('powershell.exe'), 'Windows watcher requires PowerShell')
+    def test_optional_annotation_logging_survives_windows_watcher_redirection(self):
+        # Windows PowerShell treats native stderr as terminating with this setting.
+        # Exercise the same invocation/redirection used by the startup watcher.
+        self.folder.mkdir(parents=True)
+        text = example_digest(include_priority=False)
+        result = self.folder / 'input.json'
+        result.write_text(json.dumps({'status': 'ready', 'markdown': text,
+                                      'phrase_groups': [['conditional relative entropy']]}), encoding='utf-8')
+        script = self.folder / 'prepare.py'
+        script.write_text('import sys,json\n'
+                          f'sys.path.insert(0, {str(Path(__file__).resolve().parents[1])!r})\n'
+                          'from tools.local_pipeline import prepare_generated_result\n'
+                          f'with open({str(result)!r}, encoding="utf-8") as f: result=json.load(f)\n'
+                          'prepare_generated_result(result)\nprint("completed")\n', encoding='utf-8')
+        log = self.folder / 'watcher.log'
+        runner = self.folder / 'watch.ps1'
+        runner.write_text("param($pythonPath,$scriptPath,$logPath)\n$ErrorActionPreference='Stop'\n"
+                          '& $pythonPath $scriptPath >> $logPath 2>&1\nexit $LASTEXITCODE\n', encoding='utf-8')
+        completed = subprocess.run(['powershell.exe', '-NoProfile', '-File', str(runner),
+                                    sys.executable, str(script), str(log)], capture_output=True, timeout=30)
+        self.assertEqual(completed.returncode, 0, completed.stderr)
+        # Windows PowerShell redirects native output as UTF-16.
+        output = log.read_text(encoding='utf-16')
+        self.assertIn('audio-annotation-skipped', output)
+        self.assertIn('completed', output)
 
 
 pipeline_plan = pipeline.plan

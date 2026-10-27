@@ -2,7 +2,9 @@
 
 Also return math_pronunciations as a list: one object with latex and spoken fields for each
 distinct math expression in the item titles, summaries, backgrounds, and relevance
-sections. latex must copy the exact expression including its delimiters. spoken
+sections. latex must copy the exact expression including its delimiters and any
+sentence punctuation inside them: for $$x^2.$$ copy $$x^2.$$, including the period.
+Copy from the final digest after editing, not an earlier draft. spoken
 must be a faithful, natural English reading of that exact expression, as a
 physicist would say it aloud. Preserve grouping, fractions, indices, exponents,
 operators, relations, limits, sums, and qualifiers. For example, $x^2$ is "x
@@ -60,6 +62,10 @@ inside the phrase as word joins. These annotations affect only audio delivery;
 do not alter the written title or prose to force a pronunciation. The daily
 overview, reading-order note, and day-level synthesis are outside these narrated
 sections: do not annotate phrases or equations that occur only there.
+
+Copy capitalization exactly too: if the digest says "Counterdiabatic driving",
+return ["Counterdiabatic driving"], not ["counterdiabatic driving"]. Copy groups
+from the final prose after editing it, rather than from an earlier draft.
 
 Use the paper's meaning to identify complete terminology and the scope of
 shared modifiers. Avoid colloquial list or aside intonation inside a technical

@@ -49,8 +49,14 @@ theoretical principle, overly mathematical string theory, and overly
 computer-science-heavy quantum algorithms. Broaden beyond topics closely related
 to my publications. Do not invent details about my own research.
 
-Choose ten important papers by default. Include additional strong papers only
-when warranted, with a hard maximum of twenty. Use only distinct IDs in the
+First assess the complete dated batch for relevance and scientific interest,
+then rank all qualifying papers. If more than twenty qualify, select the top
+twenty; otherwise include every qualifying paper. There is no minimum quota or
+preferred count, and fewer than ten is acceptable. Do not stop screening when
+ten or twenty qualifying papers have been found: later candidates may rank
+higher. Apply the same criteria to every candidate. Do not pad the list with
+weak papers or add redundant contributions to reach a larger count.
+Use only distinct IDs in the
 provided dated catalog. These are newly announced papers for that particular
 day; replacement announcements and papers from other dates are ineligible. For a
 historical catch-up run, review that historical batch, not today's postings. Use

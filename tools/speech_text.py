@@ -15,7 +15,40 @@ def expressions(day):
                    for match in MATH.finditer(paper[field])})
 
 
-def validate_phrase_groups(day, phrase_groups):
+def source_pronunciations(day, pronunciations, on_rekey=None):
+    """Copy exact source keys for unique matches differing only in final prose punctuation.
+
+    Formula tokens, case, and delimiters remain unchanged. This does not invent
+    missing readings; make_script still requires complete exact coverage.
+    """
+    if not isinstance(pronunciations, list):
+        raise ValueError('Audio needs an equation pronunciation list')
+    if any(not isinstance(entry, dict) or set(entry) != {'latex', 'spoken'}
+           or not isinstance(entry['latex'], str) for entry in pronunciations):
+        raise ValueError('Each equation needs exactly latex and spoken fields')
+    def key(expression):
+        if not MATH.fullmatch(expression):
+            return expression
+        for opening, closing in (('$$', '$$'), (r'\[', r'\]'), (r'\(', r'\)'), ('$', '$')):
+            if expression.startswith(opening) and expression.endswith(closing):
+                body = expression[len(opening):-len(closing)].strip()
+                body = re.sub(r'(?<!\\)[.,]$', '', body).rstrip()
+                return opening, body, closing
+        return expression
+    expected = set(expressions(day))
+    actual = {entry['latex'] for entry in pronunciations}
+    missing, extra = expected - actual, actual - expected
+    replacements = {}
+    for expression in extra:
+        candidates = [source for source in missing if key(source) == key(expression)]
+        if len(candidates) == 1 and sum(key(other) == key(expression) for other in extra) == 1:
+            replacements[expression] = candidates[0]
+            if on_rekey is not None:
+                on_rekey(expression, candidates[0])
+    return [{**entry, 'latex': replacements.get(entry['latex'], entry['latex'])} for entry in pronunciations]
+
+
+def phrase_map(phrase_groups):
     if not isinstance(phrase_groups, list):
         raise ValueError('Audio phrase groups must be a list')
     found = {}
@@ -28,6 +61,46 @@ def validate_phrase_groups(day, phrase_groups):
         if len(phrase) > 400 or not any(character.isalnum() for character in phrase) or phrase in found:
             raise ValueError('Invalid, excessive, or duplicate audio phrase group')
         found[phrase] = parts
+    return found
+
+
+def source_phrase_groups(day, phrase_groups, *, skip_missing_prose=False, on_skip=None):
+    """Resolve unambiguous prose capitalization in model output to exact source.
+
+    Equations are case sensitive. Published scripts still use strict validation;
+    this preparation step only copies existing source text, never rewrites it.
+    Generation may skip stale prose-only delivery hints with a logged event;
+    the text is still narrated normally, using all verified equation readings.
+    """
+    sources = [paper[field] for paper in day['papers']
+               for field in ('title', 'summary', 'background', 'why')]
+    groups = []
+    for phrase, parts in phrase_map(phrase_groups).items():
+        if any(phrase in source for source in sources):
+            groups.append(parts)
+            continue
+        candidates = {match.group() for source in sources
+                      for match in re.finditer(re.escape(phrase), source, re.I | re.ASCII)
+                      if [item.group() for item in MATH.finditer(match.group())]
+                      == [item.group() for item in MATH.finditer(phrase)]}
+        if not candidates and skip_missing_prose and not MATH.search(phrase):
+            if on_skip is not None:
+                on_skip(phrase)
+            continue
+        if len(candidates) != 1:
+            raise ValueError(f'Audio phrase has no unambiguous exact source spelling: {phrase!r}')
+        source_phrase = candidates.pop()
+        offset = 0
+        corrected = []
+        for part in parts:
+            corrected.append(source_phrase[offset:offset + len(part)])
+            offset += len(part) + 1
+        groups.append(corrected)
+    return validate_phrase_groups(day, groups)
+
+
+def validate_phrase_groups(day, phrase_groups):
+    found = phrase_map(phrase_groups)
     matched = set()
     for paper in day['papers']:
         for field in ('title', 'summary', 'background', 'why'):
@@ -53,7 +126,8 @@ def validate_phrase_groups(day, phrase_groups):
             if any(right[0] < left[1] for left, right in zip(spans, spans[1:])):
                 raise ValueError('Audio phrase groups cannot overlap')
     if matched != set(found):
-        raise ValueError('Audio phrase groups must copy phrases from the digest exactly')
+        raise ValueError('Audio phrase groups must copy phrases from the digest exactly: '
+                         + repr(sorted(set(found) - matched)))
     return [found[phrase] for phrase in sorted(found)]
 
 
@@ -86,7 +160,8 @@ def make_script(day, pronunciations, version=6, phrase_groups=None):
         found[latex] = spoken.strip()
     expected = set(expressions(day))
     if set(found) != expected:
-        raise ValueError('Equation pronunciations must cover every distinct item equation exactly once')
+        raise ValueError('Equation pronunciations must cover every distinct item equation exactly once; '
+                         f'missing={sorted(expected - set(found))!r}; extra={sorted(set(found) - expected)!r}')
     script = {'version': version, 'date': day['date'], 'source_hash': audio_source_hash(day),
               'pronunciations': [{'latex': expression, 'spoken': found[expression]} for expression in sorted(found)]}
     if version >= 6:

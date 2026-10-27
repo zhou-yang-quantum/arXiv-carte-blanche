@@ -25,7 +25,7 @@ class DigestTests(unittest.TestCase):
         self.assertEqual(day['papers'][0]['why'], 'A useful connection.')
 
     def test_new_format_accepts_variable_counts_without_verdicts(self):
-        for count in (10, 11, 20):
+        for count in (1, 7, 9, 10, 11, 20):
             with self.subTest(count=count):
                 day = parse_digest(example_digest(count, include_priority=False))
                 self.assertEqual(len(day['papers']), count)
@@ -38,8 +38,23 @@ class DigestTests(unittest.TestCase):
                     self.assertEqual(paper['background'], 'A useful concept.')
                     self.assertEqual(paper['why'], 'A useful connection.')
 
+    def test_small_markdown_and_json_digests_both_build(self):
+        for count in (1, 7, 9):
+            with self.subTest(count=count), tempfile.TemporaryDirectory() as folder:
+                folder = Path(folder)
+                incoming = folder / 'incoming'
+                structured = folder / 'digests'
+                incoming.mkdir()
+                structured.mkdir()
+                text = example_digest(count, include_priority=False)
+                (incoming / '2026-10-06.md').write_text(text, encoding='utf-8')
+                self.assertEqual(len(load_archive(structured, incoming)[0]['papers']), count)
+                day = parse_digest(text)
+                (structured / '2026-10-06.json').write_text(json.dumps(day), encoding='utf-8')
+                self.assertEqual(len(load_archive(structured, incoming)[0]['papers']), count)
+
     def test_rejects_counts_outside_limits(self):
-        for count in (9, 21):
+        for count in (0, 21):
             with self.subTest(count=count), self.assertRaises(ValueError):
                 parse_digest(example_digest(count, include_priority=False))
 
@@ -69,7 +84,7 @@ class DigestTests(unittest.TestCase):
 
     def test_json_archive_enforces_count_ranks_and_reading_order(self):
         day = parse_digest(example_digest(20, include_priority=False))
-        invalid_count = {**day, 'papers': day['papers'][:9], 'reading_order': list(range(1, 10))}
+        invalid_count = {**day, 'papers': [], 'reading_order': []}
         invalid_order = {**day, 'reading_order': list(range(1, 20))}
         invalid_rank = json.loads(json.dumps(day))
         invalid_rank['papers'][-1]['rank'] = 21
