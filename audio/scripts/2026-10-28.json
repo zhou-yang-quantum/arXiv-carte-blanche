@@ -1,0 +1,345 @@
+{
+  "version": 6,
+  "date": "2026-10-28",
+  "source_hash": "43b060997262846db971ff9f1d947ea1b0254c507c4d89129c84c29fdd34f2c7",
+  "pronunciations": [
+    {
+      "latex": "$$2\\beta_c Bm_c^2=1.$$",
+      "spoken": "two beta sub C times B times M sub C squared [p] equals [p] one"
+    },
+    {
+      "latex": "$$I_t(A:C|B)=\\ell(t)^{-2}f\\!\\left(|B|/\\ell(t)\\right).$$",
+      "spoken": "the conditional mutual information at time T between A and C given B [p] equals [p] ell of T to the minus two [p] times F of (the size of B divided by ell of T)"
+    },
+    {
+      "latex": "$$\\mathcal E\\ge\\frac12\\ln\\!\\left(\\frac{p_2^3}{p_4}\\right).$$",
+      "spoken": "E [p] is greater than or equal to [p] one half the natural logarithm of (P sub two cubed divided by P sub four)"
+    },
+    {
+      "latex": "$$\\mathcal N(W\\rho W^\\dagger)=\\rho.$$",
+      "spoken": "N of (W rho W dagger) [p] equals [p] rho"
+    },
+    {
+      "latex": "$$\\partial_\\lambda\\mathcal L=X\\mathcal F\\!\\left(\\sqrt{Y/X}\\right),\\qquad X=T_{\\mu\\nu}T^{\\mu\\nu},\\quad Y=(T^\\mu{}_{\\mu})^2.$$",
+      "spoken": "the partial derivative of L with respect to lambda [p] equals [p] X times F of the square root of (Y divided by X) [p] with [p] X equals T sub (mu nu) times T superscript (mu nu) [p] and [p] Y equals the square of (T superscript mu sub mu)"
+    },
+    {
+      "latex": "$$p_{\\rm acc}=\\frac{3+A_4}{48},\\qquad t_{\\rm out}=\\frac{A_3-2A_5}{3+A_4}.$$",
+      "spoken": "P sub acc [p] equals [p] (three plus A sub four) divided by forty eight [p] and [p] T sub out [p] equals [p] (A sub three minus two A sub five) divided by (three plus A sub four)"
+    },
+    {
+      "latex": "$(2m+1)(m+1)$",
+      "spoken": "(two M plus one) times (M plus one)"
+    },
+    {
+      "latex": "$3+1$",
+      "spoken": "three plus one"
+    },
+    {
+      "latex": "$A_k$",
+      "spoken": "A sub K"
+    },
+    {
+      "latex": "$B$",
+      "spoken": "B"
+    },
+    {
+      "latex": "$C_\\mu\\mapsto C_\\mu+\\zeta_\\mu I$",
+      "spoken": "C sub mu [p] maps to [p] C sub mu [p] plus [p] zeta sub mu times I"
+    },
+    {
+      "latex": "$D=1-Q/4$",
+      "spoken": "D [p] equals [p] one minus Q divided by four"
+    },
+    {
+      "latex": "$F$",
+      "spoken": "F"
+    },
+    {
+      "latex": "$F^2\\le D\\le R_1\\le F$",
+      "spoken": "F squared [p] is less than or equal to D [p] which is less than or equal to R sub one [p] which is less than or equal to F"
+    },
+    {
+      "latex": "$J_n\\sim B/n^2$",
+      "spoken": "J sub N [p] is asymptotic to [p] B divided by N squared"
+    },
+    {
+      "latex": "$N\\to\\infty$",
+      "spoken": "N [p] tends to infinity"
+    },
+    {
+      "latex": "$Q$",
+      "spoken": "Q"
+    },
+    {
+      "latex": "$R_1$",
+      "spoken": "R sub one"
+    },
+    {
+      "latex": "$T\\bar{T}$",
+      "spoken": "T T bar"
+    },
+    {
+      "latex": "$[[5,1,3]]$",
+      "spoken": "five one three"
+    },
+    {
+      "latex": "$\\beta_c$",
+      "spoken": "beta sub C"
+    },
+    {
+      "latex": "$\\delta$",
+      "spoken": "delta"
+    },
+    {
+      "latex": "$\\ell(t)$",
+      "spoken": "ell of T"
+    },
+    {
+      "latex": "$\\mathbb Z_2$",
+      "spoken": "Z sub two"
+    },
+    {
+      "latex": "$\\phi^3$",
+      "spoken": "phi cubed"
+    },
+    {
+      "latex": "$\\sqrt{t}$",
+      "spoken": "the square root of T"
+    },
+    {
+      "latex": "$_2$",
+      "spoken": "two"
+    },
+    {
+      "latex": "$a$",
+      "spoken": "A"
+    },
+    {
+      "latex": "$f\\le f_{\\rm vac}$",
+      "spoken": "F [p] is less than or equal to [p] F sub vac"
+    },
+    {
+      "latex": "$f\\le2.99830949\\ldots\\,F$",
+      "spoken": "F [p] is less than or equal to [p] two point nine nine eight three zero nine four nine and so on [p] times capital F"
+    },
+    {
+      "latex": "$f\\le4\\pi^2a$",
+      "spoken": "F [p] is less than or equal to [p] four pi squared A"
+    },
+    {
+      "latex": "$f_{\\rm vac}$",
+      "spoken": "F sub vac"
+    },
+    {
+      "latex": "$j_{\\rm max}=1/2$",
+      "spoken": "J sub max [p] equals [p] one half"
+    },
+    {
+      "latex": "$m$",
+      "spoken": "M"
+    },
+    {
+      "latex": "$m_c$",
+      "spoken": "M sub C"
+    },
+    {
+      "latex": "$p_k=\\operatorname{tr}[(\\rho^{T_B})^k]$",
+      "spoken": "P sub K [p] equals [p] the trace of the Kth power of (rho partially transposed on B)"
+    },
+    {
+      "latex": "$s=dfT^{d-1}$",
+      "spoken": "S [p] equals [p] D times F times T to the (D minus one)"
+    },
+    {
+      "latex": "$|\\delta|^{-2}$",
+      "spoken": "the absolute value of delta to the minus two"
+    },
+    {
+      "latex": "$|\\delta|^{1/m}$",
+      "spoken": "the absolute value of delta to the power (one divided by M)"
+    }
+  ],
+  "phrase_groups": [
+    [
+      "Bloch quasimomentum"
+    ],
+    [
+      "Borel transform"
+    ],
+    [
+      "Bravyi–Kitaev protocol"
+    ],
+    [
+      "Brownian energy process"
+    ],
+    [
+      "Bures geometry"
+    ],
+    [
+      "Clifford twirling"
+    ],
+    [
+      "Conformal collider bounds"
+    ],
+    [
+      "Courant–Hilbert equation"
+    ],
+    [
+      "Diagonal, Switching, and Locally Optimal Unraveling"
+    ],
+    [
+      "Feynman–Vernon influence functional"
+    ],
+    [
+      "Gauss and Gauss–Radau quadrature"
+    ],
+    [
+      "Hankel matrix"
+    ],
+    [
+      "Heisenberg adjoint"
+    ],
+    [
+      "Helstrom discrimination probability"
+    ],
+    [
+      "Kerr resonator"
+    ],
+    [
+      "Kogut–Susskind Hamiltonian"
+    ],
+    [
+      "Lax connection"
+    ],
+    [
+      "Legendre differential operator"
+    ],
+    [
+      "Light-front quantization"
+    ],
+    [
+      "Liouvillian exceptional points"
+    ],
+    [
+      "Macroscopic fluctuation theory"
+    ],
+    [
+      "Mathieu equation"
+    ],
+    [
+      "Nishimori identities"
+    ],
+    [
+      "Ohmic spin-boson models"
+    ],
+    [
+      "Rényi and von Neumann entropies"
+    ],
+    [
+      "Schwinger parameters"
+    ],
+    [
+      "Stiefel harmonics"
+    ],
+    [
+      "Stokes jumps"
+    ],
+    [
+      "Strong-to-Weak Spontaneous Symmetry Breaking"
+    ],
+    [
+      "Wentzel–Kramers–Brillouin"
+    ],
+    [
+      "Wightman correlator"
+    ],
+    [
+      "Young tableaux"
+    ],
+    [
+      "annealed importance sampling"
+    ],
+    [
+      "anti-de Sitter and de Sitter backgrounds"
+    ],
+    [
+      "cat-qubit bit flips"
+    ],
+    [
+      "correlated random-bond Ising model"
+    ],
+    [
+      "eigenstate thermalization hypothesis"
+    ],
+    [
+      "hyperhoneycomb lattice"
+    ],
+    [
+      "inverse-square Ising chain"
+    ],
+    [
+      "logarithmic negativity"
+    ],
+    [
+      "measurement-based quantum computation"
+    ],
+    [
+      "measurement-only gauge-Higgs dynamics"
+    ],
+    [
+      "minimal informationally complete measurement"
+    ],
+    [
+      "non-Hermitian effective Hamiltonian"
+    ],
+    [
+      "operator product expansion"
+    ],
+    [
+      "parity-conserving directed percolation"
+    ],
+    [
+      "partial-transpose moments"
+    ],
+    [
+      "partial-wave decomposition"
+    ],
+    [
+      "principal chiral model"
+    ],
+    [
+      "quantum Fisher information"
+    ],
+    [
+      "quantum symmetric exclusion process"
+    ],
+    [
+      "running-coupling renormalons"
+    ],
+    [
+      "spacetime sponges"
+    ],
+    [
+      "spin-squeezed neutral-atom states"
+    ],
+    [
+      "stress-tensor three-point function"
+    ],
+    [
+      "strong-to-weak symmetry breaking"
+    ],
+    [
+      "symmetric simple exclusion process"
+    ],
+    [
+      "symmetry-protected topological order"
+    ],
+    [
+      "time-evolving matrix product operator"
+    ],
+    [
+      "tropical field theory"
+    ]
+  ]
+}
