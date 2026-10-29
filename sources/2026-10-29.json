@@ -1,0 +1,16 @@
+{
+  "date": "2026-10-29",
+  "version": 4,
+  "metadata_version": "schedule",
+  "source_format": "arxiv-announcement-schedule",
+  "no_announcements": true,
+  "listing_sources": ["https://status.arxiv.org/"],
+  "papers": [],
+  "excluded_papers": [],
+  "schedule_evidence": {
+    "url": "https://status.arxiv.org/",
+    "checked_at": "2026-10-29T14:20:00+00:00",
+    "notice": "Scheduled Database Maintenance, Wednesday October 28, 2026: No announcement Wednesday evening. Articles received and accepted at or after 14:00 EDT Tuesday, October 27, 2026, and before 14:00 EDT Thursday, October 29, 2026 will be announced on Thursday, October 29, 2026 at 20:00 EDT.",
+    "explanation": "The omitted October 28 evening announcement produces no October 29 morning feed batch. The October 29 evening announcement belongs to the following morning's batch; it must not be backdated into October 29."
+  }
+}

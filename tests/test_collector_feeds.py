@@ -100,6 +100,24 @@ class FeedCollectorTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'checksum'):
             feeds.cached_group(['quant-ph'], DAY, self.cache)
 
+    def test_undated_empty_feed_waits_without_fabricating_an_archive(self):
+        with patch.object(feeds.legacy, 'fetch_text', return_value=feed([])):
+            self.assertEqual(feeds.collect(['quant-ph'], DAY, self.output, through=DAY, cache=self.cache), [])
+        self.assertFalse((self.output / (DAY + '.json')).exists())
+
+    def test_schedule_snapshot_requires_explicit_official_evidence_and_no_papers(self):
+        snapshot = {'date': DAY, 'version': 4, 'metadata_version': 'schedule',
+                    'source_format': 'arxiv-announcement-schedule', 'no_announcements': True,
+                    'papers': [], 'listing_sources': ['https://status.arxiv.org/'],
+                    'schedule_evidence': {'url': 'https://status.arxiv.org/',
+                                          'notice': 'No announcement Wednesday evening.',
+                                          'checked_at': '2026-10-29T14:00:00+00:00'}}
+        pipeline.validate_snapshot(snapshot, DAY)
+        for changes in ({'papers': [{'id': '2610.00001'}]}, {'no_announcements': False},
+                        {'schedule_evidence': {}}, {'date': '2026-10-30'}):
+            with self.subTest(changes=changes), self.assertRaises(ValueError):
+                pipeline.validate_snapshot({**snapshot, **changes}, DAY)
+
     def test_unknown_types_and_undated_feeds_are_not_empty_batches(self):
         for data in [feed([]), feed([entry(kind='unknown')]), feed([entry()]).replace('<published>', '<missing>').replace('</published>', '</missing>')]:
             with self.subTest(data=data[:30]), self.assertRaises(ValueError):

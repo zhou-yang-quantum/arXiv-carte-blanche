@@ -18,6 +18,10 @@ BASE = 'https://rss.arxiv.org/atom/'
 CACHE = legacy.ROOT / '.cache/arxiv-collector/feeds'
 
 
+class EmptyFeed(ValueError):
+    """An undated empty response is not evidence of a paperless day."""
+
+
 def canonical(categories):
     result = sorted({'math-ph' if c == 'math.MP' else c for c in categories})
     if not result or any(not re.fullmatch(r'[A-Za-z][A-Za-z0-9.-]*', c) for c in result):
@@ -40,7 +44,7 @@ def parse_feed(text, categories):
     if len(entries) >= 2000:
         raise OverflowError('Feed may be truncated at 2000 entries')
     if not entries:
-        raise ValueError('An empty Atom feed cannot prove an announcement date')
+        raise EmptyFeed('An empty Atom feed cannot prove an announcement date')
     records, dates = [], set()
     for entry in entries:
         raw_id = entry.findtext(ATOM + 'id', '').removeprefix('oai:arXiv.org:')
@@ -149,8 +153,14 @@ def collect(categories, since, folder, through=None, cache=CACHE):
     through = through or datetime.now(timezone.utc).date().isoformat()
     # Capture today's feed immediately, then recover earlier successful inputs
     # from durable cache without revisiting the HTML website.
-    _, latest = fetch_group(categories, cache=cache)
-    days = sorted({latest} | {p.name for p in Path(cache).iterdir() if p.is_dir() and re.fullmatch(r'\d{4}-\d{2}-\d{2}', p.name)})
+    try:
+        _, latest = fetch_group(categories, cache=cache)
+    except EmptyFeed:
+        latest = None
+        print(json.dumps({'status': 'waiting-for-announcements',
+                          'reason': 'Official feed is empty and has no verified announcement date; no empty batch inferred'}), flush=True)
+    days = sorted(({latest} if latest else set()) | {
+        p.name for p in Path(cache).glob('*') if p.is_dir() and re.fullmatch(r'\d{4}-\d{2}-\d{2}', p.name)})
     outputs = []
     for day in reversed(days):
         target = folder / (day + '.json')
