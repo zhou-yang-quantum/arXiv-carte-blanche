@@ -1,0 +1,274 @@
+{
+  "version": 6,
+  "date": "2026-11-02",
+  "source_hash": "f0cad6daee8adfc5b6b2b91cb00095871395b9cf55c482f0195ba063b5788ad6",
+  "pronunciations": [
+    {
+      "latex": "$1/17$",
+      "spoken": "one seventeenth"
+    },
+    {
+      "latex": "$1/N$",
+      "spoken": "one divided by N"
+    },
+    {
+      "latex": "$10^{-3}$",
+      "spoken": "ten to the minus three"
+    },
+    {
+      "latex": "$10^{-4}$",
+      "spoken": "ten to the minus four"
+    },
+    {
+      "latex": "$5\\times10^{-7}$",
+      "spoken": "five times ten to the minus seven"
+    },
+    {
+      "latex": "$C_{\\beta}\\exp\\{-c_{\\beta}[\\log(2+r)]^{2}\\}$",
+      "spoken": "capital C sub beta times the exponential of [p] minus lowercase C sub beta times the square of the logarithm of two plus R"
+    },
+    {
+      "latex": "$L$",
+      "spoken": "L"
+    },
+    {
+      "latex": "$N$",
+      "spoken": "N"
+    },
+    {
+      "latex": "$N(\\Sigma^{d-1},\\hat{g})\\int_{W^{d+1}}g^{*}\\omega\\in\\mathbb{Z}$",
+      "spoken": "N of sigma superscript (D minus one) and G hat [p] times the integral over W superscript (D plus one) of the pullback by G of omega [p] is an integer"
+    },
+    {
+      "latex": "$SU(2)_1$",
+      "spoken": "S U two at level one"
+    },
+    {
+      "latex": "$S_{b}/\\hbar\\sim100$",
+      "spoken": "S sub B divided by h bar [p] is approximately one hundred"
+    },
+    {
+      "latex": "$U(1)$",
+      "spoken": "U one"
+    },
+    {
+      "latex": "$[[512,174,8]]$",
+      "spoken": "five hundred twelve one hundred seventy four eight"
+    },
+    {
+      "latex": "$[\\partial_{t}+\\eta_{a}(t)\\partial_{y}]\\phi_{a}(y,t)=0$",
+      "spoken": "the sum of the partial derivative with respect to T and eta sub A of T times the partial derivative with respect to Y [p] acting on phi sub A of Y and T [p] equals zero"
+    },
+    {
+      "latex": "$\\alpha_{n}=\\frac{n^{2}-3}{2}$",
+      "spoken": "alpha sub N [p] equals [p] the quantity N squared minus three [p] divided by two"
+    },
+    {
+      "latex": "$\\delta R/R\\sim(\\hbar/S_{b})^{1/2}$",
+      "spoken": "delta R divided by R [p] scales as [p] the square root of the ratio of h bar to S sub B"
+    },
+    {
+      "latex": "$\\omega\\tau_{\\pi}$",
+      "spoken": "omega times tau sub pi"
+    },
+    {
+      "latex": "$\\sqrt{L}$",
+      "spoken": "the square root of L"
+    },
+    {
+      "latex": "$\\sqrt{\\rho}$",
+      "spoken": "the square root of rho"
+    },
+    {
+      "latex": "$^2$",
+      "spoken": "squared"
+    },
+    {
+      "latex": "$c$",
+      "spoken": "C"
+    },
+    {
+      "latex": "$n$",
+      "spoken": "N"
+    }
+  ],
+  "phrase_groups": [
+    [
+      "Airy distribution"
+    ],
+    [
+      "Almost-Quantum Correlations"
+    ],
+    [
+      "Brownian bridge"
+    ],
+    [
+      "Callan–Rubakov"
+    ],
+    [
+      "Casini–Huerta"
+    ],
+    [
+      "Continuous Flat-Gauging"
+    ],
+    [
+      "Convective Diffusion"
+    ],
+    [
+      "Dirichlet-to-Neumann map"
+    ],
+    [
+      "Finsler geometry"
+    ],
+    [
+      "Knowledge distillation"
+    ],
+    [
+      "Landau singularity"
+    ],
+    [
+      "Lee–Pomeransky polynomial"
+    ],
+    [
+      "Müller–Israel–Stewart"
+    ],
+    [
+      "Navascués–Pironio–Acín"
+    ],
+    [
+      "Navier–Stokes"
+    ],
+    [
+      "Petz recovery map"
+    ],
+    [
+      "RP$^2$ model"
+    ],
+    [
+      "Rydberg blockade"
+    ],
+    [
+      "Slater conditions"
+    ],
+    [
+      "Spinon form factors"
+    ],
+    [
+      "Symmetric Mass Generation"
+    ],
+    [
+      "Wess–Zumino–Witten"
+    ],
+    [
+      "almost-quantum correlations"
+    ],
+    [
+      "beam search"
+    ],
+    [
+      "canonical purification"
+    ],
+    [
+      "cumulative memory"
+    ],
+    [
+      "density matrix truncation"
+    ],
+    [
+      "density-matrix renormalization"
+    ],
+    [
+      "entropic $c$-theorem"
+    ],
+    [
+      "facial reduction"
+    ],
+    [
+      "generalized hydrodynamics"
+    ],
+    [
+      "half-bounce path integral"
+    ],
+    [
+      "hierarchical principle"
+    ],
+    [
+      "increasing differences"
+    ],
+    [
+      "information causality"
+    ],
+    [
+      "intrinsically gapless symmetry-protected topological phase"
+    ],
+    [
+      "locally reversible channels"
+    ],
+    [
+      "matrix product operator"
+    ],
+    [
+      "multiplicative temporal noise"
+    ],
+    [
+      "nested Gaussian distribution"
+    ],
+    [
+      "noncommuting rotations"
+    ],
+    [
+      "open-closed consistency"
+    ],
+    [
+      "projective ground-state bundle"
+    ],
+    [
+      "quadrupolar correlations"
+    ],
+    [
+      "quasinormal modes"
+    ],
+    [
+      "reflected-Gumbel"
+    ],
+    [
+      "remote detectability"
+    ],
+    [
+      "resonant permutations"
+    ],
+    [
+      "root-mean-square quadrupole"
+    ],
+    [
+      "row-wise serial min-sum"
+    ],
+    [
+      "semidefinite program"
+    ],
+    [
+      "spectral form factor"
+    ],
+    [
+      "split property"
+    ],
+    [
+      "squeezed space"
+    ],
+    [
+      "symmetric mass generation"
+    ],
+    [
+      "thermodynamic length"
+    ],
+    [
+      "torsion anomaly"
+    ],
+    [
+      "twisted conformal boundary states"
+    ],
+    [
+      "zero-error certificates"
+    ]
+  ]
+}
