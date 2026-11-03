@@ -1,0 +1,471 @@
+{
+  "version": 6,
+  "date": "2026-11-03",
+  "source_hash": "7010862034b4ef86f13d23aa8ead52e82f95aaa95a11ed866d9a112495710a88",
+  "pronunciations": [
+    {
+      "latex": "$$\\beta_{\\rm opt}=1+\\frac{pd-\\alpha+1}{\\alpha-2d}.$$",
+      "spoken": "beta sub opt [p] equals [p] one [p] plus [p] (P D minus alpha plus one) divided by (alpha minus two D)"
+    },
+    {
+      "latex": "$$\\mathcal{L}_{\\epsilon}=D[a^2-\\alpha^2]+\\epsilon D[a],$$",
+      "spoken": "L sub epsilon [p] equals [p] D of (A squared minus alpha squared) [p] plus [p] epsilon D of A"
+    },
+    {
+      "latex": "$0<s<1$",
+      "spoken": "zero [p] less than S [p] less than one"
+    },
+    {
+      "latex": "$1/|x|^s$",
+      "spoken": "one divided by (the absolute value of X raised to S)"
+    },
+    {
+      "latex": "$2d<\\alpha\\leq2d+1$",
+      "spoken": "two D [p] less than alpha [p] less than or equal to two D plus one"
+    },
+    {
+      "latex": "$D$",
+      "spoken": "D"
+    },
+    {
+      "latex": "$N$",
+      "spoken": "N"
+    },
+    {
+      "latex": "$R\\sim t^{\\beta_{\\rm opt}}$",
+      "spoken": "R [p] scales as [p] T raised to beta sub opt"
+    },
+    {
+      "latex": "$\\Theta(n)$",
+      "spoken": "Theta of N"
+    },
+    {
+      "latex": "$\\alpha$",
+      "spoken": "alpha"
+    },
+    {
+      "latex": "$\\alpha^2$",
+      "spoken": "alpha squared"
+    },
+    {
+      "latex": "$\\epsilon$",
+      "spoken": "epsilon"
+    },
+    {
+      "latex": "$\\exp(\\Omega(N))$",
+      "spoken": "the exponential of big Omega of N"
+    },
+    {
+      "latex": "$\\tau_{\\rm eq}=e^{\\Theta(\\sqrt N)}$",
+      "spoken": "tau sub equilibration [p] equals [p] E raised to Theta of the square root of N"
+    },
+    {
+      "latex": "$\\theta$",
+      "spoken": "theta"
+    },
+    {
+      "latex": "$\\varepsilon$",
+      "spoken": "epsilon"
+    },
+    {
+      "latex": "$\\widetilde O(n/\\varepsilon)$",
+      "spoken": "O tilde of (N divided by epsilon)"
+    },
+    {
+      "latex": "$a$",
+      "spoken": "A"
+    },
+    {
+      "latex": "$c\\sim1$",
+      "spoken": "C near one"
+    },
+    {
+      "latex": "$d$",
+      "spoken": "D"
+    },
+    {
+      "latex": "$p$",
+      "spoken": "P"
+    },
+    {
+      "latex": "$p\\geq4$",
+      "spoken": "P [p] greater than or equal to four"
+    },
+    {
+      "latex": "$q$",
+      "spoken": "Q"
+    },
+    {
+      "latex": "$q\\in[-1,1)$",
+      "spoken": "Q [p] belongs to the interval from minus one inclusive to one exclusive"
+    },
+    {
+      "latex": "$s>1$",
+      "spoken": "S [p] greater than one"
+    },
+    {
+      "latex": "$t^{1/2}$",
+      "spoken": "T to the one-half power"
+    },
+    {
+      "latex": "$t^{s/(1+s)}$",
+      "spoken": "T raised to (S divided by the quantity one plus S)"
+    }
+  ],
+  "phrase_groups": [
+    [
+      "$q$-deformed oscillators"
+    ],
+    [
+      "Borel transform"
+    ],
+    [
+      "Dean–Kawasaki equations"
+    ],
+    [
+      "Dyson-resummed one-loop self-energy"
+    ],
+    [
+      "Eigenstate Thermalization Hypothesis"
+    ],
+    [
+      "Fisher zeros"
+    ],
+    [
+      "Fisher-zero density"
+    ],
+    [
+      "Frobenius distance"
+    ],
+    [
+      "Frobenius norm"
+    ],
+    [
+      "GNVW index"
+    ],
+    [
+      "Gross–Nesme–Vogts–Werner index"
+    ],
+    [
+      "Hamiltonian bootstrap"
+    ],
+    [
+      "Ising CFT"
+    ],
+    [
+      "Kramers–Wannier duality"
+    ],
+    [
+      "Lamb shift"
+    ],
+    [
+      "Laplace integral"
+    ],
+    [
+      "Lee-Yang theorems"
+    ],
+    [
+      "Lieb-Robinson Light Cones"
+    ],
+    [
+      "Lindblad dissipator"
+    ],
+    [
+      "Lindblad samplers"
+    ],
+    [
+      "Long-Range Bosonic Systems"
+    ],
+    [
+      "Lossless Expanders"
+    ],
+    [
+      "Luttinger-liquid regions"
+    ],
+    [
+      "MPS transfer matrix"
+    ],
+    [
+      "Matrix Product States"
+    ],
+    [
+      "Mixed-correlator studies"
+    ],
+    [
+      "Modular flow"
+    ],
+    [
+      "Poisson statistics"
+    ],
+    [
+      "Run-and-Tumble Particles"
+    ],
+    [
+      "SPT response"
+    ],
+    [
+      "Small-Set qLTCs"
+    ],
+    [
+      "Two-Dimensional Potts Model"
+    ],
+    [
+      "Virasoro Bootstrap"
+    ],
+    [
+      "Virasoro block"
+    ],
+    [
+      "Virasoro crossing equations"
+    ],
+    [
+      "Virasoro symmetry"
+    ],
+    [
+      "Yang-Mills-Higgs"
+    ],
+    [
+      "Zamolodchikov recursion"
+    ],
+    [
+      "anomalous Floquet Anderson insulator"
+    ],
+    [
+      "block-injective"
+    ],
+    [
+      "bosonic QEC"
+    ],
+    [
+      "chiral Floquet phases"
+    ],
+    [
+      "chiral mass"
+    ],
+    [
+      "chord pairings"
+    ],
+    [
+      "coherent-state amplitude"
+    ],
+    [
+      "compact-boson operator towers"
+    ],
+    [
+      "complex Luttinger parameters"
+    ],
+    [
+      "complex-projective sigma model"
+    ],
+    [
+      "current variance"
+    ],
+    [
+      "de Sitter"
+    ],
+    [
+      "deformed matching polynomials"
+    ],
+    [
+      "density-interaction degree"
+    ],
+    [
+      "diagonal operator matrix elements"
+    ],
+    [
+      "disjoint index cycles"
+    ],
+    [
+      "dissipative cat qubits"
+    ],
+    [
+      "double-scaling limit"
+    ],
+    [
+      "doubly scaled SYK"
+    ],
+    [
+      "doubly-scaled SYK"
+    ],
+    [
+      "entropic barrier"
+    ],
+    [
+      "exact rational certificates"
+    ],
+    [
+      "fermion bilinear"
+    ],
+    [
+      "fermion-density–scalar interaction"
+    ],
+    [
+      "fermion–antifermion scattering"
+    ],
+    [
+      "free-energy density"
+    ],
+    [
+      "gauge orbits"
+    ],
+    [
+      "gauge-covariant regularization"
+    ],
+    [
+      "gauge-equivalence classes"
+    ],
+    [
+      "higher-order free cumulants"
+    ],
+    [
+      "imaginary-time vacuum preparation"
+    ],
+    [
+      "infrared susceptibility bound"
+    ],
+    [
+      "instanton moduli-space volume"
+    ],
+    [
+      "level statistics"
+    ],
+    [
+      "light-cone power"
+    ],
+    [
+      "local Pauli coupling channels"
+    ],
+    [
+      "local conserved-charge conditions"
+    ],
+    [
+      "local similarity transforms"
+    ],
+    [
+      "lossless expander graphs"
+    ],
+    [
+      "macroscopic fluctuation theory"
+    ],
+    [
+      "matrix product states"
+    ],
+    [
+      "matrix-product-unitary arguments"
+    ],
+    [
+      "microcanonical Brownian motion"
+    ],
+    [
+      "modular response expansion"
+    ],
+    [
+      "non-Abelian symmetry"
+    ],
+    [
+      "non-invertible symmetry operators"
+    ],
+    [
+      "non-perturbative completion"
+    ],
+    [
+      "noncommuting Hamiltonians"
+    ],
+    [
+      "onsite quartic energy"
+    ],
+    [
+      "paracontrolled decomposition"
+    ],
+    [
+      "particle-number moment bounds"
+    ],
+    [
+      "photon parity"
+    ],
+    [
+      "polynomial positivity constraints"
+    ],
+    [
+      "quantum cellular automaton"
+    ],
+    [
+      "radial sewing expansion"
+    ],
+    [
+      "real-time Yukawa dynamics"
+    ],
+    [
+      "reflecting boundary"
+    ],
+    [
+      "reflection positivity"
+    ],
+    [
+      "scalar normal modes"
+    ],
+    [
+      "self-dual supersymmetric theories"
+    ],
+    [
+      "semidefinite optimization"
+    ],
+    [
+      "single-photon-loss rate"
+    ],
+    [
+      "single-trace ETH"
+    ],
+    [
+      "slow imbalance mode"
+    ],
+    [
+      "slow spectral subspace"
+    ],
+    [
+      "spectral form factor"
+    ],
+    [
+      "spectral gap"
+    ],
+    [
+      "sphere thermal partition function"
+    ],
+    [
+      "spin-conditioned displacement"
+    ],
+    [
+      "spin-one-half Heisenberg antiferromagnet"
+    ],
+    [
+      "stabilizer-equivalent representatives"
+    ],
+    [
+      "staggered fermions"
+    ],
+    [
+      "stochastic quantisation"
+    ],
+    [
+      "super-Yang-Mills theory"
+    ],
+    [
+      "symmetry span"
+    ],
+    [
+      "symmetry-protected topological twist"
+    ],
+    [
+      "system-bath architecture"
+    ],
+    [
+      "tilted time slice"
+    ],
+    [
+      "transfer-matrix commutant"
+    ],
+    [
+      "two-photon dissipation"
+    ]
+  ]
+}
