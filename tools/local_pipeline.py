@@ -11,6 +11,7 @@ import re
 import shutil
 import subprocess
 import sys
+import unicodedata
 import urllib.error
 import urllib.request
 from zoneinfo import ZoneInfo
@@ -18,12 +19,12 @@ from zoneinfo import ZoneInfo
 if __package__:
     from . import collect_arxiv, publish_digest
     from .import_digest import parse_digest
-    from .speech_text import make_script, source_phrase_groups, source_pronunciations
+    from .speech_text import MATH, make_script, source_phrase_groups, source_pronunciations
 else:
     import collect_arxiv
     import publish_digest
     from import_digest import parse_digest
-    from speech_text import make_script, source_phrase_groups, source_pronunciations
+    from speech_text import MATH, make_script, source_phrase_groups, source_pronunciations
 
 ROOT = Path(__file__).resolve().parents[1]
 RUNTIME = ROOT / '.cache' / 'local-pipeline'
@@ -526,6 +527,21 @@ def generate(day, snapshot, config):
     return prepare_generated_result(saved)
 
 
+def normalize_title(value):
+    """Compare prose acute accents equivalently, preserving math tokens verbatim."""
+    value = collect_arxiv.clean(html.unescape(value))
+    def prose(text):
+        text = re.sub(r"\\'\{([A-Za-z])\}|\\'([A-Za-z])",
+                      lambda match: (match.group(1) or match.group(2)) + '\u0301', text)
+        return unicodedata.normalize('NFC', text)
+    parts, offset = [], 0
+    for match in MATH.finditer(value):
+        parts.extend((prose(value[offset:match.start()]), match.group()))
+        offset = match.end()
+    parts.append(prose(value[offset:]))
+    return ''.join(parts)
+
+
 def validate_result(result, snapshot, day):
     if result.get('status') != 'ready':
         raise ValueError('No complete digest was generated')
@@ -537,8 +553,7 @@ def validate_result(result, snapshot, day):
     for paper in digest['papers']:
         if paper['id'] not in candidates:
             raise ValueError('Generated paper is outside the verified announcement batch')
-        normalize = lambda value: collect_arxiv.clean(html.unescape(value))
-        if normalize(paper['title']) != normalize(candidates[paper['id']]['title']):
+        if normalize_title(paper['title']) != normalize_title(candidates[paper['id']]['title']):
             raise ValueError(f"Title does not match verified announcement metadata for {paper['id']}")
         if 'priority' in paper:
             raise ValueError('New digests must omit priority verdicts')

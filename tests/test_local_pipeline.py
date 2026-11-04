@@ -236,6 +236,21 @@ class QueueTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'cover every distinct'):
             pipeline.validate_result(prepared, snapshot(), '2026-10-07')
 
+    def test_title_comparison_accepts_equivalent_prose_accents_but_preserves_math(self):
+        for encoded in (r"R\'enyi", r"R\'{e}nyi", 'Re\u0301nyi'):
+            self.assertEqual(pipeline.normalize_title(encoded), 'Rényi')
+        self.assertNotEqual(pipeline.normalize_title(r"$R\'enyi$"), pipeline.normalize_title('$Rényi$'))
+        self.assertNotEqual(pipeline.normalize_title('Rényi $N$'), pipeline.normalize_title('Rényi $n$'))
+        self.assertNotEqual(pipeline.normalize_title('Rényi'), pipeline.normalize_title('Renyi'))
+        text = example_digest(include_priority=False).replace('2026-10-06', '2026-10-07')
+        text = text.replace('### Paper 1\n', '### Rényi negativity\n')
+        source = snapshot()
+        source['papers'][0]['title'] = r"R\'enyi negativity"
+        pipeline.validate_result({'status': 'ready', 'markdown': text}, source, '2026-10-07')
+        with self.assertRaisesRegex(ValueError, 'Title does not match'):
+            pipeline.validate_result({'status': 'ready', 'markdown': text.replace('Rényi negativity', 'Rényi entropy')},
+                                     source, '2026-10-07')
+
     def test_rejects_wrong_date_wrong_batch_and_changed_title(self):
         result = {'status': 'ready', 'markdown': example_digest(include_priority=False).replace('2026-10-06', '2026-10-07')}
         pipeline.validate_result(result, snapshot(), '2026-10-07')
