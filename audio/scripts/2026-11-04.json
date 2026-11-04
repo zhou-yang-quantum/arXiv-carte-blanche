@@ -1,0 +1,156 @@
+{
+  "version": 6,
+  "date": "2026-11-04",
+  "source_hash": "27c63951b95f9f62038b799bcafe9a1ce0d6d0353ebe3671526e0fa8828081ca",
+  "pronunciations": [
+    {
+      "latex": "$$\\left(\\partial_t^2-\\partial_\\theta^2\\right)n(\\theta,t)\\simeq0.$$",
+      "spoken": "The second derivative with respect to T [p] minus the second derivative with respect to theta [p] acting on N of theta and T [p] is approximately zero"
+    },
+    {
+      "latex": "$$z=1-0.720\\,\\delta+O(\\delta^2).$$",
+      "spoken": "Z [p] equals [p] one [p] minus [p] zero point seven two zero delta [p] plus terms of order delta squared"
+    },
+    {
+      "latex": "$$|\\Pi^R(0)|\\leq\\frac{g^2}{4T}\\frac{N}{M}.$$",
+      "spoken": "The absolute value of Pi superscript R of zero [p] is less than or equal to [p] G squared divided by four T [p] times N divided by M"
+    },
+    {
+      "latex": "$4\\le p\\le5$",
+      "spoken": "four is less than or equal to P [p] which is less than or equal to five"
+    },
+    {
+      "latex": "$52/(675h)$",
+      "spoken": "fifty-two divided by (six hundred seventy-five H)"
+    },
+    {
+      "latex": "$K_A-K_{\\bar A}$",
+      "spoken": "K sub A [p] minus [p] K sub A bar"
+    },
+    {
+      "latex": "$K_A=-\\log\\rho_A$",
+      "spoken": "K sub A [p] equals [p] minus the logarithm of rho sub A"
+    },
+    {
+      "latex": "$M(p,p+1)$",
+      "spoken": "M of P and (P plus one)"
+    },
+    {
+      "latex": "$N$",
+      "spoken": "N"
+    },
+    {
+      "latex": "$N/M$",
+      "spoken": "N divided by M"
+    },
+    {
+      "latex": "$N=3$",
+      "spoken": "N [p] equals [p] three"
+    },
+    {
+      "latex": "$N>2$",
+      "spoken": "N [p] is greater than [p] two"
+    },
+    {
+      "latex": "$O(N)$",
+      "spoken": "O of N"
+    },
+    {
+      "latex": "$T$",
+      "spoken": "T"
+    },
+    {
+      "latex": "$\\delta=s_*-s$",
+      "spoken": "delta [p] equals [p] S sub star [p] minus [p] S"
+    },
+    {
+      "latex": "$\\ln Z/\\beta$",
+      "spoken": "the natural logarithm of Z divided by beta"
+    },
+    {
+      "latex": "$\\mathbb Z/2^h\\mathbb Z$",
+      "spoken": "the integers modulo two to the H"
+    },
+    {
+      "latex": "$\\mathbb Z_{\\kappa+1}$",
+      "spoken": "Z sub (kappa plus one)"
+    },
+    {
+      "latex": "$\\mathcal T=0.665(10)$",
+      "spoken": "T [p] equals [p] zero point six six five [p] with uncertainty zero point zero one zero"
+    },
+    {
+      "latex": "$\\mathcal T\\mathcal L^\\dagger\\mathcal T^{-1}=\\mathcal L$",
+      "spoken": "T L dagger T inverse [p] equals [p] L"
+    },
+    {
+      "latex": "$\\mathcal T^2=\\mathcal P$",
+      "spoken": "T squared [p] equals [p] P"
+    },
+    {
+      "latex": "$\\theta$",
+      "spoken": "theta"
+    },
+    {
+      "latex": "$\\{|0\\rangle,|2N+1\\rangle\\}$",
+      "spoken": "the set containing ket zero [p] and ket (two N plus one)"
+    },
+    {
+      "latex": "$d=2\\kappa$",
+      "spoken": "D [p] equals [p] two kappa"
+    },
+    {
+      "latex": "$e/\\sqrt{\\pi}$",
+      "spoken": "E divided by the square root of pi"
+    },
+    {
+      "latex": "$g$",
+      "spoken": "G"
+    },
+    {
+      "latex": "$g=1.503(2)$",
+      "spoken": "G [p] equals [p] one point five zero three [p] with uncertainty zero point zero zero two"
+    },
+    {
+      "latex": "$h=3$",
+      "spoken": "H [p] equals [p] three"
+    },
+    {
+      "latex": "$h\\ge3$",
+      "spoken": "H [p] is greater than or equal to [p] three"
+    },
+    {
+      "latex": "$n$",
+      "spoken": "N"
+    },
+    {
+      "latex": "$p=4$",
+      "spoken": "P [p] equals [p] four"
+    },
+    {
+      "latex": "$p=5$",
+      "spoken": "P [p] equals [p] five"
+    },
+    {
+      "latex": "$r^{-1-s}$",
+      "spoken": "R to the power (minus one minus S)"
+    },
+    {
+      "latex": "$s_*=7/4$",
+      "spoken": "S sub star [p] equals [p] seven quarters"
+    },
+    {
+      "latex": "$t$",
+      "spoken": "T"
+    },
+    {
+      "latex": "$y=y_0+2y_1+4y_2$",
+      "spoken": "Y [p] equals [p] Y sub zero [p] plus [p] two Y sub one [p] plus [p] four Y sub two"
+    },
+    {
+      "latex": "$z$",
+      "spoken": "Z"
+    }
+  ],
+  "phrase_groups": []
+}
