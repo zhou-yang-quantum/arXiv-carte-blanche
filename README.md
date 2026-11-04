@@ -97,6 +97,8 @@ See **[Technical setup and agent reference](docs/technical-setup.md)** for the r
   - [ ] Paginate with 10 papers per page.
   - [ ] Display papers without numbering.
 - [ ] Use a dedicated maths and physics speech engine, or develop a standalone engine for this purpose.
+- [ ] show arxiv and pdf link in compact view
+- [ ] return to top of page button when browsing down
 
 ## Credits
 
