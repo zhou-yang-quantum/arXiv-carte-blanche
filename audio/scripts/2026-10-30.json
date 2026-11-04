@@ -1,0 +1,188 @@
+{
+  "version": 6,
+  "date": "2026-10-30",
+  "source_hash": "de0510a9e5c1c547157d9a30cf2ef29b9976f3cadf3815b41a1aca86e307c625",
+  "pronunciations": [
+    {
+      "latex": "$$\\Lambda=\\begin{pmatrix}x&z\\\\w&1-x\\end{pmatrix}.$$",
+      "spoken": "Lambda [p] equals [p] the two by two matrix with first row X and Z [p] and second row W and one minus X"
+    },
+    {
+      "latex": "$$\\mathcal R_{\\pi,\\Phi}(X)=\\pi^{1/2}\\Phi^\\dagger(\\sigma^{-1/2}X\\sigma^{-1/2})\\pi^{1/2}.$$",
+      "spoken": "R sub (pi and phi) of X [p] equals [p] pi to the one half [p] times phi dagger of (sigma to the minus one half times X times sigma to the minus one half) [p] times pi to the one half"
+    },
+    {
+      "latex": "$1<\\alpha\\le2$",
+      "spoken": "one [p] is less than alpha [p] which is less than or equal to two"
+    },
+    {
+      "latex": "$2<\\alpha\\le3$",
+      "spoken": "two [p] is less than alpha [p] which is less than or equal to three"
+    },
+    {
+      "latex": "$2D_2-4D_1=c$",
+      "spoken": "two D sub two [p] minus four D sub one [p] equals C"
+    },
+    {
+      "latex": "$2\\beta$",
+      "spoken": "two beta"
+    },
+    {
+      "latex": "$3.5\\beta$",
+      "spoken": "three point five beta"
+    },
+    {
+      "latex": "$3\\beta$",
+      "spoken": "three beta"
+    },
+    {
+      "latex": "$C_F(r)\\sim r^{-1/16}$",
+      "spoken": "C sub F of R [p] scales as [p] R to the minus one sixteenth"
+    },
+    {
+      "latex": "$D_n=2n\\langle L_0\\rangle+\\frac{c}{12}(n^3-n)$",
+      "spoken": "D sub N [p] equals [p] two N times the expectation value of L sub zero [p] plus [p] C divided by twelve times the quantity N cubed minus N"
+    },
+    {
+      "latex": "$G=\\Pi_2=\\mathbb Z_2$",
+      "spoken": "G [p] equals [p] pi sub two [p] equals [p] Z two"
+    },
+    {
+      "latex": "$H=\\theta(a+a^\\dagger)$",
+      "spoken": "H [p] equals [p] theta times the quantity A plus A dagger"
+    },
+    {
+      "latex": "$N$",
+      "spoken": "N"
+    },
+    {
+      "latex": "$NT^2$",
+      "spoken": "N times T squared"
+    },
+    {
+      "latex": "$O(p^{(d+1)/2})$",
+      "spoken": "order P to the power (D plus one divided by two)"
+    },
+    {
+      "latex": "$S^2\\times\\mathbb R$",
+      "spoken": "S two [p] times the real line"
+    },
+    {
+      "latex": "$T$",
+      "spoken": "T"
+    },
+    {
+      "latex": "$\\Phi$",
+      "spoken": "phi"
+    },
+    {
+      "latex": "$\\beta$",
+      "spoken": "beta"
+    },
+    {
+      "latex": "$\\epsilon n$",
+      "spoken": "epsilon N"
+    },
+    {
+      "latex": "$\\eta_b\\simeq\\eta_f\\simeq0.40$",
+      "spoken": "eta sub B [p] is approximately equal to [p] eta sub F [p] is approximately equal to [p] zero point four zero"
+    },
+    {
+      "latex": "$\\mathbb Z_2$",
+      "spoken": "Z two"
+    },
+    {
+      "latex": "$\\mathcal N=1$",
+      "spoken": "N [p] equals one"
+    },
+    {
+      "latex": "$\\mathrm{SO}(n)$",
+      "spoken": "S O of N"
+    },
+    {
+      "latex": "$\\mathrm{SU}(2)$",
+      "spoken": "S U two"
+    },
+    {
+      "latex": "$\\nu=1.27(3)$",
+      "spoken": "nu [p] equals [p] one point two seven [p] with an uncertainty of zero point zero three"
+    },
+    {
+      "latex": "$\\pi$",
+      "spoken": "pi"
+    },
+    {
+      "latex": "$\\rho^{T_A}$",
+      "spoken": "rho [p] partially time reversed on A"
+    },
+    {
+      "latex": "$\\sigma=\\Phi(\\pi)$",
+      "spoken": "sigma [p] equals [p] phi of pi"
+    },
+    {
+      "latex": "$c$",
+      "spoken": "C"
+    },
+    {
+      "latex": "$c=1$",
+      "spoken": "C [p] equals one"
+    },
+    {
+      "latex": "$c=1/2$",
+      "spoken": "C [p] equals one half"
+    },
+    {
+      "latex": "$c=3/2$",
+      "spoken": "C [p] equals three halves"
+    },
+    {
+      "latex": "$c=9/5$",
+      "spoken": "C [p] equals nine fifths"
+    },
+    {
+      "latex": "$d$",
+      "spoken": "D"
+    },
+    {
+      "latex": "$d=4-\\epsilon$",
+      "spoken": "D [p] equals [p] four minus epsilon"
+    },
+    {
+      "latex": "$d_{\\rm circuit}=\\min(d_{\\rm unmasked},d_{\\rm meas})$",
+      "spoken": "D sub circuit [p] equals [p] the minimum of D sub unmasked and D sub meas"
+    },
+    {
+      "latex": "$g=0.5$",
+      "spoken": "G [p] equals zero point five"
+    },
+    {
+      "latex": "$h_\\sigma=1/16$",
+      "spoken": "H sub sigma [p] equals one sixteenth"
+    },
+    {
+      "latex": "$m$",
+      "spoken": "M"
+    },
+    {
+      "latex": "$n$",
+      "spoken": "N"
+    },
+    {
+      "latex": "$n\\to1$",
+      "spoken": "N [p] tends to one"
+    },
+    {
+      "latex": "$p$",
+      "spoken": "P"
+    },
+    {
+      "latex": "$p^{m-1}$",
+      "spoken": "P to the (M minus one)"
+    },
+    {
+      "latex": "$z=2$",
+      "spoken": "Z [p] equals two"
+    }
+  ],
+  "phrase_groups": []
+}
