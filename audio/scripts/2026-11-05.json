@@ -1,0 +1,286 @@
+{
+  "version": 6,
+  "date": "2026-11-05",
+  "source_hash": "4ec3e5d3ec032705ed87b7ead1d30d9213136a143f1e5480cf91c7a0b3e587d2",
+  "pronunciations": [
+    {
+      "latex": "$1/\\gamma$",
+      "spoken": "one divided by gamma"
+    },
+    {
+      "latex": "$3^2+4^2=5^2+0^2$",
+      "spoken": "three squared [p] plus [p] four squared [p] equals [p] five squared [p] plus [p] zero squared"
+    },
+    {
+      "latex": "$D$",
+      "spoken": "D"
+    },
+    {
+      "latex": "$D-1$",
+      "spoken": "D [p] minus [p] one"
+    },
+    {
+      "latex": "$D_{\\mathrm{eff}}(\\gamma)=D_0+a\\sqrt{\\gamma}+\\cdots$",
+      "spoken": "D sub eff of gamma [p] equals [p] D sub zero [p] plus [p] A times the square root of gamma [p] plus [p] dot dot dot"
+    },
+    {
+      "latex": "$L$",
+      "spoken": "L"
+    },
+    {
+      "latex": "$L^2/\\log^2 L$",
+      "spoken": "L squared divided by the square of log L"
+    },
+    {
+      "latex": "$N=6$",
+      "spoken": "N [p] equals [p] six"
+    },
+    {
+      "latex": "$U(1)$",
+      "spoken": "U one"
+    },
+    {
+      "latex": "$\\epsilon$",
+      "spoken": "epsilon"
+    },
+    {
+      "latex": "$\\epsilon^{3/2}$",
+      "spoken": "epsilon to the three halves"
+    },
+    {
+      "latex": "$\\gamma$",
+      "spoken": "gamma"
+    },
+    {
+      "latex": "$\\mathbb{Z}_N$",
+      "spoken": "Z sub N"
+    },
+    {
+      "latex": "$\\mathcal{O}(\\epsilon^{-2})$",
+      "spoken": "order epsilon to the minus two"
+    },
+    {
+      "latex": "$\\mathrm{SL}^{+}_{b}(2,\\mathbb{R})$",
+      "spoken": "S L plus sub B of two over the reals"
+    },
+    {
+      "latex": "$\\omega=\\Omega-i\\Gamma$",
+      "spoken": "omega [p] equals [p] capital omega [p] minus [p] i gamma"
+    },
+    {
+      "latex": "$\\sqrt{L}$",
+      "spoken": "the square root of L"
+    },
+    {
+      "latex": "$c>1$",
+      "spoken": "C [p] greater than [p] one"
+    },
+    {
+      "latex": "$k$",
+      "spoken": "K"
+    },
+    {
+      "latex": "$t^{2/3}$",
+      "spoken": "T to the two thirds"
+    },
+    {
+      "latex": "$x^a y^b z^c$",
+      "spoken": "x to the A times y to the B times z to the C"
+    },
+    {
+      "latex": "${\\rm SL}(2,\\mathbb{R})$",
+      "spoken": "S L two over the reals"
+    }
+  ],
+  "phrase_groups": [
+    [
+      "34-50 model"
+    ],
+    [
+      "Baxter--Wu Models"
+    ],
+    [
+      "Baxter–Wu models"
+    ],
+    [
+      "CSS stabilizer codes"
+    ],
+    [
+      "Chern-Simons theory"
+    ],
+    [
+      "Clifford matchgates"
+    ],
+    [
+      "Fermionic Porter-Thomas statistics"
+    ],
+    [
+      "Jackiw–Teitelboim gravity"
+    ],
+    [
+      "Kac-Moody current algebras"
+    ],
+    [
+      "Kardar--Parisi--Zhang density hydrodynamics"
+    ],
+    [
+      "Kardar–Parisi–Zhang"
+    ],
+    [
+      "Kawai–Lewellen–Tye"
+    ],
+    [
+      "Liouville theory"
+    ],
+    [
+      "Luttinger liquid"
+    ],
+    [
+      "Non-compact Kogut-Susskind gauge theories"
+    ],
+    [
+      "Pauli frame"
+    ],
+    [
+      "Pokrovsky–Talapov law"
+    ],
+    [
+      "Prähofer–Spohn scaling function"
+    ],
+    [
+      "Purcell loss"
+    ],
+    [
+      "Rényi entanglement asymmetry"
+    ],
+    [
+      "SWAP test"
+    ],
+    [
+      "Small-Set-Peeling"
+    ],
+    [
+      "Thermodynamic Bethe Ansatz"
+    ],
+    [
+      "Thirring interaction"
+    ],
+    [
+      "Virasoro fusion kernel"
+    ],
+    [
+      "XXZ--ASEP Lindbladian"
+    ],
+    [
+      "asymmetric simple exclusion process"
+    ],
+    [
+      "braided commutativity"
+    ],
+    [
+      "chiral gauge theories"
+    ],
+    [
+      "clock-and-shift qudits"
+    ],
+    [
+      "dispersive shift"
+    ],
+    [
+      "fermionic Gaussian states"
+    ],
+    [
+      "finite Weyl algebra"
+    ],
+    [
+      "four-state Potts fixed point"
+    ],
+    [
+      "generalized hydrodynamic backgrounds"
+    ],
+    [
+      "higher Nishimori manifold"
+    ],
+    [
+      "hydrodynamic long-time tails"
+    ],
+    [
+      "linear cross-entropy score"
+    ],
+    [
+      "local Pauli Davies dynamics"
+    ],
+    [
+      "magic state injection"
+    ],
+    [
+      "noisy Burgers equation"
+    ],
+    [
+      "non-Abelian quantum doubles"
+    ],
+    [
+      "non-Hermitian skin effect"
+    ],
+    [
+      "nonlinear sigma model"
+    ],
+    [
+      "one-loop surface integrands"
+    ],
+    [
+      "partial self-correction"
+    ],
+    [
+      "point-gap topology"
+    ],
+    [
+      "quantum Mpemba effect"
+    ],
+    [
+      "quantum automorphic forms"
+    ],
+    [
+      "quantum expander codes"
+    ],
+    [
+      "quantum measure space"
+    ],
+    [
+      "quasi-normal mode"
+    ],
+    [
+      "randomized symmetry rotations"
+    ],
+    [
+      "reliable measurement product"
+    ],
+    [
+      "stochastic Pauli noise"
+    ],
+    [
+      "symmetry-resolved level spectroscopy"
+    ],
+    [
+      "synthetic dimension"
+    ],
+    [
+      "thermal form-factor expansion"
+    ],
+    [
+      "thermodynamic Bethe ansatz"
+    ],
+    [
+      "thermodynamic limit"
+    ],
+    [
+      "trivariate bicycle codes"
+    ],
+    [
+      "valuation matrix"
+    ],
+    [
+      "zero-noise extrapolation"
+    ]
+  ]
+}
