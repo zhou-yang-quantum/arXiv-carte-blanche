@@ -1,0 +1,72 @@
+{
+  "version": 6,
+  "date": "2026-11-06",
+  "source_hash": "a4085c55b2498ff81c98dc83f2435be02c763a77e57031dda1180b8554d598ba",
+  "pronunciations": [
+    {
+      "latex": "$D$",
+      "spoken": "D"
+    },
+    {
+      "latex": "$F$",
+      "spoken": "F"
+    },
+    {
+      "latex": "$N$",
+      "spoken": "N"
+    },
+    {
+      "latex": "$N\\ge40$",
+      "spoken": "N [p] greater than or equal to forty"
+    },
+    {
+      "latex": "$\\chi=-1/4$",
+      "spoken": "chi [p] equals [p] minus one quarter"
+    },
+    {
+      "latex": "$\\min D=1-\\max F$",
+      "spoken": "the minimum of D [p] equals [p] one minus the maximum of F"
+    },
+    {
+      "latex": "$\\text{-}$",
+      "spoken": "hyphen"
+    },
+    {
+      "latex": "$\\zeta=3/4$",
+      "spoken": "zeta [p] equals [p] three quarters"
+    },
+    {
+      "latex": "$c$",
+      "spoken": "C"
+    },
+    {
+      "latex": "$c-1=0.003$",
+      "spoken": "C minus one [p] equals [p] zero point zero zero three"
+    },
+    {
+      "latex": "$e^{-cL^2}$",
+      "spoken": "E to the power (minus C L squared)"
+    },
+    {
+      "latex": "$e^{-cL}$",
+      "spoken": "E to the power (minus C L)"
+    },
+    {
+      "latex": "$p\\in[0,1]$",
+      "spoken": "P [p] in the closed interval from zero to one"
+    },
+    {
+      "latex": "$z=0.03(2)$",
+      "spoken": "Z [p] equals [p] zero point zero three with uncertainty zero point zero two"
+    },
+    {
+      "latex": "$z=5/4$",
+      "spoken": "Z [p] equals [p] five quarters"
+    },
+    {
+      "latex": "c=1",
+      "spoken": "C [p] equals [p] one"
+    }
+  ],
+  "phrase_groups": []
+}
