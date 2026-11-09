@@ -15,6 +15,21 @@ def expressions(day):
                    for match in MATH.finditer(paper[field])})
 
 
+def is_source_assignment(day, expression):
+    """Allow explicit readings for exact bare variable=number text, e.g. c=1."""
+    if not re.fullmatch(r'[A-Za-z][A-Za-z0-9_]*\s*=\s*-?\d+(?:\.\d+)?', expression):
+        return False
+    pattern = re.compile(r'(?<![\w\\])' + re.escape(expression) + r'(?!\w|\.\d)')
+    for paper in day['papers']:
+        for field in ('title', 'summary', 'background', 'why'):
+            source = paper[field]
+            math = [(match.start(), match.end()) for match in MATH.finditer(source)]
+            if any(not any(left < match.end() and match.start() < right for left, right in math)
+                   for match in pattern.finditer(source)):
+                return True
+    return False
+
+
 def source_pronunciations(day, pronunciations, on_rekey=None):
     """Copy exact source keys for unique matches differing only in final prose punctuation.
 
@@ -159,6 +174,8 @@ def make_script(day, pronunciations, version=6, phrase_groups=None):
             raise ValueError('Equation pronunciations must be plain English, not TeX or markup')
         found[latex] = spoken.strip()
     expected = set(expressions(day))
+    if version >= 6:
+        expected.update(expression for expression in found if is_source_assignment(day, expression))
     if set(found) != expected:
         raise ValueError('Equation pronunciations must cover every distinct item equation exactly once; '
                          f'missing={sorted(expected - set(found))!r}; extra={sorted(set(found) - expected)!r}')

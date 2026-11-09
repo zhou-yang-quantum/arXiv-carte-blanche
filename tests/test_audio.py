@@ -224,6 +224,33 @@ class AudioTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             make_script(self.day, source_pronunciations(self.day, []))
 
+    @unittest.skipUnless(shutil.which('node'), 'Speech export requires Node.js')
+    def test_exact_bare_equation_reading_is_validated_and_exported(self):
+        self.day['papers'][0]['title'] = 'Spectral gaps above c=1'
+        self.day['papers'][0]['summary'] = 'Compare c=10 and c=1.5 and abc=1, then c=1.'
+        before = json.loads(json.dumps(self.day))
+        script = make_script(self.day, [{'latex': 'c=1', 'spoken': 'C [p] equals [p] one'}])
+        with tempfile.TemporaryDirectory() as folder:
+            folder = Path(folder)
+            source = folder / 'days.json'
+            source.write_text(json.dumps([self.day]), encoding='utf-8')
+            (folder / (self.day['date'] + '.json')).write_text(json.dumps(script), encoding='utf-8')
+            subprocess.run(['node', str(ROOT / 'tools/export_audio.mjs'), str(source), str(folder / 'text'), str(folder)],
+                           check=True, capture_output=True, timeout=60)
+            exported = json.loads((folder / 'text' / (self.day['date'] + '.json')).read_text(encoding='utf-8'))
+            heading = next(x for x in exported['items'][0]['sections'] if x['name'] == 'heading')
+            self.assertEqual(heading['text'], 'Spectral gaps above C equals one')
+            self.assertEqual(sum('pause_seconds' in segment for segment in heading['segments']), 2)
+            self.assertIn('c=10 and c=1.5 and abc=1, then C equals one', exported['text'])
+        self.assertEqual(self.day, before)
+        for expression in ['c=2', 'invented words']:
+            with self.subTest(expression=expression), self.assertRaises(ValueError):
+                make_script(self.day, [{'latex': expression, 'spoken': 'a reading'}])
+        self.day['papers'][0]['title'] = 'Paper'
+        self.day['papers'][0]['summary'] = 'Only c=10 and c=1.5 and abc=1.'
+        with self.assertRaises(ValueError):
+            make_script(self.day, [{'latex': 'c=1', 'spoken': 'C equals one'}])
+
     def test_edited_pronunciation_cannot_use_old_audio(self):
         script = make_script(self.day, [])
         with tempfile.TemporaryDirectory() as folder, patch('tools.build.ROOT', Path(folder)):

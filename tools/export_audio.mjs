@@ -13,8 +13,13 @@ function normalizeSpeech(text) {
   return text.replace(/\b(?:QEC|QFT|QLDPC|LDPC|CNOT|CCZ|QCD|SPT|SYK|RG|YM|OTOC)\b/g, word => [...word].join(' '))
     .replace(/\[\[/g, '[ [').replace(/\]\]/g, '] ]');
 }
+function speechPattern(substitutions) {
+  const bare = [...substitutions.keys()].filter(key => /^[A-Za-z][A-Za-z0-9_]*\s*=\s*-?\d+(?:\.\d+)?$/.test(key))
+    .sort((a, b) => b.length - a.length).map(key => key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+  return new RegExp(reading.mathPattern.source + (bare.length ? '|(?<![\\p{L}\\p{N}_\\\\])(?:' + bare.join('|') + ')(?![\\p{L}\\p{N}_]|\\.[0-9])' : ''), 'gu');
+}
 function pronounce(text, substitutions, robustLetters = false, flattenRhythm = false) {
-  return normalizeSpeech(reading.plainText(text).replace(reading.mathPattern, expression => {
+  return normalizeSpeech(reading.plainText(text).replace(speechPattern(substitutions), expression => {
     if (!substitutions.has(expression)) throw new Error('Missing English pronunciation: ' + expression);
     let spoken = substitutions.get(expression);
     if (flattenRhythm) spoken = spoken.replace(/\[p\]/g, ' ').replace(/[()]/g, '').replace(/[ \t]+/g, ' ').trim();
@@ -52,7 +57,7 @@ function prepareSection(name, source, substitutions, robustLetters, rhythmic, ph
     else segments.push({ text, speed });
   }
   let offset = 0;
-  const pattern = new RegExp(reading.mathPattern.source + (phrases.size ? '|' + prefix + '\\d+END' : ''), 'g');
+  const pattern = new RegExp(speechPattern(substitutions).source + (phrases.size ? '|' + prefix + '\\d+END' : ''), 'gu');
   for (const match of plain.matchAll(pattern)) {
     addText(normalizeSpeech(plain.slice(offset, match.index)));
     if (phrases.has(match[0])) {
