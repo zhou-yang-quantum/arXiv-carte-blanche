@@ -1,0 +1,274 @@
+{
+  "version": 6,
+  "date": "2026-11-09",
+  "source_hash": "d324d300993011d9426bbb04ccd1c770ad86a2dd8c5ab4f3d1bb77fec0ea8fbf",
+  "pronunciations": [
+    {
+      "latex": "$$R_{\\max}=\\min\\left\\{\\frac{\\Delta F_\\psi}{\\Delta F_\\phi},\\frac{V_\\psi}{V_\\phi}\\right\\}.$$",
+      "spoken": "R sub max [p] equals [p] the minimum of [p] delta F sub psi divided by delta F sub phi [p] and [p] V sub psi divided by V sub phi."
+    },
+    {
+      "latex": "$F\\geq0.999997$",
+      "spoken": "F [p] is greater than or equal to [p] zero point nine nine nine nine nine seven"
+    },
+    {
+      "latex": "$N$",
+      "spoken": "N"
+    },
+    {
+      "latex": "$O(2)$",
+      "spoken": "O two"
+    },
+    {
+      "latex": "$O(3)$",
+      "spoken": "O three"
+    },
+    {
+      "latex": "$O(4)$",
+      "spoken": "O four"
+    },
+    {
+      "latex": "$Q$",
+      "spoken": "Q"
+    },
+    {
+      "latex": "$Q/N$",
+      "spoken": "Q divided by N"
+    },
+    {
+      "latex": "$[[768,2,9]]$",
+      "spoken": "seven hundred sixty-eight two nine"
+    },
+    {
+      "latex": "$\\Delta t\\sim2\\pi/W$",
+      "spoken": "delta T [p] is of order [p] two pi divided by W"
+    },
+    {
+      "latex": "$\\Gamma\\propto1/v$",
+      "spoken": "Gamma [p] is proportional to [p] one divided by V"
+    },
+    {
+      "latex": "$\\bar{x}(t)=v_{\\mathrm d}t$",
+      "spoken": "X bar of T [p] equals [p] V sub D times T"
+    },
+    {
+      "latex": "$\\langle A(t)A(0)\\rangle/N^2$",
+      "spoken": "the expectation value of A of T times A of zero [p] divided by N squared"
+    },
+    {
+      "latex": "$\\mathcal{N}=4$",
+      "spoken": "N [p] equals [p] four"
+    },
+    {
+      "latex": "$\\mathrm{CP}^{N-1}$",
+      "spoken": "C P to the (N minus one)"
+    },
+    {
+      "latex": "$\\omega,k,T,|\\mu_3|\\ll\\mu_q$",
+      "spoken": "omega, K, T, and the absolute value of mu sub three [p] are all much less than [p] mu sub Q"
+    },
+    {
+      "latex": "$\\tau_{\\mathrm{diss}}\\sim\\tau_{\\mathrm{dyn}}\\log N$",
+      "spoken": "tau sub diss [p] scales as [p] tau sub dyn times the logarithm of N"
+    },
+    {
+      "latex": "$_2$",
+      "spoken": "two"
+    },
+    {
+      "latex": "$h<1$",
+      "spoken": "H [p] is less than [p] one"
+    }
+  ],
+  "phrase_groups": [
+    [
+      "AdS$_2$"
+    ],
+    [
+      "Anderson orthogonality catastrophe"
+    ],
+    [
+      "Andreev reflection"
+    ],
+    [
+      "BDNK hydrodynamics"
+    ],
+    [
+      "BQP-Complete Susceptibilities"
+    ],
+    [
+      "Banks–Fischler–Shenker–Susskind"
+    ],
+    [
+      "Bemfica–Disconzi–Noronha–Kovtun"
+    ],
+    [
+      "Bogoliubov–de Gennes"
+    ],
+    [
+      "Borel singularities"
+    ],
+    [
+      "Casimir invariants"
+    ],
+    [
+      "Coherent forward scattering"
+    ],
+    [
+      "Conformal Defect Spectra"
+    ],
+    [
+      "Euler beta functions"
+    ],
+    [
+      "Higgs-plus-three-gluon amplitudes"
+    ],
+    [
+      "Israel–Stewart"
+    ],
+    [
+      "Jordan–Wigner transformation"
+    ],
+    [
+      "Lieb–Robinson bounds"
+    ],
+    [
+      "Lynden-Bell equilibria"
+    ],
+    [
+      "Mid-circuit measurements"
+    ],
+    [
+      "Onsager inner product"
+    ],
+    [
+      "Open Quantum Time Crystals"
+    ],
+    [
+      "Pauli stabilizers"
+    ],
+    [
+      "Quantum Many-Body Spin Ratchets"
+    ],
+    [
+      "Quantum jump feedback"
+    ],
+    [
+      "Quasinormal modes"
+    ],
+    [
+      "Quotient Quantum Codes"
+    ],
+    [
+      "Raman anyon-Hubbard model"
+    ],
+    [
+      "Ramsey coherence"
+    ],
+    [
+      "SU(2) BFSS"
+    ],
+    [
+      "Smith–Yard mechanism"
+    ],
+    [
+      "Twisted Compactification"
+    ],
+    [
+      "bounded-error quantum polynomial time"
+    ],
+    [
+      "current–density interactions"
+    ],
+    [
+      "current–dissipation relation"
+    ],
+    [
+      "defect-changing operators"
+    ],
+    [
+      "density-dependent tunneling"
+    ],
+    [
+      "detailed balance"
+    ],
+    [
+      "discrete quantum convolution"
+    ],
+    [
+      "fermionic toric code"
+    ],
+    [
+      "first-detection distribution"
+    ],
+    [
+      "first-moment sum rule"
+    ],
+    [
+      "functional-determinant method"
+    ],
+    [
+      "fuzzy-sphere calculations"
+    ],
+    [
+      "generalized Landauer bound"
+    ],
+    [
+      "generalized polylogarithms"
+    ],
+    [
+      "hydrodynamic frame"
+    ],
+    [
+      "instanton measure"
+    ],
+    [
+      "joint coherent information"
+    ],
+    [
+      "massive Dirac fermions"
+    ],
+    [
+      "matched asymptotic expansion"
+    ],
+    [
+      "maximal-transcendentality relation"
+    ],
+    [
+      "momentum diffusion"
+    ],
+    [
+      "non-Abelian hydrodynamics"
+    ],
+    [
+      "perfect state transfer"
+    ],
+    [
+      "pinning-field defects"
+    ],
+    [
+      "positive partial transpose"
+    ],
+    [
+      "quantum Zeno effect"
+    ],
+    [
+      "stress-tensor form factor"
+    ],
+    [
+      "thermal operations"
+    ],
+    [
+      "time-translation covariance"
+    ],
+    [
+      "time-translation symmetries"
+    ],
+    [
+      "two-mode models"
+    ],
+    [
+      "two-time correlation function"
+    ]
+  ]
+}
