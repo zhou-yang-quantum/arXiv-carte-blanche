@@ -1,0 +1,274 @@
+{
+  "version": 6,
+  "date": "2026-11-10",
+  "source_hash": "4605c06768068348c983a7d9f3412529e3727bf893ddfee17a18aa23c9487c1b",
+  "pronunciations": [
+    {
+      "latex": "$K_{\\rm Bragg}(p)\\propto(\\gamma p)^{-1/2}$",
+      "spoken": "K sub Bragg of P [p] is proportional to [p] the quantity gamma times P [p] to the power (minus one half)"
+    },
+    {
+      "latex": "$L$",
+      "spoken": "L"
+    },
+    {
+      "latex": "$L\\geq36$",
+      "spoken": "L [p] greater than or equal to [p] thirty six"
+    },
+    {
+      "latex": "$N$",
+      "spoken": "N"
+    },
+    {
+      "latex": "$NL^{d-1}$",
+      "spoken": "N times L to the power (D minus one)"
+    },
+    {
+      "latex": "$O(d)$",
+      "spoken": "order D"
+    },
+    {
+      "latex": "$\\Delta_L>0.0729$",
+      "spoken": "Delta sub L [p] greater than [p] zero point zero seven two nine"
+    },
+    {
+      "latex": "$\\gamma$",
+      "spoken": "gamma"
+    },
+    {
+      "latex": "$d$",
+      "spoken": "D"
+    },
+    {
+      "latex": "$p$",
+      "spoken": "P"
+    },
+    {
+      "latex": "$t^{-2/3}$",
+      "spoken": "T to the power (minus two thirds)"
+    },
+    {
+      "latex": "$t^{-4/3}$",
+      "spoken": "T to the power (minus four thirds)"
+    },
+    {
+      "latex": "$t^{1/3}$",
+      "spoken": "T to the power (one third)"
+    }
+  ],
+  "phrase_groups": [
+    [
+      "Airy-type scaling"
+    ],
+    [
+      "Borel-Padé analysis"
+    ],
+    [
+      "Bragg peaks"
+    ],
+    [
+      "Clifford involutions"
+    ],
+    [
+      "Commuting-check gauging"
+    ],
+    [
+      "Eigenstate Thermalization"
+    ],
+    [
+      "Gauss-law checks"
+    ],
+    [
+      "Hartle-Hawking state"
+    ],
+    [
+      "Hubbard–Stratonovich transformation"
+    ],
+    [
+      "Kramers symmetry"
+    ],
+    [
+      "Legendre transformation"
+    ],
+    [
+      "Lieb-Robinson bound"
+    ],
+    [
+      "Markov-shielded typical states"
+    ],
+    [
+      "Momentum-adapted localization observables"
+    ],
+    [
+      "Neveu-Schwarz"
+    ],
+    [
+      "OPE-weighted contributions"
+    ],
+    [
+      "One-Particle Resonances"
+    ],
+    [
+      "Partial-transpose inequalities"
+    ],
+    [
+      "Ramond sectors"
+    ],
+    [
+      "Rosen-Morse barrier"
+    ],
+    [
+      "Stokes phenomena"
+    ],
+    [
+      "Symanzik improvement"
+    ],
+    [
+      "Turing instability"
+    ],
+    [
+      "UV/IR mixing"
+    ],
+    [
+      "Virasoro symmetry"
+    ],
+    [
+      "boundary self-energy"
+    ],
+    [
+      "boundary-changing operators"
+    ],
+    [
+      "circuit fault distance"
+    ],
+    [
+      "circuit-to-circuit fluctuations"
+    ],
+    [
+      "conditional mutual informations"
+    ],
+    [
+      "conformal bootstrap"
+    ],
+    [
+      "determinantal worm Markov chain"
+    ],
+    [
+      "entropy-capacity argument"
+    ],
+    [
+      "fault-tolerant logical measurements"
+    ],
+    [
+      "fractional-linear transformation"
+    ],
+    [
+      "free-Majorana scaling dimensions"
+    ],
+    [
+      "generalized free fields"
+    ],
+    [
+      "golden-rule rate"
+    ],
+    [
+      "graded commutators"
+    ],
+    [
+      "half-sided modular inclusion"
+    ],
+    [
+      "half-sided translation framework"
+    ],
+    [
+      "heat-kernel propagator"
+    ],
+    [
+      "higher-order events"
+    ],
+    [
+      "influence-functional"
+    ],
+    [
+      "log-concavity"
+    ],
+    [
+      "lowest Landau level"
+    ],
+    [
+      "matrix-product-state calculations"
+    ],
+    [
+      "matrix–vector quantum mechanics"
+    ],
+    [
+      "membrane cluster expansion"
+    ],
+    [
+      "neighboring-level coherences"
+    ],
+    [
+      "non-Abelian code constructions"
+    ],
+    [
+      "on-shell physics"
+    ],
+    [
+      "out-of-time-ordered correlators"
+    ],
+    [
+      "particle-hole transformation"
+    ],
+    [
+      "partition-function certificates"
+    ],
+    [
+      "pseudo-hyperbolic distance"
+    ],
+    [
+      "quantum Rabi model"
+    ],
+    [
+      "quantum-master-equation descriptions"
+    ],
+    [
+      "reflection positivity"
+    ],
+    [
+      "roots of unity"
+    ],
+    [
+      "spatial transfer operator"
+    ],
+    [
+      "spectral form factor"
+    ],
+    [
+      "spectral rigidity"
+    ],
+    [
+      "spin-one Heisenberg chain"
+    ],
+    [
+      "stabilized PXP dynamics"
+    ],
+    [
+      "stationary-phase contribution"
+    ],
+    [
+      "three-term recurrence"
+    ],
+    [
+      "time-independent Lindblad model"
+    ],
+    [
+      "two-photon and two-mode variants"
+    ],
+    [
+      "two-toric-code construction"
+    ],
+    [
+      "volume-law entanglement"
+    ]
+  ]
+}
