@@ -1,0 +1,243 @@
+{
+  "version": 6,
+  "date": "2026-11-11",
+  "source_hash": "c7ffbfec6e1da7597ed802d6b95a6f026d53716308f8f686e4ae7f8244eb0dac",
+  "pronunciations": [
+    {
+      "latex": "$2[1-\\cos(\\pi/N_q)]$",
+      "spoken": "two times the quantity [p] one minus cosine of pi divided by N sub Q"
+    },
+    {
+      "latex": "$R$",
+      "spoken": "R"
+    },
+    {
+      "latex": "$R(X)$",
+      "spoken": "R of X"
+    },
+    {
+      "latex": "$\\Delta$",
+      "spoken": "Delta"
+    },
+    {
+      "latex": "$\\Gamma=2\\pi(2\\Delta-d)k_BT/\\hbar$",
+      "spoken": "Gamma [p] equals [p] two pi times the quantity two Delta minus D [p] times K sub B times T divided by h bar"
+    },
+    {
+      "latex": "$\\theta_c=\\pi/4$",
+      "spoken": "theta sub C [p] equals [p] pi divided by four"
+    },
+    {
+      "latex": "$d$",
+      "spoken": "D"
+    },
+    {
+      "latex": "$m$",
+      "spoken": "M"
+    },
+    {
+      "latex": "$mR\\ll1$",
+      "spoken": "M times R [p] is much less than one"
+    }
+  ],
+  "phrase_groups": [
+    [
+      "Anderson-localized systems"
+    ],
+    [
+      "Born–Oppenheimer interaction"
+    ],
+    [
+      "Categorical RMT"
+    ],
+    [
+      "Drell–Yan"
+    ],
+    [
+      "Dynamical GKP codes"
+    ],
+    [
+      "Edge dressing"
+    ],
+    [
+      "Error Resilience and Unitary 2-Designs"
+    ],
+    [
+      "Euclidean source construction"
+    ],
+    [
+      "Fibonacci anyon"
+    ],
+    [
+      "Floquet eigenstates"
+    ],
+    [
+      "Gauss constraints"
+    ],
+    [
+      "Inverse Scattering & Isospectrality"
+    ],
+    [
+      "Liouvillian gap"
+    ],
+    [
+      "Local Unitarity"
+    ],
+    [
+      "Lyapunov equation"
+    ],
+    [
+      "Lüscher's method"
+    ],
+    [
+      "Pauli–Villars subtraction"
+    ],
+    [
+      "Random matrix theory"
+    ],
+    [
+      "Sachdev–Ye–Kitaev models"
+    ],
+    [
+      "Spectral anti-flatness"
+    ],
+    [
+      "Toeplitz methods"
+    ],
+    [
+      "Tripartite nonlocal magic"
+    ],
+    [
+      "Yukawa generalizations"
+    ],
+    [
+      "adiabatic gauge potential"
+    ],
+    [
+      "anticommutation matrix"
+    ],
+    [
+      "classical-inference mapping"
+    ],
+    [
+      "co-moving qubits"
+    ],
+    [
+      "coherence kernel"
+    ],
+    [
+      "collinear factorisation"
+    ],
+    [
+      "dynamical regularization"
+    ],
+    [
+      "eigenstate thermalization"
+    ],
+    [
+      "false-vacuum decay"
+    ],
+    [
+      "fermionic Gaussian transformations"
+    ],
+    [
+      "geometric susceptibility"
+    ],
+    [
+      "magnetic plaquette interaction"
+    ],
+    [
+      "maximum-likelihood Pauli recovery"
+    ],
+    [
+      "modular covariance"
+    ],
+    [
+      "multi-interval Rényi entropies"
+    ],
+    [
+      "negativity spectrum"
+    ],
+    [
+      "non-Abelian quantum doubles"
+    ],
+    [
+      "non-Gaussian gates"
+    ],
+    [
+      "non-invertible symmetries"
+    ],
+    [
+      "norm-preserving maps"
+    ],
+    [
+      "pair-configuration space"
+    ],
+    [
+      "partial transposition"
+    ],
+    [
+      "polynomial-postselection baseline"
+    ],
+    [
+      "random tensor networks"
+    ],
+    [
+      "reflected spectrum"
+    ],
+    [
+      "relative-charge response"
+    ],
+    [
+      "renormalization-group flow"
+    ],
+    [
+      "repeat-until-success protocol"
+    ],
+    [
+      "replicated Majorana description"
+    ],
+    [
+      "scaled symplectic lattices"
+    ],
+    [
+      "scattering phase shifts"
+    ],
+    [
+      "second frame potential"
+    ],
+    [
+      "second-order Trotter steps"
+    ],
+    [
+      "single-qubit Clifford group"
+    ],
+    [
+      "singlet-pair projectors"
+    ],
+    [
+      "square-hexagonal"
+    ],
+    [
+      "subsystem GKP codes"
+    ],
+    [
+      "subsystem swap"
+    ],
+    [
+      "syndrome-conditioned quantum recoveries"
+    ],
+    [
+      "tensor-network agreement"
+    ],
+    [
+      "tube algebra"
+    ],
+    [
+      "two-state Markov chain"
+    ],
+    [
+      "zero-energy resonant solution"
+    ]
+  ]
+}
