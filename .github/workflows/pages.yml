@@ -25,10 +25,13 @@ concurrency:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 75
     permissions:
       contents: write
+    outputs:
+      audio_result: ${{ steps.audio.outcome }}
+      audio_dependencies_result: ${{ steps.audio_dependencies.outcome }}
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v4
@@ -45,14 +48,28 @@ jobs:
           path: .cache/audio/voice
           key: kokoro-v1-af-heart-beb0d184-bca610b8-1
       - name: Prepare offline audio dependencies
+        id: audio_dependencies
         if: ${{ !inputs.reuse_audio_only }}
         continue-on-error: true
+        timeout-minutes: 12
+        shell: bash
         run: |
-          sudo apt-get update -qq
-          sudo apt-get install -y -qq ffmpeg espeak-ng
-          python -m pip install -r requirements-speech.txt
+          for attempt in 1 2 3; do
+            if sudo apt-get -o Acquire::Retries=3 update -qq &&
+               sudo apt-get -o Acquire::Retries=3 install -y -qq --no-install-recommends ffmpeg espeak-ng &&
+               python -m pip install --retries 5 -r requirements-speech.txt &&
+               python -c 'from kokoro_onnx import Kokoro'; then
+              exit 0
+            fi
+            if [ "$attempt" -lt 3 ]; then sleep "$((attempt * 20))"; fi
+          done
+          echo '::error::Audio dependencies could not be installed after three attempts.'
+          exit 1
       - name: Generate or reuse dated audio releases
+        id: audio
+        if: ${{ inputs.reuse_audio_only || steps.audio_dependencies.outcome == 'success' }}
         continue-on-error: true
+        shell: bash
         timeout-minutes: 60
         env:
           GH_TOKEN: ${{ github.token }}
@@ -76,7 +93,7 @@ jobs:
         with:
           path: dist
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: build
     permissions:
       pages: write
@@ -87,3 +104,18 @@ jobs:
     steps:
       - uses: actions/deploy-pages@v4
         id: deployment
+  audio-status:
+    name: Verify audio outcome
+    runs-on: ubuntu-24.04
+    needs: [build, deploy]
+    if: ${{ always() && needs.build.result == 'success' && needs.deploy.result == 'success' }}
+    steps:
+      - name: Report audio failures after text deployment
+        env:
+          AUDIO_RESULT: ${{ needs.build.outputs.audio_result }}
+          DEPENDENCIES_RESULT: ${{ needs.build.outputs.audio_dependencies_result }}
+        run: |
+          if [ "$AUDIO_RESULT" != 'success' ]; then
+            echo "::error::Text deployed, but audio did not complete. Dependencies: $DEPENDENCIES_RESULT; audio: $AUDIO_RESULT."
+            exit 1
+          fi
