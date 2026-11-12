@@ -233,10 +233,13 @@ def read_remote_snapshot(day, token):
 def validate_snapshot(snapshot, day):
     if snapshot.get('source_format') == 'arxiv-announcement-schedule':
         evidence = snapshot.get('schedule_evidence', {})
+        evidence_url = evidence.get('url', '')
+        official_notice = (evidence_url in ('https://status.arxiv.org/', 'https://info.arxiv.org/help/availability.html')
+                           or evidence_url.startswith('https://blog.arxiv.org/'))
         if (snapshot.get('date') != day or snapshot.get('version') != 4
                 or snapshot.get('metadata_version') != 'schedule' or snapshot.get('papers') != []
                 or snapshot.get('no_announcements') is not True
-                or evidence.get('url') != 'https://status.arxiv.org/'
+                or not official_notice
                 or not evidence.get('notice') or not evidence.get('checked_at')
                 or snapshot.get('listing_sources') != [evidence['url']]):
             raise ValueError('Unverified no-announcement schedule snapshot')

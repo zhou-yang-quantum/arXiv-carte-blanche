@@ -113,8 +113,15 @@ class FeedCollectorTests(unittest.TestCase):
                                           'notice': 'No announcement Wednesday evening.',
                                           'checked_at': '2026-10-29T14:00:00+00:00'}}
         pipeline.validate_snapshot(snapshot, DAY)
+        blog = 'https://blog.arxiv.org/2026/11/06/announcement-change-veterans-day/'
+        pipeline.validate_snapshot({**snapshot, 'listing_sources': [blog],
+                                    'schedule_evidence': {**snapshot['schedule_evidence'], 'url': blog}}, DAY)
+        calendar = 'https://info.arxiv.org/help/availability.html'
+        pipeline.validate_snapshot({**snapshot, 'listing_sources': [calendar],
+                                    'schedule_evidence': {**snapshot['schedule_evidence'], 'url': calendar}}, DAY)
         for changes in ({'papers': [{'id': '2610.00001'}]}, {'no_announcements': False},
-                        {'schedule_evidence': {}}, {'date': '2026-10-30'}):
+                        {'schedule_evidence': {}}, {'date': '2026-10-30'},
+                        {'schedule_evidence': {**snapshot['schedule_evidence'], 'url': 'https://example.com/'}}):
             with self.subTest(changes=changes), self.assertRaises(ValueError):
                 pipeline.validate_snapshot({**snapshot, **changes}, DAY)
 

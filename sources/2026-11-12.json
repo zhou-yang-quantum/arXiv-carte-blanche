@@ -1,0 +1,19 @@
+{
+  "date": "2026-11-12",
+  "version": 4,
+  "metadata_version": "schedule",
+  "source_format": "arxiv-announcement-schedule",
+  "no_announcements": true,
+  "listing_sources": [
+    "https://info.arxiv.org/help/availability.html"
+  ],
+  "papers": [],
+  "excluded_papers": [],
+  "schedule_evidence": {
+    "url": "https://info.arxiv.org/help/availability.html",
+    "confirmation_url": "https://arxiv-org.atlassian.net/servicedesk/customer/portal/1/create/1246",
+    "checked_at": "2026-11-12T18:20:47.400707+00:00",
+    "notice": "arXiv lists November 11, 2026 as a deferred-announcement holiday for Veterans Day. Papers held over that evening will be included in the November 12 evening announcement, producing the November 13 morning feed.",
+    "explanation": "The omitted November 11 evening announcement produces no November 12 morning feed batch. The November 12 evening announcement belongs to the following morning's batch and must not be backdated into November 12."
+  }
+}
