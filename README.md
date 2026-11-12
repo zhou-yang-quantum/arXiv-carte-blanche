@@ -99,6 +99,8 @@ See **[Technical setup and agent reference](docs/technical-setup.md)** for the r
 - [ ] Use a dedicated maths and physics speech engine, or develop a standalone engine for this purpose.
 - [ ] show arxiv and pdf link in compact view
 - [ ] return to top of page button when browsing down
+- [ ] add a button in the audio player to go to the corresponding text
+- [ ] Current digest might feel a little verbose, should I make it more compact and also display arxiv abstract directly, with also the audio for the arxiv abstract? 
 
 ## Credits
 
