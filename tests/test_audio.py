@@ -10,7 +10,7 @@ import zipfile
 from unittest.mock import patch
 
 from tools.build import ROOT, audio_source_hash, audio_script_hash, load_audio_index
-from tools.generate_audio import fingerprint, concatenate, append_silence, text_chunks, build_playlist_archive, ensure_playlist, render
+from tools.generate_audio import fingerprint, concatenate, append_silence, text_chunks, build_playlist_archive, ensure_playlist, render, publish
 from tools.speech_text import make_script, source_phrase_groups, source_pronunciations
 from tools.import_digest import parse_digest
 from tools.project import AUDIO_BASE, LEGACY_AUDIO_BASE, canonical_audio_manifest
@@ -95,6 +95,33 @@ class AudioTests(unittest.TestCase):
                 voice.assert_not_called()
                 render.assert_not_called()
             self.assertEqual(json.loads((folder / 'audio/index.json').read_text(encoding='utf-8'))['days'], {})
+
+    def test_release_publication_survives_a_workflow_change_during_rendering(self):
+        manifest = json.loads(json.dumps(self.audio))
+        manifest['content_hash'] = 'exact-rendered-content'
+        calls = []
+        def github(args, **kwargs):
+            if args[:3] == ['gh', 'release', 'create']:
+                # GitHub rejects tagging the old workflow commit with GITHUB_TOKEN.
+                if args[args.index('--target') + 1] == 'old-workflow-commit':
+                    raise RuntimeError('HTTP 403: Resource not accessible by integration')
+            calls.append(args)
+        with tempfile.TemporaryDirectory() as folder:
+            folder = Path(folder)
+            for item in manifest['items']:
+                (folder / f'item-{item["rank"]:02}.mp3').write_bytes(b'fixture-mp3')
+            (folder / 'day.mp3').write_bytes(b'fixture-day')
+            (folder / 'speech.txt').write_text('Exact rendered speech.', encoding='utf-8')
+            with patch.dict('os.environ', {'GITHUB_SHA': 'old-workflow-commit'}), \
+                 patch('tools.generate_audio.subprocess.run', return_value=subprocess.CompletedProcess([], 1)), \
+                 patch('tools.generate_audio.command', side_effect=github):
+                publish(manifest, folder, 'audio-fixture')
+            self.assertEqual(calls[0][0:3], ['gh', 'release', 'create'])
+            self.assertEqual(calls[-1][-1], str(folder / 'manifest.json'))
+            saved = json.loads((folder / 'manifest.json').read_text(encoding='utf-8'))
+            self.assertEqual(saved['content_hash'], 'exact-rendered-content')
+            self.assertEqual(saved['source_hash'], self.audio['source_hash'])
+            self.assertTrue(any(args[-1].endswith('playlist.zip') for args in calls))
 
     def test_wrong_item_ids_ranks_and_external_hosts_are_rejected(self):
         for key, value in [('id', '2610.99999'), ('rank', 20), ('url', 'https://example.com/track.mp3')]:

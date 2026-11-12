@@ -287,7 +287,10 @@ def publish(manifest, folder, tag):
             'Sections have 1.5-second pauses; the full day contains only item recordings.\n'
             'Source digest: https://github.com/' + REPOSITORY + '/blob/main/incoming/' + manifest['date'] + '.md\n'
             'Generated without model API calls.\n', encoding='utf-8')
-        command(['gh', 'release', 'create', tag, '--repo', REPOSITORY, '--target', os.environ.get('GITHUB_SHA', 'main'),
+        # A workflow edit on main during rendering can make GITHUB_SHA require
+        # workflow-write permission to tag. Use the default branch for the tag;
+        # the immutable manifest hashes identify the exact digest and speech.
+        command(['gh', 'release', 'create', tag, '--repo', REPOSITORY, '--target', 'main',
                  '--title', 'arXiv-' + manifest['date'] + ' audio', '--notes-file', str(notes), '--latest=false'])
     command(['gh', 'release', 'upload', tag, '--repo', REPOSITORY, '--clobber', *[str(p) for p in sorted(folder.glob('*.mp3'))], str(folder / 'speech.txt')], timeout=600)
     command(['gh', 'release', 'upload', tag, '--repo', REPOSITORY, '--clobber', str(archive)], timeout=300)
