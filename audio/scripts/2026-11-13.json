@@ -1,0 +1,412 @@
+{
+  "version": 6,
+  "date": "2026-11-13",
+  "source_hash": "5df9c886e6117764575416655da27d0cd31f76b11f5796b3b699ee4c741ff204",
+  "pronunciations": [
+    {
+      "latex": "$+i$",
+      "spoken": "plus i"
+    },
+    {
+      "latex": "$-\\pi^2$",
+      "spoken": "minus pi squared"
+    },
+    {
+      "latex": "$1/n$",
+      "spoken": "one divided by N"
+    },
+    {
+      "latex": "$10^{-200}$",
+      "spoken": "ten to the power minus two hundred"
+    },
+    {
+      "latex": "$2n$",
+      "spoken": "two N"
+    },
+    {
+      "latex": "$A\\boldsymbol{\\lambda}=\\boldsymbol b$",
+      "spoken": "A times lambda [p] equals [p] B"
+    },
+    {
+      "latex": "$C$",
+      "spoken": "C"
+    },
+    {
+      "latex": "$C=1$",
+      "spoken": "C equals one"
+    },
+    {
+      "latex": "$H$",
+      "spoken": "H"
+    },
+    {
+      "latex": "$N$",
+      "spoken": "N"
+    },
+    {
+      "latex": "$N_f$",
+      "spoken": "N sub F"
+    },
+    {
+      "latex": "$O(1)$",
+      "spoken": "big O of one"
+    },
+    {
+      "latex": "$O(\\log d)$",
+      "spoken": "big O of log D"
+    },
+    {
+      "latex": "$O(d\\log d)$",
+      "spoken": "big O of (D times log D)"
+    },
+    {
+      "latex": "$O\\mapsto\\rho^{it}O\\rho^{-it}$",
+      "spoken": "O maps to [p] rho to the power (i t) [p] times O [p] times rho to the power (minus i t)"
+    },
+    {
+      "latex": "$P$",
+      "spoken": "P"
+    },
+    {
+      "latex": "$R^*$",
+      "spoken": "R star"
+    },
+    {
+      "latex": "$W_2W_1=e^{i\\pi C/2}W_1W_2$",
+      "spoken": "W sub two times W sub one [p] equals [p] e to the power (i pi C divided by two) [p] times W sub one times W sub two"
+    },
+    {
+      "latex": "$\\Delta E=-|\\mathcal E|^2/\\delta$",
+      "spoken": "delta E [p] equals [p] minus the squared absolute value of E [p] divided by delta"
+    },
+    {
+      "latex": "$\\boldsymbol{\\omega}$",
+      "spoken": "omega"
+    },
+    {
+      "latex": "$\\hbar\\to0$",
+      "spoken": "h bar tends to zero"
+    },
+    {
+      "latex": "$\\log\\tilde p(u)\\sim-c^*|u|^{16}$",
+      "spoken": "log P tilde of U [p] is asymptotic to [p] minus C star times the absolute value of U to the sixteenth power"
+    },
+    {
+      "latex": "$\\overline{\\mathrm{MS}}$",
+      "spoken": "M S bar"
+    },
+    {
+      "latex": "$\\sqrt{N_{\\rm bins}}$",
+      "spoken": "the square root of N sub bins"
+    },
+    {
+      "latex": "$d$",
+      "spoken": "D"
+    },
+    {
+      "latex": "$i$",
+      "spoken": "i"
+    },
+    {
+      "latex": "$i\\boldsymbol{\\omega}\\cdot\\nabla P=[H,P]$",
+      "spoken": "i times the dot product of omega with the gradient of P [p] equals [p] the commutator of H with P"
+    },
+    {
+      "latex": "$n$",
+      "spoken": "N"
+    },
+    {
+      "latex": "$n\\to\\infty$",
+      "spoken": "N tends to infinity"
+    },
+    {
+      "latex": "$q$",
+      "spoken": "Q"
+    },
+    {
+      "latex": "$q=2$",
+      "spoken": "Q equals two"
+    },
+    {
+      "latex": "$q=4$",
+      "spoken": "Q equals four"
+    },
+    {
+      "latex": "$q=6$",
+      "spoken": "Q equals six"
+    },
+    {
+      "latex": "$u$",
+      "spoken": "U"
+    }
+  ],
+  "phrase_groups": [
+    [
+      "$n$-rainbow states"
+    ],
+    [
+      "ABJM amplitudes"
+    ],
+    [
+      "Atom loss"
+    ],
+    [
+      "Bloch-sphere directions"
+    ],
+    [
+      "Blume–Capel models"
+    ],
+    [
+      "Born–Markov and secular approximations"
+    ],
+    [
+      "CSS circuits"
+    ],
+    [
+      "Caldeira–Leggett model"
+    ],
+    [
+      "Clifford circuits"
+    ],
+    [
+      "Clifford surrogate"
+    ],
+    [
+      "Counterdiabatic transport"
+    ],
+    [
+      "Edwards–Anderson susceptibility"
+    ],
+    [
+      "GHZ triplets"
+    ],
+    [
+      "Geometric Theory of Quasiperiodically Driven Systems"
+    ],
+    [
+      "Grover oracle"
+    ],
+    [
+      "Haar-random circuits"
+    ],
+    [
+      "Hadamard gates"
+    ],
+    [
+      "Hamiltonian learning"
+    ],
+    [
+      "Heisenberg scaling"
+    ],
+    [
+      "Holevo information"
+    ],
+    [
+      "Infrared rearrangement"
+    ],
+    [
+      "Jordan–Wigner strings"
+    ],
+    [
+      "Kitaev chain"
+    ],
+    [
+      "Lieb–Robinson bound"
+    ],
+    [
+      "Lieb–Schultz–Mattis component"
+    ],
+    [
+      "Lindblad span"
+    ],
+    [
+      "Mpemba effect"
+    ],
+    [
+      "Pauli frame"
+    ],
+    [
+      "Pauli master equation"
+    ],
+    [
+      "Petz recovery"
+    ],
+    [
+      "Qi–Wu–Zhang model"
+    ],
+    [
+      "Quantum signal processing"
+    ],
+    [
+      "Quasi-adiabatic continuation"
+    ],
+    [
+      "Reed–Muller code"
+    ],
+    [
+      "Reflection positivity"
+    ],
+    [
+      "Sachdev–Ye–Kitaev"
+    ],
+    [
+      "Tethered Monte Carlo"
+    ],
+    [
+      "Wilson overlap"
+    ],
+    [
+      "XXZ chain"
+    ],
+    [
+      "Yang–Yang entropy"
+    ],
+    [
+      "amplitude damping"
+    ],
+    [
+      "auxiliary-mass flow"
+    ],
+    [
+      "channel tomography"
+    ],
+    [
+      "charge-conjugation symmetry"
+    ],
+    [
+      "chessboard estimates"
+    ],
+    [
+      "classical-memory model"
+    ],
+    [
+      "conditional expectation"
+    ],
+    [
+      "conformal field theory"
+    ],
+    [
+      "cross-dimensional controlled-Z"
+    ],
+    [
+      "crystalline equivalence principle"
+    ],
+    [
+      "cusp and collinear anomalous dimensions"
+    ],
+    [
+      "dihedral and quaternion groups"
+    ],
+    [
+      "dispersive energy shift"
+    ],
+    [
+      "dual-conformal cross-ratios"
+    ],
+    [
+      "dynamical structure factor"
+    ],
+    [
+      "dynamically invariant subspaces"
+    ],
+    [
+      "energy diffusion"
+    ],
+    [
+      "fermion parity"
+    ],
+    [
+      "finite-strength code preparation"
+    ],
+    [
+      "fluctuation–dissipation theorem"
+    ],
+    [
+      "frequency lattice"
+    ],
+    [
+      "genuine multi-time quantum memory"
+    ],
+    [
+      "higher-group statistics"
+    ],
+    [
+      "inclusion parent Hamiltonians"
+    ],
+    [
+      "integration-by-parts reduction"
+    ],
+    [
+      "local-stochastic noise"
+    ],
+    [
+      "many-body Chern number"
+    ],
+    [
+      "mass and field anomalous dimensions"
+    ],
+    [
+      "measurement-induced transitions"
+    ],
+    [
+      "membrane-like lattice surgery"
+    ],
+    [
+      "microscopic thermal equilibrium"
+    ],
+    [
+      "modular flow"
+    ],
+    [
+      "negative geometries"
+    ],
+    [
+      "noise direction"
+    ],
+    [
+      "nonabelian holonomy"
+    ],
+    [
+      "orientation-reversing operations"
+    ],
+    [
+      "persistent core"
+    ],
+    [
+      "persistent mediator"
+    ],
+    [
+      "photon blockade"
+    ],
+    [
+      "projected ensemble"
+    ],
+    [
+      "quantum cellular automaton"
+    ],
+    [
+      "quasiparticle picture"
+    ],
+    [
+      "random-matrix statistics"
+    ],
+    [
+      "rms-normalized magnetization"
+    ],
+    [
+      "spectral moments"
+    ],
+    [
+      "symmetry-protected topological phases"
+    ],
+    [
+      "time-dependent density matrix renormalization group"
+    ],
+    [
+      "trajectory ensemble"
+    ],
+    [
+      "wave-like dark matter"
+    ]
+  ]
+}
