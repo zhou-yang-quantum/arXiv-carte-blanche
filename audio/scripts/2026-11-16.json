@@ -1,0 +1,248 @@
+{
+  "version": 6,
+  "date": "2026-11-16",
+  "source_hash": "3390b92234c352e2aa6292654e945b60fc6fc97f3492664c49c7d855e046c58b",
+  "pronunciations": [
+    {
+      "latex": "$(0,2)$",
+      "spoken": "zero, two"
+    },
+    {
+      "latex": "$(1,1)$",
+      "spoken": "one, one"
+    },
+    {
+      "latex": "$(2,0)$",
+      "spoken": "two, zero"
+    },
+    {
+      "latex": "$(F_{\\mu\\nu}F^{\\mu\\nu})^2$",
+      "spoken": "the square of the quantity [p] F sub mu nu times F superscript mu nu"
+    },
+    {
+      "latex": "$1/N$",
+      "spoken": "one divided by N"
+    },
+    {
+      "latex": "$2N^3$",
+      "spoken": "two N cubed"
+    },
+    {
+      "latex": "$G(t)=\\langle\\psi_0|e^{-iHt}|\\psi_0\\rangle$",
+      "spoken": "G of T [p] equals [p] bra psi sub zero [p] E to the power of minus I H T [p] ket psi sub zero"
+    },
+    {
+      "latex": "$R_k=k^2$",
+      "spoken": "R sub K [p] equals [p] K squared"
+    },
+    {
+      "latex": "$V=2$",
+      "spoken": "V [p] equals two"
+    },
+    {
+      "latex": "$V_n=\\tan[\\pi(\\theta+n^2\\alpha)]$",
+      "spoken": "V sub N [p] equals [p] the tangent of pi times the quantity theta plus N squared alpha"
+    },
+    {
+      "latex": "$\\langle(n_s-1)^2\\rangle=0$",
+      "spoken": "the expectation value of [p] the square of the quantity N sub S minus one [p] equals zero"
+    },
+    {
+      "latex": "$\\langle\\Phi(x,t)\\Phi^\\dagger(0,0)\\rangle$",
+      "spoken": "the expectation value of [p] phi of X and T [p] times [p] phi dagger of zero and zero"
+    },
+    {
+      "latex": "$\\mathbb{Z}_N^3$",
+      "spoken": "Z sub N cubed"
+    },
+    {
+      "latex": "$\\operatorname{Im}\\omega\\leq|\\operatorname{Im}k|$",
+      "spoken": "the imaginary part of omega [p] is less than or equal to [p] the absolute value of the imaginary part of K"
+    },
+    {
+      "latex": "$\\phi^4$",
+      "spoken": "phi to the fourth"
+    },
+    {
+      "latex": "$_3$",
+      "spoken": "three"
+    },
+    {
+      "latex": "$c_s\\to1$",
+      "spoken": "C sub S [p] approaches one"
+    },
+    {
+      "latex": "$f=1/2$",
+      "spoken": "F [p] equals [p] one half"
+    },
+    {
+      "latex": "$f=n/L$",
+      "spoken": "F [p] equals [p] N divided by L"
+    },
+    {
+      "latex": "$k+\\omega(k)$",
+      "spoken": "K [p] plus [p] omega of K"
+    },
+    {
+      "latex": "$k-\\omega(k)$",
+      "spoken": "K [p] minus [p] omega of K"
+    },
+    {
+      "latex": "$x/t$",
+      "spoken": "X divided by T"
+    },
+    {
+      "latex": "$|k|$",
+      "spoken": "the absolute value of K"
+    }
+  ],
+  "phrase_groups": [
+    [
+      "Adjoint QCD$_3$"
+    ],
+    [
+      "Airy distortions"
+    ],
+    [
+      "Anderson localization"
+    ],
+    [
+      "Belavkin–Staszewski relative entropy"
+    ],
+    [
+      "Bose-Hubbard mixture"
+    ],
+    [
+      "Bures statistical geometry"
+    ],
+    [
+      "Cauchy–Riemann equations"
+    ],
+    [
+      "Cayley transform"
+    ],
+    [
+      "Chern–Simons–Higgs theory"
+    ],
+    [
+      "Dicke states"
+    ],
+    [
+      "Einstein–Maxwell–dilaton"
+    ],
+    [
+      "Glauber dynamics"
+    ],
+    [
+      "Gutzwiller projection"
+    ],
+    [
+      "Lieb--Liniger Bose gas"
+    ],
+    [
+      "Loschmidt amplitude"
+    ],
+    [
+      "Majumdar–Ghosh energy"
+    ],
+    [
+      "Monopole-Fermion Scattering"
+    ],
+    [
+      "Nil-Coxeter relations"
+    ],
+    [
+      "Nyquist–Shannon sampling"
+    ],
+    [
+      "Sachdev–Ye–Kitaev model"
+    ],
+    [
+      "Toeplitz positivity"
+    ],
+    [
+      "Typically real functions"
+    ],
+    [
+      "Uhlmann transition probability"
+    ],
+    [
+      "Umegaki relative entropy"
+    ],
+    [
+      "Weak Gravity Conjecture"
+    ],
+    [
+      "Yang–Baxter integrability"
+    ],
+    [
+      "adjoint Majorana fermion"
+    ],
+    [
+      "background-dependent decoupling"
+    ],
+    [
+      "boundary projective representations"
+    ],
+    [
+      "canonical purifications"
+    ],
+    [
+      "charge-density-wave amplitude"
+    ],
+    [
+      "conformal ladder kernel"
+    ],
+    [
+      "dual-unitary circuits"
+    ],
+    [
+      "entanglement membrane picture"
+    ],
+    [
+      "fermionic representability"
+    ],
+    [
+      "functional renormalization group"
+    ],
+    [
+      "generalized Gibbs ensembles"
+    ],
+    [
+      "logarithmic negativity"
+    ],
+    [
+      "multidimensional free-flow construction"
+    ],
+    [
+      "non-self-averaging yield"
+    ],
+    [
+      "parafermionic exchange algebra"
+    ],
+    [
+      "particle–antiparticle excitations"
+    ],
+    [
+      "projected entangled-pair states"
+    ],
+    [
+      "quantum Cramér–Rao bound"
+    ],
+    [
+      "single-particle momentum profile"
+    ],
+    [
+      "stabilizer Rényi entropy"
+    ],
+    [
+      "strong spatial mixing"
+    ],
+    [
+      "transfer-matrix calculus"
+    ],
+    [
+      "von Neumann algebra"
+    ]
+  ]
+}
