@@ -1,0 +1,359 @@
+{
+  "version": 6,
+  "date": "2026-11-17",
+  "source_hash": "21e1f4cee57937281c1b2349aa9eff1cb998301624d473038a9920c2d071d4dd",
+  "pronunciations": [
+    {
+      "latex": "$-\\log P(R)=(\\rho_0R)^2f+o(R^2)$",
+      "spoken": "minus log P of R [p] equals [p] (rho sub zero times R) squared times F [p] plus [p] little O of R squared"
+    },
+    {
+      "latex": "$0<\\epsilon<1$",
+      "spoken": "zero [p] is less than epsilon [p] which is less than one"
+    },
+    {
+      "latex": "$1/r^\\alpha$",
+      "spoken": "one divided by R to the alpha"
+    },
+    {
+      "latex": "$3.20\\times10^{-8}$",
+      "spoken": "three point two zero [p] times ten to the minus eight"
+    },
+    {
+      "latex": "$35/48$",
+      "spoken": "thirty-five forty-eighths"
+    },
+    {
+      "latex": "$3\\times3$",
+      "spoken": "three by three"
+    },
+    {
+      "latex": "$7\\times7$",
+      "spoken": "seven by seven"
+    },
+    {
+      "latex": "$C>0$",
+      "spoken": "C [p] is greater than [p] zero"
+    },
+    {
+      "latex": "$C|\\psi\\rangle$",
+      "spoken": "C times ket psi"
+    },
+    {
+      "latex": "$D$",
+      "spoken": "D"
+    },
+    {
+      "latex": "$G(t)\\sim N^{-2}t^\\alpha e^{-Ct^{3/4}}$",
+      "spoken": "G of T [p] scales as [p] N to the minus two times T to the alpha [p] times the exponential of minus C times T to the three quarters"
+    },
+    {
+      "latex": "$H_C=C^\\dagger HC$",
+      "spoken": "H sub C [p] equals [p] C dagger H C"
+    },
+    {
+      "latex": "$L$",
+      "spoken": "L"
+    },
+    {
+      "latex": "$L\\log L$",
+      "spoken": "L times log L"
+    },
+    {
+      "latex": "$N$",
+      "spoken": "N"
+    },
+    {
+      "latex": "$N=12$",
+      "spoken": "N [p] equals [p] twelve"
+    },
+    {
+      "latex": "$R$",
+      "spoken": "R"
+    },
+    {
+      "latex": "$T=\\widetilde O(\\sqrt N/\\epsilon)$",
+      "spoken": "T [p] equals [p] O tilde of (the square root of N divided by epsilon)"
+    },
+    {
+      "latex": "$U$",
+      "spoken": "U"
+    },
+    {
+      "latex": "$V(x)=16\\lambda\\sin^4(x/2)$",
+      "spoken": "V of x [p] equals [p] sixteen lambda times the fourth power of sine of x divided by two"
+    },
+    {
+      "latex": "$W\\rho W^\\dagger=\\rho$",
+      "spoken": "W rho W dagger [p] equals [p] rho"
+    },
+    {
+      "latex": "$W\\rho=\\rho$",
+      "spoken": "W rho [p] equals [p] rho"
+    },
+    {
+      "latex": "$[[144,12,12]]$",
+      "spoken": "one hundred forty-four twelve twelve"
+    },
+    {
+      "latex": "$\\Delta_s=2.816$",
+      "spoken": "delta sub S [p] equals [p] two point eight one six"
+    },
+    {
+      "latex": "$\\alpha=d$",
+      "spoken": "alpha [p] equals [p] D"
+    },
+    {
+      "latex": "$\\alpha=d+1$",
+      "spoken": "alpha [p] equals [p] D plus one"
+    },
+    {
+      "latex": "$\\alpha=d/2$",
+      "spoken": "alpha [p] equals [p] D divided by two"
+    },
+    {
+      "latex": "$\\alpha>d$",
+      "spoken": "alpha [p] is greater than [p] D"
+    },
+    {
+      "latex": "$\\beta$",
+      "spoken": "beta"
+    },
+    {
+      "latex": "$\\epsilon$",
+      "spoken": "epsilon"
+    },
+    {
+      "latex": "$\\exp[O(D^3)]$",
+      "spoken": "the exponential of O of D cubed"
+    },
+    {
+      "latex": "$\\exp[\\Theta(D^2)]$",
+      "spoken": "the exponential of Theta of D squared"
+    },
+    {
+      "latex": "$\\exp[\\Theta(D^3)]$",
+      "spoken": "the exponential of Theta of D cubed"
+    },
+    {
+      "latex": "$\\hbar^{4/3}$",
+      "spoken": "h bar to the four thirds"
+    },
+    {
+      "latex": "$\\lambda$",
+      "spoken": "lambda"
+    },
+    {
+      "latex": "$\\langle O\\rangle_U=\\operatorname{Tr}(\\rho UO)/\\operatorname{Tr}(\\rho U)$",
+      "spoken": "the expectation of O sub U [p] equals [p] the trace of rho U O divided by the trace of rho U"
+    },
+    {
+      "latex": "$\\mu_T=1.47\\pm0.25$",
+      "spoken": "mu sub T [p] equals [p] one point four seven [p] plus or minus [p] zero point two five"
+    },
+    {
+      "latex": "$\\pi$",
+      "spoken": "pi"
+    },
+    {
+      "latex": "$\\rho_0$",
+      "spoken": "rho sub zero"
+    },
+    {
+      "latex": "$\\sqrt{\\rho}$",
+      "spoken": "the square root of rho"
+    },
+    {
+      "latex": "$\\widetilde W=\\mathcal R^\\dagger(W)$",
+      "spoken": "W tilde [p] equals [p] R dagger applied to W"
+    },
+    {
+      "latex": "$d$",
+      "spoken": "D"
+    },
+    {
+      "latex": "$f$",
+      "spoken": "F"
+    },
+    {
+      "latex": "$q^{-1/3}$",
+      "spoken": "Q to the minus one third"
+    },
+    {
+      "latex": "$t_c\\ge(1-\\epsilon)\\frac{\\beta}{2\\pi}\\log N$",
+      "spoken": "T sub C [p] is greater than or equal to [p] (one minus epsilon) times beta divided by two pi [p] times log N"
+    },
+    {
+      "latex": "$x$",
+      "spoken": "x"
+    },
+    {
+      "latex": "$|3\\rangle$",
+      "spoken": "ket three"
+    }
+  ],
+  "phrase_groups": [
+    [
+      "Algebraic instantons"
+    ],
+    [
+      "Belief propagation"
+    ],
+    [
+      "Bethe ansatz"
+    ],
+    [
+      "Born–Markov coarse-graining"
+    ],
+    [
+      "Cardy states"
+    ],
+    [
+      "Classical Shadows"
+    ],
+    [
+      "Clifford transformations"
+    ],
+    [
+      "Clifford-tensor network manifolds"
+    ],
+    [
+      "Discrete-Frequency Spectroscopy"
+    ],
+    [
+      "Fock-space tree"
+    ],
+    [
+      "Fuzzy-sphere regularization"
+    ],
+    [
+      "Generalized currents"
+    ],
+    [
+      "Imaginary-time evolution"
+    ],
+    [
+      "Lieb–Liniger gas"
+    ],
+    [
+      "Osterwalder–Schrader reconstruction"
+    ],
+    [
+      "Sachdev–Ye–Kitaev"
+    ],
+    [
+      "Strong-to-Weak Spontaneous Symmetry Breaking"
+    ],
+    [
+      "TEMPO-BP"
+    ],
+    [
+      "Temperley–Lieb algebra"
+    ],
+    [
+      "Thermal Fast Scrambling"
+    ],
+    [
+      "auxiliary-kernel method"
+    ],
+    [
+      "bond-percolation problems"
+    ],
+    [
+      "cavity recursion"
+    ],
+    [
+      "current minors"
+    ],
+    [
+      "density-matrix renormalization group"
+    ],
+    [
+      "encoder–decoder correlation terms"
+    ],
+    [
+      "higher-form symmetries"
+    ],
+    [
+      "hodograph transformation"
+    ],
+    [
+      "hydrodynamic instanton"
+    ],
+    [
+      "matrix product operator"
+    ],
+    [
+      "matrix product state"
+    ],
+    [
+      "non-Gaussian vacuum"
+    ],
+    [
+      "nondestructive parity measurement"
+    ],
+    [
+      "normalized Frobenius norm"
+    ],
+    [
+      "operator-size distribution"
+    ],
+    [
+      "out-of-time-order correlators"
+    ],
+    [
+      "overlap Weyl fermion"
+    ],
+    [
+      "quantum Fourier transforms"
+    ],
+    [
+      "quantum comb master equation"
+    ],
+    [
+      "quartic-oscillator vacuum"
+    ],
+    [
+      "quasinormal modes"
+    ],
+    [
+      "rational chiral algebra"
+    ],
+    [
+      "reflection positivity"
+    ],
+    [
+      "shadow chain"
+    ],
+    [
+      "special conformal generators"
+    ],
+    [
+      "spectral clipping"
+    ],
+    [
+      "stretched-exponential decay"
+    ],
+    [
+      "surface code stability experiment"
+    ],
+    [
+      "symmetry-protected topological state"
+    ],
+    [
+      "symmetry-twisted ensemble"
+    ],
+    [
+      "tetrality web"
+    ],
+    [
+      "valence-bond-solid order"
+    ],
+    [
+      "walking stability circuit"
+    ],
+    [
+      "wired boundary"
+    ]
+  ]
+}
