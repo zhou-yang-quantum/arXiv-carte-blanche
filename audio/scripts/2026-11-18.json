@@ -1,0 +1,293 @@
+{
+  "version": 6,
+  "date": "2026-11-18",
+  "source_hash": "7bfc8ff4df3c783b86a15d46239ae32a0b759addcb15b253b54fc90e54e28697",
+  "pronunciations": [
+    {
+      "latex": "$$E_{\\mathrm{C}}(\\rho_{V})=E_{\\mathrm{F}}(\\rho_{V})=E_{\\mathrm{F}}^{\\mathrm{G}}(\\rho_{V})=G(V).$$",
+      "spoken": "E sub C of rho sub V [p] equals [p] E sub F of rho sub V [p] equals [p] E sub F superscript G of rho sub V [p] equals [p] G of V."
+    },
+    {
+      "latex": "$$\\dot{\\Omega}=[[\\Omega,\\hat{H}],\\Omega].$$",
+      "spoken": "Omega dot [p] equals [p] the commutator of (the commutator of Omega with H) with Omega."
+    },
+    {
+      "latex": "$1/\\ln(T/\\lambda)$",
+      "spoken": "one divided by the natural logarithm of the ratio T to lambda"
+    },
+    {
+      "latex": "$2+1$",
+      "spoken": "two plus one"
+    },
+    {
+      "latex": "$2^{L}+1$",
+      "spoken": "two to the L [p] plus one"
+    },
+    {
+      "latex": "$D_{M}^{\\mathrm{anom}}$",
+      "spoken": "D sub M superscript anomalous"
+    },
+    {
+      "latex": "$D_{M}^{\\mathrm{anom}}(L,t)=\\gamma^{3}L^{\\alpha}f_{M}(t/(\\gamma L^{2}))$",
+      "spoken": "D sub M superscript anomalous of L and T [p] equals [p] gamma cubed times L to the alpha [p] times F sub M evaluated at T divided by the quantity gamma times L squared"
+    },
+    {
+      "latex": "$G(V)$",
+      "spoken": "G of V"
+    },
+    {
+      "latex": "$L$",
+      "spoken": "L"
+    },
+    {
+      "latex": "$M$",
+      "spoken": "M"
+    },
+    {
+      "latex": "$S$",
+      "spoken": "S"
+    },
+    {
+      "latex": "$T$",
+      "spoken": "T"
+    },
+    {
+      "latex": "$[[144,12,12]]$",
+      "spoken": "one hundred forty-four twelve twelve"
+    },
+    {
+      "latex": "$\\gamma$",
+      "spoken": "gamma"
+    },
+    {
+      "latex": "$\\lambda$",
+      "spoken": "lambda"
+    },
+    {
+      "latex": "$\\mathcal N=4$",
+      "spoken": "N equals four"
+    },
+    {
+      "latex": "$f$",
+      "spoken": "F"
+    },
+    {
+      "latex": "$m$",
+      "spoken": "M"
+    },
+    {
+      "latex": "$mL$",
+      "spoken": "m times L"
+    },
+    {
+      "latex": "N=4",
+      "spoken": "N equals four"
+    }
+  ],
+  "phrase_groups": [
+    [
+      "AdS unitarity"
+    ],
+    [
+      "Baxter functions"
+    ],
+    [
+      "Berezinskii–Kosterlitz–Thouless phase"
+    ],
+    [
+      "Bethe–Salpeter approximation"
+    ],
+    [
+      "Cluster-state entangling gates"
+    ],
+    [
+      "Davies thermal baths"
+    ],
+    [
+      "Dirichlet boundary conditions"
+    ],
+    [
+      "Gaussian displacement modulation"
+    ],
+    [
+      "Gaussian fermion tensor network"
+    ],
+    [
+      "High-temperature dimensional reduction"
+    ],
+    [
+      "Konishi multiplet"
+    ],
+    [
+      "Liouvillian autocorrelation function"
+    ],
+    [
+      "Mellin space"
+    ],
+    [
+      "Mermin–Wagner theorem"
+    ],
+    [
+      "Monte Carlo"
+    ],
+    [
+      "Painlevé V equation"
+    ],
+    [
+      "Poisson counting noise"
+    ],
+    [
+      "Quantum Jump Statistics"
+    ],
+    [
+      "Quasi-adiabatic continuation"
+    ],
+    [
+      "Replica statistical models"
+    ],
+    [
+      "Rindler modular modes"
+    ],
+    [
+      "Rényi-0 area law"
+    ],
+    [
+      "Schwartz localization density"
+    ],
+    [
+      "Separation of variables"
+    ],
+    [
+      "Singer-cycle Clifford circuits"
+    ],
+    [
+      "Stabilizer equivalence"
+    ],
+    [
+      "Virasoro-primary gap"
+    ],
+    [
+      "Wannier-type orbitals"
+    ],
+    [
+      "almost local observables"
+    ],
+    [
+      "approximate no-signalling bounds"
+    ],
+    [
+      "asymmetric orbifold"
+    ],
+    [
+      "charge-deformed crosscap states"
+    ],
+    [
+      "completely positive"
+    ],
+    [
+      "conformal-bootstrap bounds"
+    ],
+    [
+      "double-bracket flow"
+    ],
+    [
+      "entanglement asymmetry"
+    ],
+    [
+      "entanglement of formation"
+    ],
+    [
+      "fault distance"
+    ],
+    [
+      "finite-field character sums"
+    ],
+    [
+      "finite-rank commutators"
+    ],
+    [
+      "functional renormalization group"
+    ],
+    [
+      "geodesic convexity"
+    ],
+    [
+      "group-commutator construction"
+    ],
+    [
+      "half-BPS operators"
+    ],
+    [
+      "infinite-temperature trace pairing"
+    ],
+    [
+      "intrinsic mixed-state topological order"
+    ],
+    [
+      "leakage-dephased Pauli twirling"
+    ],
+    [
+      "lifted-product structure"
+    ],
+    [
+      "local topological quantum order"
+    ],
+    [
+      "logarithmic negativity"
+    ],
+    [
+      "logical Pauli maps"
+    ],
+    [
+      "matrix-product-state implementation"
+    ],
+    [
+      "modular Hamiltonian"
+    ],
+    [
+      "multiscale welded codes"
+    ],
+    [
+      "non-invertible quantum cellular automata"
+    ],
+    [
+      "nonlocal games"
+    ],
+    [
+      "out-of-time-ordered correlators"
+    ],
+    [
+      "passive quantum memory"
+    ],
+    [
+      "periodic Gibbs ensemble"
+    ],
+    [
+      "positive-operator-valued measure"
+    ],
+    [
+      "quantum reference frame"
+    ],
+    [
+      "quantum spectral curve"
+    ],
+    [
+      "relative-entropy inequality"
+    ],
+    [
+      "strong eigenstate thermalization"
+    ],
+    [
+      "syndrome-extraction circuit"
+    ],
+    [
+      "topological defects"
+    ],
+    [
+      "twisted sectors"
+    ],
+    [
+      "virial identities"
+    ]
+  ]
+}
