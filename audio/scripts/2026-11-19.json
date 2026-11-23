@@ -1,0 +1,435 @@
+{
+  "version": 6,
+  "date": "2026-11-19",
+  "source_hash": "51f4dad50146b0956fd96ff7324deaad4c3da7f47749084bef1eb8b0334ad593",
+  "pronunciations": [
+    {
+      "latex": "$(n,n)$",
+      "spoken": "the pair N, N"
+    },
+    {
+      "latex": "$0.22\\%$",
+      "spoken": "zero point two two percent"
+    },
+    {
+      "latex": "$0.26\\%$",
+      "spoken": "zero point two six percent"
+    },
+    {
+      "latex": "$0<\\epsilon<1$",
+      "spoken": "zero [p] is less than epsilon [p] is less than one"
+    },
+    {
+      "latex": "$1/3$",
+      "spoken": "one third"
+    },
+    {
+      "latex": "$1/4$",
+      "spoken": "one quarter"
+    },
+    {
+      "latex": "$1/N$",
+      "spoken": "one over N"
+    },
+    {
+      "latex": "$F$",
+      "spoken": "F"
+    },
+    {
+      "latex": "$K$",
+      "spoken": "K"
+    },
+    {
+      "latex": "$K+d-2$",
+      "spoken": "K [p] plus D [p] minus two"
+    },
+    {
+      "latex": "$L$",
+      "spoken": "L"
+    },
+    {
+      "latex": "$L^\\vee/L$",
+      "spoken": "L dual modulo L"
+    },
+    {
+      "latex": "$N$",
+      "spoken": "N"
+    },
+    {
+      "latex": "$N^{1-\\epsilon}$",
+      "spoken": "N to the power of (one minus epsilon)"
+    },
+    {
+      "latex": "$O(\\lambda^2)$",
+      "spoken": "order lambda squared"
+    },
+    {
+      "latex": "$S$",
+      "spoken": "S"
+    },
+    {
+      "latex": "$T$",
+      "spoken": "T"
+    },
+    {
+      "latex": "$X$",
+      "spoken": "X"
+    },
+    {
+      "latex": "$Y$",
+      "spoken": "Y"
+    },
+    {
+      "latex": "$Z$",
+      "spoken": "Z"
+    },
+    {
+      "latex": "$[[16,4,4]]$",
+      "spoken": "sixteen four four"
+    },
+    {
+      "latex": "$[[20,4,4]]$",
+      "spoken": "twenty four four"
+    },
+    {
+      "latex": "$[[72,12,6]]$",
+      "spoken": "seventy-two twelve six"
+    },
+    {
+      "latex": "$\\Omega_\\epsilon(N/\\log^2N)$",
+      "spoken": "Omega sub epsilon of (N divided by log squared N)"
+    },
+    {
+      "latex": "$\\lambda$",
+      "spoken": "lambda"
+    },
+    {
+      "latex": "$\\langle TJJ\\rangle$",
+      "spoken": "the T J J correlator"
+    },
+    {
+      "latex": "$\\langle TTT\\rangle$",
+      "spoken": "the T T T correlator"
+    },
+    {
+      "latex": "$\\rho^n/\\operatorname{Tr}(\\rho^n)$",
+      "spoken": "rho to the N [p] divided by the trace of rho to the N"
+    },
+    {
+      "latex": "$^{(1)}$",
+      "spoken": "superscript one"
+    },
+    {
+      "latex": "$_3$",
+      "spoken": "sub three"
+    },
+    {
+      "latex": "$a$",
+      "spoken": "A"
+    },
+    {
+      "latex": "$d$",
+      "spoken": "D"
+    },
+    {
+      "latex": "$g(2t)-g(t)^2<0$",
+      "spoken": "G of two T [p] minus [p] G of T squared [p] is less than zero"
+    },
+    {
+      "latex": "$g(t)$",
+      "spoken": "G of T"
+    },
+    {
+      "latex": "$n$",
+      "spoken": "N"
+    },
+    {
+      "latex": "$q=N^{-1}\\sum_j z_j^{(A)}z_j^{(B)}$",
+      "spoken": "Q [p] equals [p] N inverse times the sum over J of [p] Z sub J superscript A times Z sub J superscript B"
+    },
+    {
+      "latex": "$t^{-1/2}$",
+      "spoken": "T to the power of (minus one half)"
+    },
+    {
+      "latex": "$|0\\rangle$",
+      "spoken": "ket zero"
+    },
+    {
+      "latex": "$|\\Psi\\rangle=C|\\psi_{\\mathrm{MPS}}\\rangle$",
+      "spoken": "ket Psi [p] equals [p] C times ket psi sub M P S"
+    }
+  ],
+  "phrase_groups": [
+    [
+      "$F$-Symbols"
+    ],
+    [
+      "$F$-matrix"
+    ],
+    [
+      "$F$-symbols"
+    ],
+    [
+      "1-form symmetry"
+    ],
+    [
+      "Abelian topological order"
+    ],
+    [
+      "Abou-Chacra–Anderson–Thouless"
+    ],
+    [
+      "Addressable transversal CCZ gates"
+    ],
+    [
+      "Anderson transition"
+    ],
+    [
+      "Clifford-Augmented Matrix Product States"
+    ],
+    [
+      "Concatenated error correction"
+    ],
+    [
+      "Euler characteristic"
+    ],
+    [
+      "Franz–Parisi-type potential"
+    ],
+    [
+      "GHZ-fold measurement"
+    ],
+    [
+      "Gauss-law operators"
+    ],
+    [
+      "Gross–Neveu–Yukawa"
+    ],
+    [
+      "Haar-random brickwork circuits"
+    ],
+    [
+      "Hamiltonian of mean force"
+    ],
+    [
+      "Jack–Osborn"
+    ],
+    [
+      "Kardar–Parisi–Zhang"
+    ],
+    [
+      "Kubo–Martin–Schwinger"
+    ],
+    [
+      "Lamb shift"
+    ],
+    [
+      "Lieb–Liniger"
+    ],
+    [
+      "Liouvillian eigenvalues"
+    ],
+    [
+      "Majorana path"
+    ],
+    [
+      "OTOC$^{(1)}$"
+    ],
+    [
+      "Out-of-time-order correlators"
+    ],
+    [
+      "Pauli propagation"
+    ],
+    [
+      "Pauli-string control sets"
+    ],
+    [
+      "Pauli-twirled channel"
+    ],
+    [
+      "Pentagon equations"
+    ],
+    [
+      "Redfield generator"
+    ],
+    [
+      "Reed–Solomon"
+    ],
+    [
+      "Schmidt probabilities"
+    ],
+    [
+      "Schmidt spectrum"
+    ],
+    [
+      "Sherrington–Kirkpatrick"
+    ],
+    [
+      "Steane-style error correction"
+    ],
+    [
+      "Steane-style extraction"
+    ],
+    [
+      "Virtual Autopurification"
+    ],
+    [
+      "Wegner one-orbital model"
+    ],
+    [
+      "Young diagram $(n,n)$"
+    ],
+    [
+      "Zamolodchikov monotonicity"
+    ],
+    [
+      "auxiliary rapidities"
+    ],
+    [
+      "averaged null energy"
+    ],
+    [
+      "balanced product"
+    ],
+    [
+      "bivariate bicycle code"
+    ],
+    [
+      "braid-group representations"
+    ],
+    [
+      "cat-state measurement"
+    ],
+    [
+      "chiral central charge"
+    ],
+    [
+      "conformal bootstrap"
+    ],
+    [
+      "conformal collider"
+    ],
+    [
+      "continuous-variable toric code"
+    ],
+    [
+      "covariance-matrix evolution"
+    ],
+    [
+      "cup product"
+    ],
+    [
+      "diameter truncation"
+    ],
+    [
+      "entanglement spread"
+    ],
+    [
+      "entropy-production lower bound"
+    ],
+    [
+      "fault distance"
+    ],
+    [
+      "fermionic Gaussian states"
+    ],
+    [
+      "finite-state Markov"
+    ],
+    [
+      "fusion multiplicities"
+    ],
+    [
+      "gradient flow"
+    ],
+    [
+      "hexagon equations"
+    ],
+    [
+      "large-deviation function"
+    ],
+    [
+      "local Hadamard transformations"
+    ],
+    [
+      "magic-state cultivation"
+    ],
+    [
+      "matrix product state"
+    ],
+    [
+      "nested Bethe ansatz"
+    ],
+    [
+      "nilpotent subgroup"
+    ],
+    [
+      "nonlocal magic"
+    ],
+    [
+      "overlap susceptibility"
+    ],
+    [
+      "positive semidefinite"
+    ],
+    [
+      "product expansion"
+    ],
+    [
+      "projector Monte Carlo"
+    ],
+    [
+      "quantum Monte Carlo"
+    ],
+    [
+      "quantum approximate optimization algorithm"
+    ],
+    [
+      "rationally independent energy gaps"
+    ],
+    [
+      "resource-state injection"
+    ],
+    [
+      "secular approximation"
+    ],
+    [
+      "self-dual simple generator"
+    ],
+    [
+      "singular continuous"
+    ],
+    [
+      "squashed sphere"
+    ],
+    [
+      "symbolic Pauli frame"
+    ],
+    [
+      "trace-norm clustering"
+    ],
+    [
+      "trace-norm error"
+    ],
+    [
+      "transversal CNOTs"
+    ],
+    [
+      "transverse impact parameter"
+    ],
+    [
+      "transverse-field Ising chain"
+    ],
+    [
+      "verified cat states"
+    ],
+    [
+      "virtual purification"
+    ],
+    [
+      "window propagation"
+    ]
+  ]
+}
