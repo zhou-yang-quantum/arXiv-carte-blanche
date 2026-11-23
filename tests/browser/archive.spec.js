@@ -183,6 +183,8 @@ test('additional dates navigate and search across the entire archive', async ({ 
     const older = structuredClone(data.days[0]);
     older.date = '2026-10-02'; older.title = 'arXiv-2026-10-02';
     older.papers[0].title = 'An older unique research idea';
+    older.papers[0].id = '2610.00002';
+    older.papers[0].url = 'https://arxiv.org/abs/2610.00002';
     data.days.push(older);
     await route.fulfill({ response, json: data });
   });
@@ -196,8 +198,9 @@ test('additional dates navigate and search across the entire archive', async ({ 
   await expect(page.locator('.paper-card')).toHaveAttribute('data-date', '2026-10-02');
   await expect(page.locator('.paper-label')).toHaveCount(0);
   const prompt = new URL(await page.getByRole('link', { name: 'Ask GPT about item 1', exact: true }).getAttribute('href')).searchParams.get('prompt');
-  expect(prompt).toContain('BEGIN DIGEST ITEM: arXiv-2026-10-02');
-  expect(prompt).toContain('An older unique research idea');
+  expect(prompt).toContain('https://arxiv.org/abs/2610.00002');
+  expect(prompt).not.toContain('An older unique research idea');
+  expect(prompt).not.toContain('https://arxiv.org/abs/' + originalDigest.papers[0].id);
 });
 
 test('imported Markdown cannot run HTML or javascript links', async ({ page }) => {
@@ -247,7 +250,7 @@ test('twenty-paper days support mobile direct links without a reading-order bar 
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
 });
 
-test('Ask GPT context preserves TeX and omits redundant source links', async ({ page }) => {
+test('Ask GPT identifies the paper only by its abstract link and omits all digest content', async ({ page }) => {
   await page.route('**/data/archive.json', async (route) => {
     const { response, data } = await archiveFixture(route);
     data.days[0].papers[0].summary = 'Exact **claim**, with \\(x^2+1\\), $z=3/2$, and [a source](https://arxiv.org/abs/2610.03864). [v1 paper](https://arxiv.org/html/2610.03864v1)';
@@ -255,10 +258,14 @@ test('Ask GPT context preserves TeX and omits redundant source links', async ({ 
   });
   await page.goto('/');
   const full = new URL(await page.getByRole('link', { name: 'Ask GPT about item 1', exact: true }).getAttribute('href')).searchParams.get('prompt');
-  expect(full).toContain('BEGIN DIGEST ITEM: arXiv-2026-10-06');
-  expect(full).toContain('Item 1.\n\n');
-  expect(full).not.toContain('arXiv-2026-10-06 — Item');
-  expect(full).toContain('Exact claim, with \\(x^2+1\\), $z=3/2$, and a source.');
+  expect(full.match(/https:\/\/\S+/g)).toEqual(['https://arxiv.org/abs/2610.03864']);
+  expect(full).not.toMatch(/digest/i);
+  expect(full).not.toContain('arXiv-2026-10-06');
+  expect(full).not.toContain(originalDigest.papers[0].title);
+  expect(full).not.toContain(originalDigest.papers[0].authors);
+  expect(full).not.toContain('Exact');
+  expect(full).not.toContain('x^2+1');
+  expect(full).not.toContain('$z=3/2$');
   expect(full).not.toContain('v1 paper');
   await expect(page.getByRole('link', { name: 'v1 paper', exact: true })).toHaveCount(0);
   expect(full).not.toContain('**');
@@ -266,7 +273,7 @@ test('Ask GPT context preserves TeX and omits redundant source links', async ({ 
   await expect(page.locator('.katex-error')).toHaveCount(0);
 });
 
-test('Ask GPT opens ChatGPT with the complete selected item, TeX and original paper links', async ({ page, context }) => {
+test('Ask GPT requires abstract and full-text study before readiness or answers', async ({ page, context }) => {
   const summary = 'Exact claim: \\(x^2+1\\), $z=3/2$, α + β & 50% #1? Café.';
   await page.route('**/data/archive.json', async (route) => {
     const { response, data } = await archiveFixture(route);
@@ -291,20 +298,25 @@ test('Ask GPT opens ChatGPT with the complete selected item, TeX and original pa
   expect(url.origin).toBe('https://chatgpt.com');
   const prompt = url.searchParams.get('prompt');
   expect(prompt).toContain('physics and maths questions');
-  expect(prompt).toContain('Refer to the original arXiv paper');
-  expect(prompt).toContain('If you cannot access the paper, say so');
+  expect(prompt).toContain('Before confirming readiness or answering any substantive questions, open and study the abstract');
+  expect(prompt).toContain('then retrieve and study the full paper in HTML or PDF, including its equations and relevant appendices');
+  expect(prompt).toContain('If one full-text format is unavailable, try the other. The abstract alone is not sufficient.');
+  expect(prompt).toContain('Base your answers on the original paper and cite relevant sections, equations, or pages');
+  expect(prompt).toContain('If you cannot access the abstract or full text, say which source is unavailable and ask me to upload the paper');
+  expect(prompt).toContain('wait for it before answering substantive questions');
+  expect(prompt).toContain('Do not claim to have read any source you could not access');
+  expect(prompt).toContain('Once you have studied both the abstract and full text, briefly acknowledge readiness');
+  expect(prompt).toContain('state whether you read the HTML or PDF');
   expect(prompt).toContain('wait for my questions');
-  expect(prompt).toContain('Original paper: https://arxiv.org/abs/2610.03864');
-  expect(prompt).toContain('PDF: https://arxiv.org/pdf/2610.03864');
-  expect(prompt).toContain('BEGIN DIGEST ITEM: arXiv-2026-10-06\n\nItem 1.\n\n');
-  expect(prompt).toContain(originalDigest.papers[0].title);
-  expect(prompt).toContain('Authors: ' + originalDigest.papers[0].authors);
-  expect(prompt).toContain('Summary\n\n' + summary);
-  expect(prompt).toContain('Background\n\nOrdinary \\(0\\)-form symmetry');
-  expect(prompt).toContain('Why it matters?\n\nvery high.');
-  expect(prompt).toContain('END DIGEST ITEM: arXiv-2026-10-06');
+  expect(prompt.match(/https:\/\/\S+/g)).toEqual(['https://arxiv.org/abs/2610.03864']);
+  expect(prompt).not.toMatch(/digest/i);
+  expect(prompt).not.toContain(originalDigest.papers[0].title);
+  expect(prompt).not.toContain(originalDigest.papers[0].authors);
+  expect(prompt).not.toContain(summary);
+  expect(prompt).not.toContain(originalDigest.papers[0].background);
+  expect(prompt).not.toContain(originalDigest.papers[0].why);
   expect(prompt).not.toContain(originalDigest.papers[1].title);
-  expect((prompt.match(/x\^2\+1/g) || []).length).toBe(1);
+  expect(prompt).not.toContain('x^2+1');
   expect(prompt).not.toContain('DIGESTMATH');
   expect(await chat.evaluate(() => window.opener)).toBeNull();
 });

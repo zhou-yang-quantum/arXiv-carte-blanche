@@ -55,16 +55,18 @@
       ...day.papers.map((paper) => itemText(day, paper)), day.notes ? 'Notes\n\n' + plainText(day.notes) : '']
       .filter(Boolean).join('\n\n');
   }
-  function questionPrompt(day, paper) {
-    return 'Prepare to answer physics and maths questions about the following digest item. '
-      + 'Refer to the original arXiv paper for answers rather than relying on the digest. '
-      + 'Read the original paper before answering substantive questions and cite relevant sections or equations where possible. '
-      + 'If you cannot access the paper, say so and ask me to upload it; do not guess from the digest. '
-      + 'For now, briefly acknowledge the paper and wait for my questions.\n\n'
-      + 'Original paper: https://arxiv.org/abs/' + paper.id + '\n'
-      + 'PDF: https://arxiv.org/pdf/' + paper.id + '\n\n'
-      + 'BEGIN DIGEST ITEM: ' + day.title + '\n\n' + itemText(day, paper)
-      + '\n\nEND DIGEST ITEM: ' + day.title;
+  function questionPrompt(paper) {
+    return 'Prepare to answer physics and maths questions about the original arXiv paper linked below. '
+      + 'Before confirming readiness or answering any substantive questions, open and study the abstract, '
+      + 'then retrieve and study the full paper in HTML or PDF, including its equations and relevant appendices. '
+      + 'If one full-text format is unavailable, try the other. The abstract alone is not sufficient. '
+      + 'Base your answers on the original paper and cite relevant sections, equations, or pages where possible. '
+      + 'If you cannot access the abstract or full text, say which source is unavailable and ask me to upload the paper '
+      + 'or provide the missing text; wait for it before answering substantive questions. '
+      + 'Do not claim to have read any source you could not access. '
+      + 'Once you have studied both the abstract and full text, briefly acknowledge readiness, '
+      + 'state whether you read the HTML or PDF, and wait for my questions.\n\n'
+      + 'Paper: https://arxiv.org/abs/' + paper.id;
   }
   function voiceText(day) {
     return 'Prepare to read ' + day.title + ' (' + day.papers.length + ' items). The text below is the authoritative digest. '

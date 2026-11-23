@@ -297,7 +297,7 @@ function renderPaper(day, paper) {
   const actions = document.createElement('div');
   actions.className = 'reading-actions paper-actions';
   actions.innerHTML = '<button class="text-button paper-action" data-action="play" aria-label="Play item ' + paper.rank + '" title="Play item ' + paper.rank + '">' + icons.play + '</button><button class="text-button bookmark-button paper-action" data-action="save" aria-label="' + (saved.has(paper.id) ? 'Unsave' : 'Save') + ' item ' + paper.rank + '" title="' + (saved.has(paper.id) ? 'Unsave' : 'Save') + ' item ' + paper.rank + '" aria-pressed="' + saved.has(paper.id) + '">' + icons.bookmark + '</button><a class="text-button paper-action" data-action="ask" target="_blank" rel="noopener noreferrer" aria-label="Ask GPT about item ' + paper.rank + '" title="Ask GPT about this paper">' + icons.bot + '</a><button class="text-button paper-action" data-action="details"></button>';
-  actions.querySelector('[data-action="ask"]').href = 'https://chatgpt.com/?prompt=' + encodeURIComponent(DigestReading.questionPrompt(day, paper));
+  actions.querySelector('[data-action="ask"]').href = 'https://chatgpt.com/?prompt=' + encodeURIComponent(DigestReading.questionPrompt(paper));
   const play = actions.querySelector('[data-action="play"]');
   play.disabled = !player.entry(day, paper.rank);
   if (play.disabled) play.title = 'Audio is not available yet';

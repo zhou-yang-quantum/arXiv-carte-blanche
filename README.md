@@ -24,7 +24,7 @@ The published menu reflects my own knowledge and interests in theoretical physic
 - Read summaries with equations and links to the original arXiv papers.
 - Hide the archive sidebar, switch to compact view, or expand individual paper details.
 - Switch between light and dark reading modes.
-- Ask GPT about any paper: open ChatGPT with the complete digest item, original arXiv links, and a prepared prompt for physics and maths questions grounded in the paper. You may need to sign in and press Send in ChatGPT.
+- Ask GPT about any paper: open ChatGPT with only the arXiv abstract link to identify the paper and instructions to study the abstract and HTML or PDF full text before confirming readiness or answering questions. Answers should cite the paper. If the sources are inaccessible, the prompt asks for an upload or the missing text. You may need to sign in and press Send in ChatGPT.
 
 The website is static HTML/CSS/JavaScript. Local Codex generates the digests; GitHub Actions collects arXiv source data and builds and deploys the website. Browsing, building, and manual digest imports need no model API key.
 
