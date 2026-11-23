@@ -30,7 +30,7 @@ class WatcherProcessTests(unittest.TestCase):
                               "$ErrorActionPreference='Stop'\n. $bridge\n"
                               '$result = Invoke-ArxivController $pythonPath $scriptPath\n'
                               '$result | ConvertTo-Json -Compress\n', encoding='utf-8')
-            result = subprocess.run(['powershell.exe', '-NoProfile', '-File', str(runner),
+            result = subprocess.run(['powershell.exe', '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', str(runner),
                                      str(bridge), sys.executable, str(script)],
                                     capture_output=True, encoding='utf-8', timeout=30)
             self.assertEqual(result.returncode, 0, result.stderr)

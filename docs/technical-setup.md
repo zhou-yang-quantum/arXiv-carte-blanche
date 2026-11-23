@@ -155,10 +155,48 @@ Configure `local-pipeline.json`: `enabled` controls automatic generation, `timez
 Install the watcher from the checkout:
 
 ```powershell
-powershell.exe -NoProfile -File tools/install-local-watcher.ps1 -StartNow
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File tools/install-local-watcher.ps1 -StartNow
 ```
 
-This records Python/Codex executable paths in ignored `.cache/local-pipeline/runtime.json` and registers a current-user Windows login task. No Codex automation ID is needed; legacy `automation_id` fields are ignored and removed when reinstalling the watcher. If migrating an existing setup, pause its redundant Codex scheduled task after installing/verifying the watcher.
+This records Python/Codex executable paths (and GitHub CLI when available) in ignored `.cache/local-pipeline/runtime.json` and registers a current-user Windows login task. No Codex automation ID is needed; legacy `automation_id` fields are ignored and removed when reinstalling the watcher. If migrating an existing setup, pause its redundant Codex scheduled task after installing/verifying the watcher.
+
+### Moving to another Windows computer
+
+Copied runtime paths and Windows startup tasks do not transfer to a new computer.
+Preserve `.cache/local-pipeline/` for completed research and retry history, but
+reinstall the watcher to replace its old executable paths. Install Python, `tzdata`,
+Node.js/npm, Git, and GitHub CLI, and verify the existing Codex ChatGPT login.
+Use HTTPS for Git until SSH is configured; daily publication itself uses the
+GitHub CLI credential and does not require SSH.
+
+If commands are unavailable or a Windows Store Python alias takes precedence,
+pass the real executables explicitly (substitute local paths):
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File tools/install-local-watcher.ps1 -StartNow -PythonPath '<python.exe>' -CodexPath '<codex.exe>' -GitHubPath '<gh.exe>'
+```
+
+The installer checks the interpreter and timezone data. The watcher adds the saved
+tool directories to its own environment so it can run after installation even
+when Windows still has an older command search path.
+If a Codex Store app update removes the saved executable, the controller discovers
+the currently registered app package automatically, including when Task Scheduler
+still has the old command search path. Existing completed research is reused.
+
+Complete GitHub browser login and verify repository write access interactively:
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File tools/finish-local-setup.ps1
+```
+
+This also configures GitHub HTTPS credentials, clears the machine-wide login retry
+delay while preserving per-date state, and starts the watcher. It may begin due
+research on the next minute check while Codex is open. Existing published dates
+are protected. Review `plan` before running it if a large historical queue is not
+intended. Git author name/email are needed separately for manual local commits;
+the automatic API publisher uses the signed-in GitHub account.
+
+### Watcher behavior and controls
 
 The watcher checks once per minute while the Codex app is running and calls `run --automatic` only when work is due and enabled. A five-minute Windows trigger restarts an interrupted watcher, while `IgnoreNew` leaves a running instance alone. It does not start the app or wake the computer. A process lock prevents concurrent workers from generating the same day. Opening the app after an absence processes missing weekdays oldest first, including gaps before newer entries. Before the due time, only older missing days are eligible. Queue checks and completed-date skips run ordinary code and consume no model tokens. Archive-wait retries check GitHub without a model; generation retries can consume tokens until a result succeeds.
 

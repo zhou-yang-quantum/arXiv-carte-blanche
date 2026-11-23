@@ -94,6 +94,58 @@ class CollectorTests(unittest.TestCase):
             pipeline.validate_snapshot(current, current['date'])
 
 
+class CodexDiscoveryTests(unittest.TestCase):
+    def setUp(self):
+        temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(temporary.cleanup)
+        self.folder = Path(temporary.name)
+        for patcher in [patch.object(pipeline, 'RUNTIME', self.folder / 'runtime'),
+                        patch.object(pipeline.sys, 'platform', 'win32')]:
+            patcher.start()
+            self.addCleanup(patcher.stop)
+        pipeline.RUNTIME.mkdir()
+        patcher = patch.dict(os.environ, {'LOCALAPPDATA': str(self.folder)})
+        patcher.start()
+        self.addCleanup(patcher.stop)
+
+    def test_available_cli_does_not_need_package_discovery(self):
+        with patch.object(pipeline.shutil, 'which', return_value='working-codex'), \
+             patch.object(pipeline.subprocess, 'run') as discover:
+            self.assertEqual(pipeline.find_codex(), 'working-codex')
+        discover.assert_not_called()
+
+    def test_saved_working_cli_does_not_need_package_discovery(self):
+        executable = self.folder / 'saved-codex.exe'
+        executable.touch()
+        (pipeline.RUNTIME / 'runtime.json').write_text(json.dumps({'codex': str(executable)}), encoding='utf-8')
+        with patch.object(pipeline.shutil, 'which', return_value=None), \
+             patch.object(pipeline.subprocess, 'run') as discover:
+            self.assertEqual(pipeline.find_codex(), str(executable))
+        discover.assert_not_called()
+
+    def test_app_update_recovers_from_deleted_runtime_path_and_stale_path(self):
+        (pipeline.RUNTIME / 'runtime.json').write_text(json.dumps({'codex': str(self.folder / 'removed-app/codex.exe')}), encoding='utf-8')
+        executable = self.folder / 'updated app/resources/codex.exe'
+        executable.parent.mkdir(parents=True)
+        executable.touch()
+        output = subprocess.CompletedProcess([], 0, stdout=str(executable) + '\n', stderr='')
+        with patch.object(pipeline.shutil, 'which', return_value=None), \
+             patch.object(pipeline.subprocess, 'run', return_value=output) as discover:
+            self.assertEqual(pipeline.find_codex(), str(executable))
+        self.assertIn('Get-AppxPackage -Name OpenAI.Codex', discover.call_args.args[0][-1])
+        self.assertEqual(discover.call_args.kwargs['timeout'], 30)
+
+    def test_missing_or_failed_package_discovery_is_a_controlled_failure(self):
+        failures = [subprocess.CompletedProcess([], 1, stdout='', stderr='package unavailable'),
+                    subprocess.CompletedProcess([], 0, stdout=str(self.folder / 'missing.exe'), stderr=''),
+                    subprocess.TimeoutExpired('powershell.exe', 30), OSError('unavailable')]
+        for failure in failures:
+            with self.subTest(failure=failure), patch.object(pipeline.shutil, 'which', return_value=None), \
+                 patch.object(pipeline.subprocess, 'run', side_effect=[failure]):
+                with self.assertRaisesRegex(RuntimeError, 'Codex CLI is unavailable'):
+                    pipeline.find_codex()
+
+
 class QueueTests(unittest.TestCase):
     def setUp(self):
         temporary = tempfile.TemporaryDirectory()
@@ -486,7 +538,7 @@ class StyleExampleTests(unittest.TestCase):
         runner = self.folder / 'watch.ps1'
         runner.write_text("param($pythonPath,$scriptPath,$logPath)\n$ErrorActionPreference='Stop'\n"
                           '& $pythonPath $scriptPath >> $logPath 2>&1\nexit $LASTEXITCODE\n', encoding='utf-8')
-        completed = subprocess.run(['powershell.exe', '-NoProfile', '-File', str(runner),
+        completed = subprocess.run(['powershell.exe', '-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', str(runner),
                                     sys.executable, str(script), str(log)], capture_output=True, timeout=30)
         self.assertEqual(completed.returncode, 0, completed.stderr)
         # Windows PowerShell redirects native output as UTF-16.

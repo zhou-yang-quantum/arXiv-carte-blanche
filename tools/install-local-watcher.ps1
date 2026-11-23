@@ -1,14 +1,32 @@
-param([switch]$StartNow)
+param(
+    [switch]$StartNow,
+    [string]$PythonPath,
+    [string]$CodexPath,
+    [string]$GitHubPath
+)
 $ErrorActionPreference = 'Stop'
 $repoRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
 $watcherPath = Join-Path $repoRoot 'tools/watch-local-pipeline.ps1'
 $runtimeRoot = Join-Path $repoRoot '.cache/local-pipeline'
 if (-not (Test-Path -LiteralPath $watcherPath)) { throw 'Watcher script is missing.' }
 [IO.Directory]::CreateDirectory($runtimeRoot) | Out-Null
-$pythonPath = (Get-Command python -ErrorAction Stop).Source
-$codexPath = (Get-Command codex -ErrorAction Stop).Source
+if (-not $PythonPath) { $PythonPath = (Get-Command python -ErrorAction Stop).Source }
+if (-not $CodexPath) { $CodexPath = (Get-Command codex -ErrorAction Stop).Source }
+if (-not $GitHubPath) {
+    $githubCommand = Get-Command gh -ErrorAction SilentlyContinue
+    if ($githubCommand) { $GitHubPath = $githubCommand.Source }
+}
+# Resolve the real interpreter rather than saving a Windows Store alias or shim.
+$resolvedPython = & $PythonPath -c "import sys; from zoneinfo import ZoneInfo; ZoneInfo('America/Chicago'); print(sys.executable)"
+if ($LASTEXITCODE -ne 0 -or -not $resolvedPython -or -not (Test-Path -LiteralPath $resolvedPython)) {
+    throw 'Python 3.11+ with tzdata is required; use -PythonPath to select a working interpreter.'
+}
+$PythonPath = $resolvedPython.Trim()
+if (-not (Test-Path -LiteralPath $CodexPath)) { throw 'Codex executable is unavailable.' }
+if ($GitHubPath -and -not (Test-Path -LiteralPath $GitHubPath)) { throw 'GitHub CLI executable is unavailable.' }
 $runtimePath = Join-Path $runtimeRoot 'runtime.json'
-$runtime = @{python=$pythonPath; codex=$codexPath}
+$runtime = @{python=$PythonPath; codex=$CodexPath}
+if ($GitHubPath) { $runtime.gh = $GitHubPath }
 [IO.File]::WriteAllText($runtimePath, (($runtime | ConvertTo-Json) + "`n"), (New-Object Text.UTF8Encoding($false)))
 $userName = [Security.Principal.WindowsIdentity]::GetCurrent().Name
 $taskName = 'Daily-arXiv startup catch-up'

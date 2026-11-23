@@ -10,6 +10,13 @@ try {
     $runtimeConfig = Get-Content -LiteralPath (Join-Path $runtimeRoot 'runtime.json') -Raw | ConvertFrom-Json
     $pythonPath = $runtimeConfig.python
     if (-not (Test-Path -LiteralPath $pythonPath)) { throw 'Configured Python executable is unavailable.' }
+    # Scheduled tasks can inherit an old PATH after migration or tool installation.
+    # Also make the configured Python available to the research lookup commands.
+    $toolDirectories = @($runtimeConfig.python, $runtimeConfig.codex, $runtimeConfig.gh) |
+        Where-Object { $_ -and (Test-Path -LiteralPath $_) } |
+        ForEach-Object { [IO.Path]::GetDirectoryName($_) } |
+        Select-Object -Unique
+    $env:PATH = ($toolDirectories -join ';') + ';' + $env:PATH
     do {
         try {
             $app = @(Get-Process -Name ChatGPT,Codex -ErrorAction SilentlyContinue | Where-Object {

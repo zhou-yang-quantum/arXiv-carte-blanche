@@ -187,6 +187,23 @@ def find_codex():
     binaries = sorted(base.glob('*/codex.exe'), key=lambda path: path.stat().st_mtime, reverse=True)
     if binaries:
         return str(binaries[0])
+    if sys.platform == 'win32':
+        # Store app updates remove versioned WindowsApps paths saved at setup.
+        # Task Scheduler may still inherit PATH from before the app update.
+        command = ("[Console]::OutputEncoding = New-Object Text.UTF8Encoding($false); "
+                   "Get-AppxPackage -Name OpenAI.Codex | ForEach-Object { "
+                   "Join-Path $_.InstallLocation 'app/resources/codex.exe' }")
+        try:
+            installed = subprocess.run(
+                ['powershell.exe', '-NoProfile', '-NonInteractive', '-Command', command],
+                capture_output=True, text=True, encoding='utf-8', timeout=30)
+        except (OSError, subprocess.SubprocessError):
+            installed = None
+        if installed is not None and installed.returncode == 0:
+            for candidate in installed.stdout.splitlines():
+                candidate = candidate.strip().lstrip('\ufeff')
+                if candidate and Path(candidate).is_file():
+                    return candidate
     raise RuntimeError('Codex CLI is unavailable; open/update the desktop app or install the CLI')
 
 
