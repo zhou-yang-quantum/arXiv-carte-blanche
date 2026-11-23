@@ -1,0 +1,304 @@
+{
+  "version": 6,
+  "date": "2026-11-20",
+  "source_hash": "85dc9a57d535662317facb95874c593958321659887314adf9ab70efbbcf0a97",
+  "pronunciations": [
+    {
+      "latex": "$$I(A:C|B)\\leq K\\min\\{|\\partial A|,|\\partial C|\\}e^{-r/R}.$$",
+      "spoken": "the conditional mutual information between A and C given B [p] is less than or equal to [p] K times the smaller of the boundary sizes of A and C [p] times the exponential of (minus lowercase R divided by capital R)"
+    },
+    {
+      "latex": "$$V_{\\mathrm{dyn}}\\Sigma_\\tau\\geq2R_\\gamma^2.$$",
+      "spoken": "V sub dyn times sigma sub tau [p] is greater than or equal to [p] two times R sub gamma squared"
+    },
+    {
+      "latex": "$(-1)^{x_1x_2\\cdots x_k}$",
+      "spoken": "minus one to the power (X sub one times X sub two through X sub K)"
+    },
+    {
+      "latex": "$1/2<\\kappa\\leq1$",
+      "spoken": "one half [p] is less than [p] kappa [p] is less than or equal to [p] one"
+    },
+    {
+      "latex": "$3/4\\leq\\kappa\\leq1$",
+      "spoken": "three quarters [p] is less than or equal to [p] kappa [p] is less than or equal to [p] one"
+    },
+    {
+      "latex": "$B(p)=2\\sqrt{p(1-p)}$",
+      "spoken": "B of P [p] equals [p] two times the square root of (P times the quantity one minus P)"
+    },
+    {
+      "latex": "$CZ$",
+      "spoken": "controlled Z"
+    },
+    {
+      "latex": "$C^{k-1}Z$",
+      "spoken": "C to the (K minus one) [p] Z"
+    },
+    {
+      "latex": "$S=\\Theta(n)$",
+      "spoken": "S [p] equals [p] big theta of N"
+    },
+    {
+      "latex": "$S=\\Theta(n^{2-2\\kappa}\\log n)$",
+      "spoken": "S [p] equals [p] big theta of the product of N to the power (two minus two kappa) and the logarithm of N"
+    },
+    {
+      "latex": "$SU(3)$",
+      "spoken": "S U three"
+    },
+    {
+      "latex": "$Z$",
+      "spoken": "Z"
+    },
+    {
+      "latex": "$\\kappa=1$",
+      "spoken": "kappa [p] equals [p] one"
+    },
+    {
+      "latex": "$\\kappa=1/2$",
+      "spoken": "kappa [p] equals [p] one half"
+    },
+    {
+      "latex": "$\\mathbb{CP}^2$",
+      "spoken": "C P squared"
+    },
+    {
+      "latex": "$\\mathcal{C}(T)=\\tfrac12\\ln[\\Upsilon(T)/T]+c_{\\mathrm{geom}}$",
+      "spoken": "C of T [p] equals [p] one half times the natural logarithm of (Upsilon of T divided by T) [p] plus [p] C sub geom"
+    },
+    {
+      "latex": "$\\operatorname{Tr}(\\rho_{AB}g_A\\rho_{AB}g_A^{-1})/\\operatorname{Tr}(\\rho_{AB}^2)$",
+      "spoken": "the trace of the product (rho sub A B times G sub A times rho sub A B times G sub A inverse) [p] divided by [p] the trace of rho sub A B squared"
+    },
+    {
+      "latex": "$\\theta=\\pi$",
+      "spoken": "theta [p] equals [p] pi"
+    },
+    {
+      "latex": "$\\widetilde{O}(\\sqrt{N}/\\epsilon)$",
+      "spoken": "O tilde of (the square root of N divided by epsilon)"
+    },
+    {
+      "latex": "$\\zeta(3)k^2$",
+      "spoken": "zeta of three times K squared"
+    },
+    {
+      "latex": "$c=2.137(27)$",
+      "spoken": "C [p] equals [p] two point one three seven, with uncertainty zero point zero two seven"
+    },
+    {
+      "latex": "$d\\geq3$",
+      "spoken": "D [p] is greater than or equal to [p] three"
+    },
+    {
+      "latex": "$k$",
+      "spoken": "K"
+    },
+    {
+      "latex": "$n^{-\\kappa}$",
+      "spoken": "N to the power minus kappa"
+    },
+    {
+      "latex": "$z=2$",
+      "spoken": "Z [p] equals [p] two"
+    }
+  ],
+  "phrase_groups": [
+    [
+      "$SU(3)$ symmetry"
+    ],
+    [
+      "$\\mathbb{CP}^2$ sigma model"
+    ],
+    [
+      "ABJM sphere free energy"
+    ],
+    [
+      "AC sensing bounds"
+    ],
+    [
+      "BFSS free energy"
+    ],
+    [
+      "Bethe ansatz"
+    ],
+    [
+      "Bhattacharyya coefficient"
+    ],
+    [
+      "Bravyi–König theorem"
+    ],
+    [
+      "Cauchy–Schwarz"
+    ],
+    [
+      "Chern–Simons level"
+    ],
+    [
+      "Chern–Simons-matter theory"
+    ],
+    [
+      "Clifford hierarchy"
+    ],
+    [
+      "Doob martingale"
+    ],
+    [
+      "Fidkowski–Kitaev preparation"
+    ],
+    [
+      "Frequency filtering"
+    ],
+    [
+      "Galilean invariance"
+    ],
+    [
+      "Goldstone fluctuations"
+    ],
+    [
+      "Haagerup anyon chain"
+    ],
+    [
+      "Hamiltonian gradient"
+    ],
+    [
+      "Hilbert-space fragmentation"
+    ],
+    [
+      "Kac normalization"
+    ],
+    [
+      "Maldacena–Ludwig boundary"
+    ],
+    [
+      "Memory-controlled sensor rotations"
+    ],
+    [
+      "Open–closed duality"
+    ],
+    [
+      "Pauli stabilizer encodings"
+    ],
+    [
+      "Quasi-adiabatic continuation"
+    ],
+    [
+      "Ramond–Ramond one-form sector"
+    ],
+    [
+      "Real-time averaging"
+    ],
+    [
+      "Replica arguments"
+    ],
+    [
+      "Wigner-Dyson correlations"
+    ],
+    [
+      "Wigner–Dyson-like correlations"
+    ],
+    [
+      "bivariate bicycle codes"
+    ],
+    [
+      "cluster expansion"
+    ],
+    [
+      "code-capacity operational distance"
+    ],
+    [
+      "conditional mutual information"
+    ],
+    [
+      "cross entropy"
+    ],
+    [
+      "deconfined domain-wall excitations"
+    ],
+    [
+      "defect Hilbert space"
+    ],
+    [
+      "eight-dimensional adjoint multiplet"
+    ],
+    [
+      "fusion category"
+    ],
+    [
+      "infinite matrix product states"
+    ],
+    [
+      "isotropic Heisenberg chain"
+    ],
+    [
+      "maximum-likelihood thresholds"
+    ],
+    [
+      "mixed-state phases"
+    ],
+    [
+      "nested commutators"
+    ],
+    [
+      "non-Abelian lattice gauge codes"
+    ],
+    [
+      "on-site group symmetry"
+    ],
+    [
+      "phase oracle"
+    ],
+    [
+      "phase stiffness"
+    ],
+    [
+      "projective 2-designs"
+    ],
+    [
+      "quantum computational spectroscopy"
+    ],
+    [
+      "quantum conditioning system"
+    ],
+    [
+      "quantum double"
+    ],
+    [
+      "quasi-local channels"
+    ],
+    [
+      "second Rényi moment"
+    ],
+    [
+      "subsystem code"
+    ],
+    [
+      "symmetry-invariant Gibbs states"
+    ],
+    [
+      "thermal underdamped dynamics"
+    ],
+    [
+      "three-dimensional fundamental representation"
+    ],
+    [
+      "topological defect lines"
+    ],
+    [
+      "transversal $C^{k-1}Z$ gate"
+    ],
+    [
+      "two-mode squeezed pairs"
+    ],
+    [
+      "two-way channel equivalence"
+    ],
+    [
+      "unitary random-matrix class"
+    ],
+    [
+      "vortex-free Villain model"
+    ]
+  ]
+}
