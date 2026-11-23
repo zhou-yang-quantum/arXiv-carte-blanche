@@ -7,10 +7,10 @@ import hashlib
 import math
 
 if __package__:
-    from .import_digest import parse_digest, MIN_PAPERS, MAX_PAPERS
+    from .import_digest import parse_digest, MIN_PAPERS, max_papers_for_date
     from .project import AUDIO_BASE, canonical_audio_manifest
 else:
-    from import_digest import parse_digest, MIN_PAPERS, MAX_PAPERS
+    from import_digest import parse_digest, MIN_PAPERS, max_papers_for_date
     from project import AUDIO_BASE, canonical_audio_manifest
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -77,8 +77,9 @@ def load_archive(folder, incoming_folder=None):
         papers = day["papers"]
         count = len(papers)
         expected_ranks = list(range(1, count + 1))
-        if not MIN_PAPERS <= count <= MAX_PAPERS or [p["rank"] for p in papers] != expected_ranks:
-            raise ValueError(f"{date}: expected {MIN_PAPERS}–{MAX_PAPERS} consecutively ranked papers")
+        maximum = max_papers_for_date(date)
+        if not MIN_PAPERS <= count <= maximum or [p["rank"] for p in papers] != expected_ranks:
+            raise ValueError(f"{date}: expected {MIN_PAPERS}–{maximum} consecutively ranked papers")
         if len({p["id"] for p in papers}) != count:
             raise ValueError(f"{date}: duplicate paper IDs")
         if sorted(day["reading_order"]) != expected_ranks:

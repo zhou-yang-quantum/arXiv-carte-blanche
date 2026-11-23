@@ -104,6 +104,21 @@ class PublisherTests(unittest.TestCase):
         api.assert_not_called()
 
     @patch('tools.publish_digest.api_request')
+    def test_new_daily_limit_rejects_sixteen_before_accessing_github(self, api):
+        text = example_digest(16, include_priority=False).replace('2026-10-06', '2026-11-20')
+        with self.assertRaisesRegex(ValueError, '1–15'):
+            publish(text, 'test-credential')
+        api.assert_not_called()
+
+    @patch('tools.publish_digest.api_request')
+    def test_fifteen_papers_are_delivered_on_november_twentieth(self, api):
+        text = example_digest(15, include_priority=False).replace('2026-10-06', '2026-11-20')
+        api.side_effect = [None, {'commit': {'sha': 'a' * 40}}]
+        result = publish(text, 'test-credential')
+        self.assertEqual(result['papers'], 15)
+        self.assertEqual(result['date'], '2026-11-20')
+
+    @patch('tools.publish_digest.api_request')
     def test_date_check_does_not_return_digest_content(self, api):
         api.return_value = {'content': 'a large archived selection'}
         self.assertEqual(check_date('2026-10-06', 'test-credential'), {'date': '2026-10-06', 'status': 'exists'})

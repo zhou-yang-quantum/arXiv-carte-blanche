@@ -50,10 +50,13 @@ computer-science-heavy quantum algorithms. Broaden beyond topics closely related
 to my publications. Do not invent details about my own research.
 
 First assess the complete dated batch for relevance and scientific interest,
-then rank all qualifying papers. If more than twenty qualify, select the top
-twenty; otherwise include every qualifying paper. There is no minimum quota or
+then rank all qualifying papers. Use the controller's date-specific daily paper
+limit: fifteen for November 20, 2026 and later. If more than the applicable limit
+qualify, select that many top-ranked papers; otherwise include every qualifying
+paper. Earlier target dates use the
+limit supplied by the controller. There is no minimum quota or
 preferred count, and fewer than ten is acceptable. Do not stop screening when
-ten or twenty qualifying papers have been found: later candidates may rank
+ten or fifteen qualifying papers have been found: later candidates may rank
 higher. Apply the same criteria to every candidate. Do not pad the list with
 weak papers or add redundant contributions to reach a larger count.
 Use only distinct IDs in the

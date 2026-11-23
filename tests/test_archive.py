@@ -2,7 +2,7 @@ import json
 import tempfile
 import unittest
 from pathlib import Path
-from tools.import_digest import parse_digest
+from tools.import_digest import parse_digest, MIN_PAPERS, max_papers_for_date
 from tools.build import load_archive, ROOT
 
 
@@ -57,6 +57,30 @@ class DigestTests(unittest.TestCase):
         for count in (0, 21):
             with self.subTest(count=count), self.assertRaises(ValueError):
                 parse_digest(example_digest(count, include_priority=False))
+
+    def test_fifteen_paper_limit_starts_on_november_twentieth(self):
+        historical = example_digest(20, include_priority=False).replace('2026-10-06', '2026-11-19')
+        self.assertEqual(len(parse_digest(historical)['papers']), 20)
+        for date in ('2026-11-20', '2026-12-01', '2027-01-01'):
+            with self.subTest(date=date):
+                text = example_digest(15, include_priority=False).replace('2026-10-06', date)
+                self.assertEqual(len(parse_digest(text)['papers']), 15)
+                text = example_digest(16, include_priority=False).replace('2026-10-06', date)
+                with self.assertRaisesRegex(ValueError, '1–15'):
+                    parse_digest(text)
+
+    def test_new_json_archive_cannot_bypass_fifteen_paper_limit(self):
+        day = parse_digest(example_digest(20, include_priority=False))
+        day.update(date='2026-11-20', title='arXiv-2026-11-20')
+        with tempfile.TemporaryDirectory() as folder:
+            target = Path(folder, '2026-11-20.json')
+            target.write_text(json.dumps(day), encoding='utf-8')
+            with self.assertRaisesRegex(ValueError, '1–15'):
+                load_archive(Path(folder))
+            day['papers'] = day['papers'][:15]
+            day['reading_order'] = list(range(1, 16))
+            target.write_text(json.dumps(day), encoding='utf-8')
+            self.assertEqual(len(load_archive(Path(folder))[0]['papers']), 15)
 
     def test_why_heading_preserves_sections_for_new_and_legacy_digests(self):
         for heading in ('**Why it matters?**', '**Why it matters:**',
@@ -123,8 +147,8 @@ class DigestTests(unittest.TestCase):
     def test_real_archive_has_complete_sections(self):
         days = load_archive(ROOT / 'content/digests', ROOT / 'incoming')
         for day in days:
-            self.assertGreaterEqual(len(day['papers']), 10)
-            self.assertLessEqual(len(day['papers']), 20)
+            self.assertGreaterEqual(len(day['papers']), MIN_PAPERS)
+            self.assertLessEqual(len(day['papers']), max_papers_for_date(day['date']))
             self.assertEqual(sorted(day['reading_order']), list(range(1, len(day['papers']) + 1)))
             for paper in day['papers']:
                 for key in ('summary', 'background', 'why'):

@@ -1,4 +1,4 @@
-"""Import a dated ChatGPT digest of up to twenty ranked papers into the archive."""
+"""Import a dated ChatGPT digest with the paper limit in effect on that date."""
 import argparse
 import json
 import re
@@ -7,6 +7,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 MIN_PAPERS = 1
 MAX_PAPERS = 20
+FIFTEEN_PAPER_START = '2026-11-20'
+CURRENT_MAX_PAPERS = 15
 TOPICS = {
     "Quantum field theory": r"field theor|worldline|instantons|matrix.model|topological order|fusion",
     "Non-equilibrium": r"dissipat|dynamics|chaos|Krylov|OTOC|thermal|non.equilibrium",
@@ -16,6 +18,11 @@ TOPICS = {
     "Exactly solvable models": r"integrab|exact |exactly|Gaussian|Kitaev|Lanczos",
     "Statistical mechanics": r"partition function|cluster expansion|statistical mechanic|Boltzmann|hydrodynamic",
 }
+
+
+def max_papers_for_date(day):
+    """Preserve earlier twenty-paper digests; cap November 20 onward at fifteen."""
+    return CURRENT_MAX_PAPERS if day >= FIFTEEN_PAPER_START else MAX_PAPERS
 
 
 def clean(text):
@@ -77,8 +84,9 @@ def parse_digest(text):
         papers.append(paper)
     count = len(papers)
     expected_ranks = list(range(1, count + 1))
-    if not MIN_PAPERS <= count <= MAX_PAPERS or [p["rank"] for p in papers] != expected_ranks:
-        raise ValueError(f"Expected {MIN_PAPERS}–{MAX_PAPERS} items with consecutive ranks starting at 1")
+    maximum = max_papers_for_date(date)
+    if not MIN_PAPERS <= count <= maximum or [p["rank"] for p in papers] != expected_ranks:
+        raise ValueError(f"Expected {MIN_PAPERS}–{maximum} items with consecutive ranks starting at 1")
     if len({p["id"] for p in papers}) != count:
         raise ValueError("Duplicate paper IDs in digest")
     order_match = re.search(r"reading order.*?\*\*(.*?)\*\*", day_notes, re.I)

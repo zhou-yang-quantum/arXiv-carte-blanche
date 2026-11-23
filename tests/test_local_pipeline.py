@@ -94,6 +94,24 @@ class CollectorTests(unittest.TestCase):
             pipeline.validate_snapshot(current, current['date'])
 
 
+class DailyPaperLimitTests(unittest.TestCase):
+    def test_startup_prompt_supplies_the_limit_for_each_target_date(self):
+        for day, limit in [('2026-11-19', 20), ('2026-11-20', 15), ('2027-01-01', 15)]:
+            with self.subTest(day=day):
+                self.assertIn(f'Daily paper limit for {day}: {limit}.', pipeline.research_prompt(day))
+
+    def test_generated_result_cannot_exceed_the_new_limit(self):
+        for count in (15, 16):
+            text = example_digest(count, include_priority=False).replace('2026-10-06', '2026-11-20')
+            result = {'status': 'ready', 'markdown': text, 'math_pronunciations': [], 'phrase_groups': []}
+            if count == 15:
+                _, digest = pipeline.validate_result(result, snapshot(count, day='2026-11-20'), '2026-11-20')
+                self.assertEqual(len(digest['papers']), 15)
+            else:
+                with self.assertRaisesRegex(ValueError, '1–15'):
+                    pipeline.validate_result(result, snapshot(count, day='2026-11-20'), '2026-11-20')
+
+
 class CodexDiscoveryTests(unittest.TestCase):
     def setUp(self):
         temporary = tempfile.TemporaryDirectory()

@@ -18,12 +18,12 @@ from zoneinfo import ZoneInfo
 
 if __package__:
     from . import collect_arxiv, publish_digest
-    from .import_digest import parse_digest
+    from .import_digest import parse_digest, max_papers_for_date
     from .speech_text import MATH, make_script, source_phrase_groups, source_pronunciations
 else:
     import collect_arxiv
     import publish_digest
-    from import_digest import parse_digest
+    from import_digest import parse_digest, max_papers_for_date
     from speech_text import MATH, make_script, source_phrase_groups, source_pronunciations
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -481,6 +481,7 @@ def research_prompt(day, style_example=None):
     prompt += '\nAudio annotation instructions (already supplied; do not reread their files):\n'
     prompt += audio_path.read_text(encoding='utf-8')
     prompt += f'\n\nExact target date: {day}.\nCatalog lookup: python tools/local_pipeline.py catalog {day}\n'
+    prompt += f'Daily paper limit for {day}: {max_papers_for_date(day)}. Rank the full batch and return no more than this many papers; do not pad a smaller qualifying selection.\n'
     prompt += f'Metadata lookup: python tools/local_pipeline.py paper {day} ID1 ID2 ...\n'
     prompt += f'Catalog and metadata pages are each bounded to {LOOKUP_PAGE_BYTES} UTF-8 bytes including their JSON envelope. Follow next_command until complete is true; paper --details uses the same paging for archive-validation evidence. Do not dump catalog.json or the full input archive.\n'
     prompt += 'The metadata lookup only reads saved announcement data and preserves complete abstracts. Use the exact source version recorded in source_v1 (legacy snapshots) or versioned_url (feed snapshots). You may read files and use live web search. Use automatic approval review for required read commands. Return the digest in your final JSON, not through file writes.\n'

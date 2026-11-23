@@ -99,7 +99,9 @@ Motivation-first, source-grounded summary paragraphs, with Markdown and LaTeX as
 
 [arXiv YYMM.NNNNN](https://arxiv.org/abs/YYMM.NNNNN)
 
-Repeat consecutive ranks through the actual paper count. Optionally finish with
+Repeat consecutive ranks through the actual paper count, never exceeding the
+controller's daily limit (15 from November 20, 2026 onward). Check the final item
+count before returning the JSON. Optionally finish with
 `My reading order would be **1 → 2 → ... → N**.` using every rank exactly once,
 followed by a brief synthesis. Use the provided date everywhere. Use no HTML,
 internal ChatGPT citation markers, code fence around the digest, or conversational
