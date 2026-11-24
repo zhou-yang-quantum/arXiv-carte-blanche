@@ -1,0 +1,354 @@
+{
+  "version": 6,
+  "date": "2026-11-23",
+  "source_hash": "de408d4da273a40d0b0b6a4e8b344582d4b0d6afd61177ec1c81d01d47d3a82a",
+  "pronunciations": [
+    {
+      "latex": "$$\\Delta S_d=\\log\\left|\\frac{\\dot N_{\\mathrm{out}}}{\\dot N_{\\mathrm{in}}}\\right|.$$",
+      "spoken": "delta S sub D [p] equals [p] the logarithm of the absolute value of N dot sub out divided by N dot sub in."
+    },
+    {
+      "latex": "$$\\langle\\sigma_0\\rangle\\ge c(d,\\beta)>0.$$",
+      "spoken": "the expectation value of sigma sub zero [p] greater than or equal to [p] C of D and beta [p] greater than [p] zero."
+    },
+    {
+      "latex": "$$c_{LR}=\\frac{2\\,\\dim G}{k_L+k_R+2h^\\vee}\\,k_{LR}.$$",
+      "spoken": "C sub L R [p] equals [p] two times the dimension of G [p] divided by the quantity K sub L plus K sub R plus two H dual [p] times K sub L R."
+    },
+    {
+      "latex": "$1/g$",
+      "spoken": "one divided by G"
+    },
+    {
+      "latex": "$C_1,C_3\\ge0$",
+      "spoken": "C sub one and C sub three [p] greater than or equal to [p] zero"
+    },
+    {
+      "latex": "$C_2^2\\le4C_1C_3$",
+      "spoken": "C sub two squared [p] less than or equal to [p] four times C sub one times C sub three"
+    },
+    {
+      "latex": "$D$",
+      "spoken": "D"
+    },
+    {
+      "latex": "$L$",
+      "spoken": "L"
+    },
+    {
+      "latex": "$L\\epsilon\\ll1$",
+      "spoken": "L times epsilon [p] much less than [p] one"
+    },
+    {
+      "latex": "$N$",
+      "spoken": "N"
+    },
+    {
+      "latex": "$O(2N)$",
+      "spoken": "the orthogonal group O of two N"
+    },
+    {
+      "latex": "$O(2N-k)\\times O(k)$",
+      "spoken": "the orthogonal group O of two N minus K [p] times [p] the orthogonal group O of K"
+    },
+    {
+      "latex": "$O(L)$",
+      "spoken": "order L"
+    },
+    {
+      "latex": "$\\alpha\\in(1,3/2)$",
+      "spoken": "alpha [p] in the open interval from one to three halves"
+    },
+    {
+      "latex": "$\\alpha\\in(D,D+1)$",
+      "spoken": "alpha [p] in the open interval from D to D plus one"
+    },
+    {
+      "latex": "$\\beta>\\beta_c(d)$",
+      "spoken": "beta [p] greater than [p] beta sub C of D"
+    },
+    {
+      "latex": "$\\epsilon$",
+      "spoken": "epsilon"
+    },
+    {
+      "latex": "$\\mathbb{Z}^d$",
+      "spoken": "Z to the D"
+    },
+    {
+      "latex": "$\\phi^4$",
+      "spoken": "phi to the fourth"
+    },
+    {
+      "latex": "$\\theta=\\pi$",
+      "spoken": "theta [p] equals [p] pi"
+    },
+    {
+      "latex": "$\\varepsilon t^{D+1}$",
+      "spoken": "epsilon times T to the (D plus one)"
+    },
+    {
+      "latex": "$\\varepsilon t^{D+3}$",
+      "spoken": "epsilon times T to the (D plus three)"
+    },
+    {
+      "latex": "$\\varepsilon$",
+      "spoken": "epsilon"
+    },
+    {
+      "latex": "$d \\geq 4$",
+      "spoken": "D [p] greater than or equal to [p] four"
+    },
+    {
+      "latex": "$e^+e^-$",
+      "spoken": "electron positron"
+    },
+    {
+      "latex": "$h=g^2$",
+      "spoken": "H [p] equals [p] G squared"
+    },
+    {
+      "latex": "$k=1,\\ldots,N$",
+      "spoken": "K [p] equals [p] one through N"
+    },
+    {
+      "latex": "$r\\sim t^{1/(\\alpha-D)}$",
+      "spoken": "R [p] scales as [p] T to the power of one divided by the quantity alpha minus D"
+    },
+    {
+      "latex": "$t$",
+      "spoken": "T"
+    },
+    {
+      "latex": "$t_{\\mathrm{eq}}\\sim L^{\\alpha-1/2}$",
+      "spoken": "T sub equilibrium [p] scales as [p] L to the power of alpha minus one half"
+    }
+  ],
+  "phrase_groups": [
+    [
+      "Agmon's method"
+    ],
+    [
+      "Antiperiodic boundary conditions"
+    ],
+    [
+      "Dobrushin boundary conditions"
+    ],
+    [
+      "Dobrushin comparison"
+    ],
+    [
+      "EFT inverse problem"
+    ],
+    [
+      "Fermi–Hubbard system"
+    ],
+    [
+      "Gauss's law"
+    ],
+    [
+      "Gaussian orthogonal ensemble"
+    ],
+    [
+      "Goldstone modes"
+    ],
+    [
+      "Gross-Neveu model"
+    ],
+    [
+      "K3 sigma model"
+    ],
+    [
+      "Kogut–Susskind Hamiltonian"
+    ],
+    [
+      "Krylov basis"
+    ],
+    [
+      "Landau–Zener transition probabilities"
+    ],
+    [
+      "Lieb–Robinson bound"
+    ],
+    [
+      "Majorana operators"
+    ],
+    [
+      "Majorana quasiparticles"
+    ],
+    [
+      "Markov's inequality"
+    ],
+    [
+      "PIKfan"
+    ],
+    [
+      "Pauli dressing"
+    ],
+    [
+      "Pauli string"
+    ],
+    [
+      "Pauli twirling"
+    ],
+    [
+      "Quantum Many-Body Scars"
+    ],
+    [
+      "SLE loop CFT"
+    ],
+    [
+      "Sachdev–Ye–Kitaev model"
+    ],
+    [
+      "Schramm–Loewner evolution"
+    ],
+    [
+      "Standard Model effective field theory"
+    ],
+    [
+      "Sugawara construction"
+    ],
+    [
+      "Virasoro conformal blocks"
+    ],
+    [
+      "Wess–Zumino–Witten"
+    ],
+    [
+      "Wiedemann–Franz law"
+    ],
+    [
+      "accumulated error generator"
+    ],
+    [
+      "adjacent-gap ratios"
+    ],
+    [
+      "closed-channel spectrum"
+    ],
+    [
+      "conformal field theories"
+    ],
+    [
+      "conformal loop ensemble"
+    ],
+    [
+      "conformal perturbation theory"
+    ],
+    [
+      "connected covariance"
+    ],
+    [
+      "contour deformation"
+    ],
+    [
+      "coset sector"
+    ],
+    [
+      "cross-layer covariances"
+    ],
+    [
+      "curved positivity cones"
+    ],
+    [
+      "density-dependent interactions"
+    ],
+    [
+      "diagonal affine symmetry"
+    ],
+    [
+      "diagonal entropy"
+    ],
+    [
+      "domain Markov property"
+    ],
+    [
+      "doubled fermionic algebra"
+    ],
+    [
+      "dual Coxeter number"
+    ],
+    [
+      "electric-field vacuum"
+    ],
+    [
+      "exactly marginal deformations"
+    ],
+    [
+      "extremal rays"
+    ],
+    [
+      "forward-scattering coefficients"
+    ],
+    [
+      "free-fermion chain"
+    ],
+    [
+      "free-fermion radius"
+    ],
+    [
+      "infinite tensor networks"
+    ],
+    [
+      "infrared estimate"
+    ],
+    [
+      "link-enhanced matrix product operator"
+    ],
+    [
+      "local Ward identities"
+    ],
+    [
+      "massive Schwinger model"
+    ],
+    [
+      "operator size"
+    ],
+    [
+      "out-of-time-ordered correlators"
+    ],
+    [
+      "physics-informed kernels"
+    ],
+    [
+      "positive semidefinite moment matrices"
+    ],
+    [
+      "power-law hopping"
+    ],
+    [
+      "quadratic fermionic Hamiltonian"
+    ],
+    [
+      "quantum separatrix"
+    ],
+    [
+      "quasiparticle annihilation operators"
+    ],
+    [
+      "randomized compiling"
+    ],
+    [
+      "semiclassical parameter"
+    ],
+    [
+      "sign problem"
+    ],
+    [
+      "spatial influence kernel"
+    ],
+    [
+      "superconformal primaries"
+    ],
+    [
+      "symmetric traceless tensor channel"
+    ],
+    [
+      "thermodynamic limit"
+    ],
+    [
+      "two-qubit Clifford gates"
+    ]
+  ]
+}
