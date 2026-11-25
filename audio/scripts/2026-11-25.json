@@ -1,0 +1,316 @@
+{
+  "version": 6,
+  "date": "2026-11-25",
+  "source_hash": "f3f2cb344b9fbfa2df3628b2d8ee47f8d16f64696e7dc98f57ae90761f072d2e",
+  "pronunciations": [
+    {
+      "latex": "$$P_\\infty=\\frac{p_0}{N+1}\\longrightarrow0.$$",
+      "spoken": "P sub infinity [p] equals [p] P sub zero divided by (N plus one) [p] tends to [p] zero"
+    },
+    {
+      "latex": "$$\\zeta_n(\\psi)=M_n(\\psi)+\\log\\mathrm{GSD}.$$",
+      "spoken": "zeta sub N of psi [p] equals [p] M sub N of psi [p] plus [p] the logarithm of the ground-state degeneracy"
+    },
+    {
+      "latex": "$$s(j;\\epsilon)=s_0\\!\\left(\\frac{e^{2\\epsilon j}-\\cosh\\epsilon}{2\\sinh\\epsilon}\\right).$$",
+      "spoken": "S of J and epsilon [p] equals [p] S sub zero evaluated at the fraction whose numerator is E to the power (two epsilon J) minus the hyperbolic cosine of epsilon [p] and whose denominator is twice the hyperbolic sine of epsilon"
+    },
+    {
+      "latex": "$(1/\\varepsilon)^{2+o(1)}$",
+      "spoken": "one over epsilon [p] raised to the power (two plus little O of one)"
+    },
+    {
+      "latex": "$1+1$",
+      "spoken": "one plus one"
+    },
+    {
+      "latex": "$1/N$",
+      "spoken": "one over N"
+    },
+    {
+      "latex": "$B(M)=U_0^\\dagger M U_0-U^\\dagger M U$",
+      "spoken": "B of M [p] equals [p] U sub zero dagger M U sub zero [p] minus [p] U dagger M U"
+    },
+    {
+      "latex": "$N$",
+      "spoken": "N"
+    },
+    {
+      "latex": "$T$",
+      "spoken": "T"
+    },
+    {
+      "latex": "$T\\bar{T}$",
+      "spoken": "T T bar"
+    },
+    {
+      "latex": "$\\epsilon$",
+      "spoken": "epsilon"
+    },
+    {
+      "latex": "$\\eta_\\phi=1.09(4)$",
+      "spoken": "eta sub phi [p] equals [p] one point zero nine [p] with uncertainty zero point zero four"
+    },
+    {
+      "latex": "$\\eta_\\phi>1$",
+      "spoken": "eta sub phi [p] is greater than [p] one"
+    },
+    {
+      "latex": "$\\ln t$",
+      "spoken": "the natural logarithm of T"
+    },
+    {
+      "latex": "$\\mathcal O(T^{1+3/(4p)})$",
+      "spoken": "order T to the power of the quantity one plus three divided by (four P)"
+    },
+    {
+      "latex": "$\\nu=1.10(3)$",
+      "spoken": "nu [p] equals [p] one point one zero [p] with uncertainty zero point zero three"
+    },
+    {
+      "latex": "$\\sqrt{\\ln t}$",
+      "spoken": "the square root of the natural logarithm of T"
+    },
+    {
+      "latex": "$\\theta=0$",
+      "spoken": "theta [p] equals [p] zero"
+    },
+    {
+      "latex": "$\\theta=\\pi$",
+      "spoken": "theta [p] equals [p] pi"
+    },
+    {
+      "latex": "$\\varepsilon$",
+      "spoken": "epsilon"
+    },
+    {
+      "latex": "$\\varepsilon=2^{-o(n/\\log n)}$",
+      "spoken": "epsilon [p] equals [p] two to the power of minus little O of (N divided by log N)"
+    },
+    {
+      "latex": "$\\zeta\\to\\Psi+\\nu$",
+      "spoken": "zeta [p] goes to [p] psi [p] plus [p] nu"
+    },
+    {
+      "latex": "$j$",
+      "spoken": "J"
+    },
+    {
+      "latex": "$m$",
+      "spoken": "M"
+    },
+    {
+      "latex": "$m=\\Omega(n^3)$",
+      "spoken": "M [p] equals [p] big Omega of N cubed"
+    },
+    {
+      "latex": "$n$",
+      "spoken": "N"
+    },
+    {
+      "latex": "$p$",
+      "spoken": "P"
+    },
+    {
+      "latex": "$p_0$",
+      "spoken": "P sub zero"
+    },
+    {
+      "latex": "$s_0$",
+      "spoken": "S sub zero"
+    },
+    {
+      "latex": "$t,\\beta=o(n/\\log n)$",
+      "spoken": "T and beta [p] are [p] little O of (N divided by log N)"
+    },
+    {
+      "latex": "$t^{1/3}$",
+      "spoken": "T to the one-third power"
+    }
+  ],
+  "phrase_groups": [
+    [
+      "$T\\bar{T}$-type deformations"
+    ],
+    [
+      "Bell sampling"
+    ],
+    [
+      "Bethe-ansatz eigenstates"
+    ],
+    [
+      "Fredholm determinants"
+    ],
+    [
+      "Gram matrix"
+    ],
+    [
+      "Gross-Neveu-Heisenberg Transition"
+    ],
+    [
+      "Gross–Neveu–Heisenberg transition"
+    ],
+    [
+      "Heisenberg-picture error observable"
+    ],
+    [
+      "Kipnis--Marchioro--Presutti model"
+    ],
+    [
+      "Lee–Pomeransky representation"
+    ],
+    [
+      "Lee–Yang scaling sector"
+    ],
+    [
+      "Macroscopic fluctuation theory"
+    ],
+    [
+      "ODE/IM correspondence"
+    ],
+    [
+      "Pauli propagation"
+    ],
+    [
+      "SU(2) quantum link model"
+    ],
+    [
+      "Schwinger model"
+    ],
+    [
+      "Spinal reflected entropy"
+    ],
+    [
+      "Stokes multipliers"
+    ],
+    [
+      "Tesseract search decoder"
+    ],
+    [
+      "Thermal purification"
+    ],
+    [
+      "Tracy–Widom"
+    ],
+    [
+      "Weakly coupled auxiliary fields"
+    ],
+    [
+      "Weisskopf–Wigner analysis"
+    ],
+    [
+      "amplitude-estimation advantage"
+    ],
+    [
+      "auxiliary-field quantum Monte Carlo"
+    ],
+    [
+      "baryon–antibaryon pairs"
+    ],
+    [
+      "canonical differential equations"
+    ],
+    [
+      "canonical purification"
+    ],
+    [
+      "diagonal ensemble"
+    ],
+    [
+      "discretized lightcone quantization"
+    ],
+    [
+      "equal-time structure factor"
+    ],
+    [
+      "fold-transversal S gate"
+    ],
+    [
+      "free cumulants"
+    ],
+    [
+      "free probability"
+    ],
+    [
+      "generalized Gibbs ensemble"
+    ],
+    [
+      "gravitational form factors"
+    ],
+    [
+      "higher residue pairings"
+    ],
+    [
+      "intersection pairings"
+    ],
+    [
+      "logical Pauli expectations"
+    ],
+    [
+      "memory-dependent resetting"
+    ],
+    [
+      "mixed anomaly"
+    ],
+    [
+      "non-Abelian gauge–matter dynamics"
+    ],
+    [
+      "nonlocal canonical transformation"
+    ],
+    [
+      "out-of-time-order correlators"
+    ],
+    [
+      "particle–hole transformation"
+    ],
+    [
+      "parton distribution functions"
+    ],
+    [
+      "pinched propagators"
+    ],
+    [
+      "quantum flutter"
+    ],
+    [
+      "quasiparticle ansatz"
+    ],
+    [
+      "recoil field"
+    ],
+    [
+      "second frame potential"
+    ],
+    [
+      "soft XOR"
+    ],
+    [
+      "sparse Pauli model"
+    ],
+    [
+      "spectral axial charge"
+    ],
+    [
+      "stabilizer Rényi entropy"
+    ],
+    [
+      "state 1-designs"
+    ],
+    [
+      "state 2-designs"
+    ],
+    [
+      "static adjoint background charges"
+    ],
+    [
+      "symmetry relocalization"
+    ],
+    [
+      "uniform matrix product state"
+    ],
+    [
+      "variational imaginary-time evolution"
+    ]
+  ]
+}
