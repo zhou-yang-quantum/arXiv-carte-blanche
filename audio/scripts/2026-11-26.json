@@ -1,0 +1,325 @@
+{
+  "version": 6,
+  "date": "2026-11-26",
+  "source_hash": "5353fc9fa8d1541357cefb140fe097c71b71f07ea56b8f1ad3b841cf88793690",
+  "pronunciations": [
+    {
+      "latex": "$$\\rho=\\frac{23I-3\\,\\mathrm{SWAP}}{1448}.$$",
+      "spoken": "rho [p] equals [p] (twenty-three I minus three SWAP) [p] divided by one thousand four hundred forty-eight."
+    },
+    {
+      "latex": "$10^{-8}$",
+      "spoken": "ten to the minus eight"
+    },
+    {
+      "latex": "$K$",
+      "spoken": "K"
+    },
+    {
+      "latex": "$K<2$",
+      "spoken": "K [p] is less than [p] two"
+    },
+    {
+      "latex": "$[[144,12,12]]$",
+      "spoken": "one hundred forty-four twelve twelve"
+    },
+    {
+      "latex": "$\\Delta=1$",
+      "spoken": "Delta [p] equals [p] one"
+    },
+    {
+      "latex": "$\\Delta>1$",
+      "spoken": "Delta [p] is greater than [p] one"
+    },
+    {
+      "latex": "$\\alpha\\leftrightarrow1/\\alpha$",
+      "spoken": "alpha [p] is exchanged with [p] one divided by alpha"
+    },
+    {
+      "latex": "$\\hbar/(k_B T)$",
+      "spoken": "h bar [p] divided by [p] (K sub B times T)"
+    },
+    {
+      "latex": "$\\rho_*=(k+1)/2$",
+      "spoken": "rho sub star [p] equals [p] (K plus one) divided by two"
+    },
+    {
+      "latex": "$\\widehat{\\mathfrak{su}}(2)_k \\to \\widehat{\\mathfrak{su}}(2)_1$",
+      "spoken": "affine S U two at level K [p] flows to [p] affine S U two at level one"
+    },
+    {
+      "latex": "$k+1$",
+      "spoken": "K [p] plus [p] one"
+    },
+    {
+      "latex": "$k\\geq3$",
+      "spoken": "K [p] is greater than or equal to [p] three"
+    },
+    {
+      "latex": "$n=2$",
+      "spoken": "N [p] equals [p] two"
+    },
+    {
+      "latex": "$n>2$",
+      "spoken": "N [p] is greater than [p] two"
+    },
+    {
+      "latex": "$x\\sim t^{2/3}$",
+      "spoken": "X [p] scales as [p] T to the two-thirds power"
+    }
+  ],
+  "phrase_groups": [
+    [
+      "Bell-state fidelity"
+    ],
+    [
+      "Born-rule randomness"
+    ],
+    [
+      "Bound magic"
+    ],
+    [
+      "Chern insulator"
+    ],
+    [
+      "Chiral Domain-Wall Modes"
+    ],
+    [
+      "Choi representation"
+    ],
+    [
+      "Complete copositivity"
+    ],
+    [
+      "Density-matrix renormalization group"
+    ],
+    [
+      "Floquet code"
+    ],
+    [
+      "Fluctuating-hydrodynamic calculations"
+    ],
+    [
+      "Gaussian optimality"
+    ],
+    [
+      "Haar-random states"
+    ],
+    [
+      "Kardar–Parisi–Zhang scaling"
+    ],
+    [
+      "Luttinger parameter"
+    ],
+    [
+      "Lyapunov gap"
+    ],
+    [
+      "Massless WZW Flows $\\widehat{\\mathfrak{su}}(2)_k \\to \\widehat{\\mathfrak{su}}(2)_1$"
+    ],
+    [
+      "Monte Carlo"
+    ],
+    [
+      "Negative Partial Transpose"
+    ],
+    [
+      "Neural Network Decoders"
+    ],
+    [
+      "Non-Markovian Open Quantum Systems"
+    ],
+    [
+      "Optimal Controlled Quantum Instrument"
+    ],
+    [
+      "PPT Pauli channels"
+    ],
+    [
+      "Pauli-frame sampling"
+    ],
+    [
+      "Qubit Loss"
+    ],
+    [
+      "Renormalization Group Interfaces"
+    ],
+    [
+      "Rényi entanglement asymmetries"
+    ],
+    [
+      "Sandwiched Rényi relative entropy"
+    ],
+    [
+      "Schmidt-spectrum norm"
+    ],
+    [
+      "Topological Adaptive Quantum Dynamics"
+    ],
+    [
+      "Transition Path Sampling"
+    ],
+    [
+      "Twisted boundary conditions"
+    ],
+    [
+      "Werner state"
+    ],
+    [
+      "Wess–Zumino–Witten flows"
+    ],
+    [
+      "Wilson coefficients"
+    ],
+    [
+      "XXZ chain"
+    ],
+    [
+      "bivariate bicycle code"
+    ],
+    [
+      "charged moments"
+    ],
+    [
+      "conformal perturbation theory"
+    ],
+    [
+      "convolutional neural decoders"
+    ],
+    [
+      "diagonal current algebra"
+    ],
+    [
+      "discrete Wigner function"
+    ],
+    [
+      "dressed logical operators"
+    ],
+    [
+      "entanglement of formation"
+    ],
+    [
+      "entropy-biased measured Majorana chain"
+    ],
+    [
+      "free-fermion CFT"
+    ],
+    [
+      "generalized Doob construction"
+    ],
+    [
+      "input–output Choi state"
+    ],
+    [
+      "left canonical form"
+    ],
+    [
+      "line defects"
+    ],
+    [
+      "loop tensor network renormalization"
+    ],
+    [
+      "mean-force Gibbs state"
+    ],
+    [
+      "modular flow"
+    ],
+    [
+      "most-likely-error benchmarks"
+    ],
+    [
+      "negative partial transpose"
+    ],
+    [
+      "non-Markovian quantum state diffusion"
+    ],
+    [
+      "path-integral factorization"
+    ],
+    [
+      "positive partial transpose"
+    ],
+    [
+      "pure-loss and quantum-limited amplifier channels"
+    ],
+    [
+      "quantum Fisher information"
+    ],
+    [
+      "quantum Mpemba effect"
+    ],
+    [
+      "quantum speed-limit theory"
+    ],
+    [
+      "radial sewing"
+    ],
+    [
+      "renormalization-group perturbation"
+    ],
+    [
+      "sandwiched Rényi divergences"
+    ],
+    [
+      "sandwiched Rényi mutual information"
+    ],
+    [
+      "self-consistent Poisson description"
+    ],
+    [
+      "separable operations"
+    ],
+    [
+      "sine-Gordon mass–coupling relation"
+    ],
+    [
+      "soliton gas"
+    ],
+    [
+      "spacetime Pauli-fault distance"
+    ],
+    [
+      "spacetime subsystem code"
+    ],
+    [
+      "spin bound states"
+    ],
+    [
+      "spin-boson model"
+    ],
+    [
+      "stabilizer octahedron"
+    ],
+    [
+      "stabilizer operations"
+    ],
+    [
+      "stabilizer polytope"
+    ],
+    [
+      "strong-converse exponent"
+    ],
+    [
+      "tensor-stable obstruction"
+    ],
+    [
+      "tilted ferromagnetic states"
+    ],
+    [
+      "topological dressing"
+    ],
+    [
+      "two-parameter replica construction"
+    ],
+    [
+      "unbalanced open Dicke model"
+    ],
+    [
+      "walking extraction circuit"
+    ],
+    [
+      "zero-reference condition"
+    ]
+  ]
+}
